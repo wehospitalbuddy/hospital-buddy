@@ -55,15 +55,19 @@ async function loadHospitalBuddies(db) {
   const buddyList =
     document.getElementById("buddyList");
 
-  if (!buddyList) return;
+
+  if (!buddyList) {
+    return;
+  }
 
 
   try {
 
-    const snapshot = await db
-      .collection("hospital_buddies")
-      .where("status", "==", "available")
-      .get();
+    const snapshot =
+      await db
+        .collection("hospital_buddies")
+        .where("status", "==", "available")
+        .get();
 
 
     if (snapshot.empty) {
@@ -71,13 +75,9 @@ async function loadHospitalBuddies(db) {
       buddyList.innerHTML = `
         <article class="buddy">
 
-          <div style="font-size:35px">
-            🤝
-          </div>
+          <div class="resultIcon">🤝</div>
 
-          <h3>
-            No Hospital Buddy Available
-          </h3>
+          <h3>No Hospital Buddy Available</h3>
 
           <p>
             No Hospital Buddy is currently available.
@@ -91,59 +91,63 @@ async function loadHospitalBuddies(db) {
     }
 
 
-    buddyList.innerHTML = snapshot.docs
-      .map(doc => {
+    buddyList.innerHTML =
+      snapshot.docs
+        .map(doc => {
 
-        const buddy = doc.data();
-
-        const languages =
-          Array.isArray(buddy.languages)
-            ? buddy.languages.join(", ")
-            : "Available on request";
+          const buddy = doc.data();
 
 
-        return `
-          <article class="buddy">
+          const languages =
+            Array.isArray(buddy.languages)
+              ? buddy.languages.join(", ")
+              : "Available on request";
 
-            <div style="font-size:35px">
-              🤝
-            </div>
 
-            <h3>
-              ${escapeHTML(
-                buddy.name || "Hospital Buddy"
-              )}
-            </h3>
+          return `
+            <article class="buddy">
 
-            <p>
-              <b>Qualification:</b>
-              ${escapeHTML(
-                buddy.qualification || "Not specified"
-              )}
-            </p>
+              <div class="resultIcon">
+                🤝
+              </div>
 
-            <p>
-              <b>Languages:</b>
-              ${escapeHTML(languages)}
-            </p>
+              <h3>
+                ${escapeHTML(
+                  buddy.name || "Hospital Buddy"
+                )}
+              </h3>
 
-            <p class="privateText">
-              Phone number shared after confirmation.
-            </p>
+              <p>
+                <b>Qualification:</b>
+                ${escapeHTML(
+                  buddy.qualification ||
+                  "Not specified"
+                )}
+              </p>
 
-            <button
-              class="btn"
-              type="button"
-              onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})"
-            >
-              Request This Hospital Buddy
-            </button>
+              <p>
+                <b>Languages:</b>
+                ${escapeHTML(languages)}
+              </p>
 
-          </article>
-        `;
+              <p class="privateText">
+                <b>Phone:</b>
+                Hidden until confirmation
+              </p>
 
-      })
-      .join("");
+              <button
+                class="btn"
+                type="button"
+                onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})"
+              >
+                Request This Hospital Buddy
+              </button>
+
+            </article>
+          `;
+
+        })
+        .join("");
 
 
   } catch (error) {
@@ -182,7 +186,10 @@ function setupBooking(db) {
   const form =
     document.getElementById("form");
 
-  if (!form) return;
+
+  if (!form) {
+    return;
+  }
 
 
   form.onsubmit = async (event) => {
@@ -227,9 +234,9 @@ function setupBooking(db) {
 
     try {
 
-      // -----------------------------------------
-      // FIND AVAILABLE HOSPITAL BUDDY
-      // -----------------------------------------
+      // -------------------------------------------------
+      // FIND AVAILABLE HOSPITAL BUDDIES
+      // -------------------------------------------------
 
       const buddySnapshot =
         await db
@@ -241,7 +248,9 @@ function setupBooking(db) {
       let selectedBuddy = null;
 
 
-      // First try language match
+      // -------------------------------------------------
+      // FIRST TRY LANGUAGE MATCH
+      // -------------------------------------------------
 
       buddySnapshot.forEach(doc => {
 
@@ -264,8 +273,10 @@ function setupBooking(db) {
       });
 
 
-      // If no language match,
-      // select first available Buddy
+      // -------------------------------------------------
+      // IF NO LANGUAGE MATCH,
+      // USE FIRST AVAILABLE HOSPITAL BUDDY
+      // -------------------------------------------------
 
       if (
         !selectedBuddy &&
@@ -284,9 +295,9 @@ function setupBooking(db) {
       }
 
 
-      // -----------------------------------------
-      // NO BUDDY AVAILABLE
-      // -----------------------------------------
+      // -------------------------------------------------
+      // NO HOSPITAL BUDDY AVAILABLE
+      // -------------------------------------------------
 
       if (!selectedBuddy) {
 
@@ -301,8 +312,9 @@ function setupBooking(db) {
           </h2>
 
           <p>
-            Sorry, there is currently no available
-            Hospital Buddy for your request.
+            Sorry, there is currently no
+            available Hospital Buddy for
+            this request.
           </p>
 
           <button
@@ -320,9 +332,9 @@ function setupBooking(db) {
       }
 
 
-      // -----------------------------------------
+      // -------------------------------------------------
       // CREATE BOOKING
-      // -----------------------------------------
+      // -------------------------------------------------
 
       const bookingRef =
         await db
@@ -349,7 +361,8 @@ function setupBooking(db) {
             buddyName:
               selectedBuddy.name || "",
 
-            status: "pending",
+            status:
+              "pending",
 
             createdAt:
               firebase.firestore
@@ -359,6 +372,10 @@ function setupBooking(db) {
           });
 
 
+      // -------------------------------------------------
+      // CREATE BOOKING ID
+      // -------------------------------------------------
+
       const bookingId =
         "HB-" +
         bookingRef.id
@@ -366,9 +383,9 @@ function setupBooking(db) {
           .toUpperCase();
 
 
-      // -----------------------------------------
+      // -------------------------------------------------
       // SHOW BOOKING RESULT
-      // -----------------------------------------
+      // -------------------------------------------------
 
       showResult(`
 
@@ -381,7 +398,8 @@ function setupBooking(db) {
         </h2>
 
         <div class="bookingId">
-          Booking ID: ${escapeHTML(bookingId)}
+          Booking ID:
+          ${escapeHTML(bookingId)}
         </div>
 
         <p>
@@ -392,8 +410,9 @@ function setupBooking(db) {
 
           <b>Hospital Buddy</b>
 
-          <br>
+          <br><br>
 
+          <b>Name:</b>
           ${escapeHTML(
             selectedBuddy.name ||
             "Hospital Buddy"
@@ -421,6 +440,7 @@ function setupBooking(db) {
 
         </div>
 
+
         <p>
 
           <b>Service:</b>
@@ -443,16 +463,23 @@ function setupBooking(db) {
 
         </p>
 
-        <p>
-          <b>Status:</b>
-          Pending confirmation
-        </p>
 
         <p>
-          The Hospital Buddy's phone number will
-          be shared only after the request is
-          confirmed by the administrator.
+
+          <b>Status:</b>
+          Pending confirmation
+
         </p>
+
+
+        <p class="privateText">
+
+          The Hospital Buddy's phone number
+          will be shared only after the request
+          is confirmed.
+
+        </p>
+
 
         <button
           class="btn"
@@ -464,6 +491,10 @@ function setupBooking(db) {
 
       `);
 
+
+      // -------------------------------------------------
+      // RESET FORM
+      // -------------------------------------------------
 
       form.reset();
 
@@ -487,7 +518,8 @@ function setupBooking(db) {
         </h2>
 
         <p>
-          We could not submit your booking request.
+          We could not submit your
+          booking request.
         </p>
 
         <p>
@@ -524,7 +556,9 @@ function showResult(html) {
     document.getElementById("modal");
 
 
-  if (!result || !modal) return;
+  if (!result || !modal) {
+    return;
+  }
 
 
   result.innerHTML = html;
@@ -540,11 +574,12 @@ function closeModal() {
     document.getElementById("modal");
 
 
-  if (modal) {
-
-    modal.classList.add("hidden");
-
+  if (!modal) {
+    return;
   }
+
+
+  modal.classList.add("hidden");
 
 }
 
