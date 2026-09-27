@@ -1,8 +1,395 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Health Buddy</title><link rel="stylesheet" href="styles.css"></head><body>
-<header><div class="nav"><a class="brand" href="#"><img src="logo.png"><b>Health Buddy</b></a><nav><a href="#services">Services</a><a href="#buddies">Buddies</a><a href="#how">How it works</a><a href="#book">Book</a></nav></div></header>
-<section class="hero"><div><span>INDEPENDENT • NON-MEDICAL • PATIENT-FOCUSED</span><h1>Book a Buddy for your hospital visit.</h1><p>Practical help with navigation, administrative tasks, appointment procedures and language assistance.</p><a class="btn" href="#book">Book a Buddy</a><p class="note"><b>Important:</b> Hospital Buddy is independent and is not affiliated with or endorsed by AIIMS Guwahati.</p></div><div class="heroCard">🤝<h2>Your visit. Your choice. Your Buddy.</h2><p>Choose your service, language, date and time. After confirmation, the assigned Buddy's details and contact number can be shared privately.</p></div></section>
-<section id="services"><h2>Our Services</h2><div class="grid"><article>🧭<h3>Hospital Navigation</h3><p>Directions to permitted departments and counters.</p></article><article>📅<h3>Appointment Assistance</h3><p>Help with official registration and appointment procedures.</p></article><article>🧾<h3>Administrative Help</h3><p>Forms, copies and routine administrative assistance.</p></article><article>🗣️<h3>Language Assistance</h3><p>Basic non-medical support in available regional languages.</p></article><article>👴<h3>Elderly Assistance</h3><p>Practical support where hospital rules permit.</p></article><article>🧳<h3>Outstation Support</h3><p>Help for patients travelling from other districts and the North-East.</p></article></div></section>
-<section id="buddies" class="tint"><h2>Our Buddies</h2><p>In the live system, only available Buddies will appear.</p><div id="buddies" class="grid"></div></section>
-<section id="how"><h2>How It Works</h2><div class="steps"><div><b>1</b><h3>Request</h3><p>Tell us what help you need.</p></div><div><b>2</b><h3>Match</h3><p>We find an available Buddy.</p></div><div><b>3</b><h3>Confirm</h3><p>Review the service and fee.</p></div><div><b>4</b><h3>Contact</h3><p>After confirmation, receive Buddy details and contact number.</p></div></div></section>
-<section id="book" class="tint"><h2>Book a Buddy</h2><form id="form"><label>Name<input id="name" required></label><label>Phone<input id="phone" required></label><label>Language<select id="lang"><option>Assamese</option><option>English</option><option>Hindi</option><option>Bengali</option><option>Bodo</option></select></label><label>Service<select id="service"><option>Hospital Navigation</option><option>Appointment Assistance</option><option>Administrative Help</option><option>Language Assistance</option><option>Elderly Assistance</option><option>Outstation Support</option></select></label><div class="two"><label>Date<input id="date" type="date" required></label><label>Time<input id="time" type="time" required></label></div><label>Non-medical requirement<textarea id="notes"></textarea></label><label class="check"><input id="agree" type="checkbox" required>I understand this is an independent service and does not guarantee treatment, admission, priority or doctor access.</label><button class="btn">Find & Request a Buddy</button></form></section>
-<footer><b>Health Buddy</b><p>Helping Patients • Supporting Families • Creating Opportunities</p><p>Near AIIMS Guwahati, Changsari, Assam</p></footer><div id="modal" class="modal hidden"><div class="modalbox"><button onclick="closeModal()">×</button><div id="result"></div></div></div><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Health Buddy | Hospital Assistance</title>
+
+  <meta
+    name="description"
+    content="Health Buddy provides independent non-medical assistance for patients and families visiting hospitals."
+  >
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+
+    <a class="brand" href="#">
+      <img src="logo.png" alt="Health Buddy">
+      <b>Health Buddy</b>
+    </a>
+
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#buddies-section">Buddies</a>
+      <a href="#how">How it works</a>
+      <a href="#book">Book</a>
+    </nav>
+
+  </div>
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div>
+
+    <span class="eyebrow">
+      INDEPENDENT • NON-MEDICAL • PATIENT-FOCUSED
+    </span>
+
+    <h1>
+      Book a Buddy for your hospital visit.
+    </h1>
+
+    <p>
+      Practical help with hospital navigation, administrative tasks,
+      appointment procedures, elderly assistance and language support.
+    </p>
+
+    <a class="btn" href="#book">
+      Book a Buddy
+    </a>
+
+    <p class="note">
+      <b>Important:</b>
+      Health Buddy is an independent service and is not affiliated with
+      or endorsed by AIIMS Guwahati or any hospital.
+    </p>
+
+  </div>
+
+
+  <div class="heroCard">
+
+    <div class="heroIcon">🤝</div>
+
+    <h2>
+      Your visit. Your choice. Your Buddy.
+    </h2>
+
+    <p>
+      Choose your language, service, date and time.
+      We will try to match your request with an available Buddy.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section id="services">
+
+  <h2>Our Services</h2>
+
+  <div class="grid">
+
+    <article>
+      <div class="serviceIcon">🧭</div>
+      <h3>Hospital Navigation</h3>
+      <p>
+        Directions to permitted departments, counters and hospital facilities.
+      </p>
+    </article>
+
+    <article>
+      <div class="serviceIcon">📅</div>
+      <h3>Appointment Assistance</h3>
+      <p>
+        Help with official registration and appointment procedures.
+      </p>
+    </article>
+
+    <article>
+      <div class="serviceIcon">🧾</div>
+      <h3>Administrative Help</h3>
+      <p>
+        Assistance with forms, copies and routine administrative tasks.
+      </p>
+    </article>
+
+    <article>
+      <div class="serviceIcon">🗣️</div>
+      <h3>Language Assistance</h3>
+      <p>
+        Basic non-medical support in available regional languages.
+      </p>
+    </article>
+
+    <article>
+      <div class="serviceIcon">👴</div>
+      <h3>Elderly Assistance</h3>
+      <p>
+        Practical assistance for elderly visitors where hospital rules permit.
+      </p>
+    </article>
+
+    <article>
+      <div class="serviceIcon">🧳</div>
+      <h3>Outstation Support</h3>
+      <p>
+        Practical support for patients travelling from other districts and
+        the North-East.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- BUDDIES -->
+
+<section id="buddies-section" class="tint">
+
+  <h2>Our Buddies</h2>
+
+  <p>
+    Only Buddies currently marked as available are shown.
+  </p>
+
+  <div id="buddies" class="grid">
+
+    <article class="buddy">
+      <h3>Loading Buddies...</h3>
+      <p>Please wait.</p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section id="how">
+
+  <h2>How It Works</h2>
+
+  <div class="steps">
+
+    <div>
+      <b>1</b>
+      <h3>Request</h3>
+      <p>Tell us what help you need.</p>
+    </div>
+
+    <div>
+      <b>2</b>
+      <h3>Match</h3>
+      <p>We find an available Buddy.</p>
+    </div>
+
+    <div>
+      <b>3</b>
+      <h3>Confirm</h3>
+      <p>Review your request and confirmation status.</p>
+    </div>
+
+    <div>
+      <b>4</b>
+      <h3>Contact</h3>
+      <p>
+        After confirmation, Buddy contact details can be shared privately.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- BOOKING -->
+
+<section id="book" class="tint">
+
+  <h2>Book a Buddy</h2>
+
+  <p class="sectionIntro">
+    Submit your request and we will try to match you with an available Buddy.
+  </p>
+
+  <form id="form">
+
+    <label>
+      Name
+      <input
+        id="name"
+        type="text"
+        placeholder="Enter your name"
+        required
+      >
+    </label>
+
+
+    <label>
+      Phone
+      <input
+        id="phone"
+        type="tel"
+        placeholder="Enter your phone number"
+        required
+      >
+    </label>
+
+
+    <label>
+      Language
+
+      <select id="lang" required>
+
+        <option value="Assamese">Assamese</option>
+        <option value="English">English</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Bengali">Bengali</option>
+        <option value="Bodo">Bodo</option>
+
+      </select>
+
+    </label>
+
+
+    <label>
+      Service
+
+      <select id="service" required>
+
+        <option value="Hospital Navigation">
+          Hospital Navigation
+        </option>
+
+        <option value="Appointment Assistance">
+          Appointment Assistance
+        </option>
+
+        <option value="Administrative Help">
+          Administrative Help
+        </option>
+
+        <option value="Language Assistance">
+          Language Assistance
+        </option>
+
+        <option value="Elderly Assistance">
+          Elderly Assistance
+        </option>
+
+        <option value="Outstation Support">
+          Outstation Support
+        </option>
+
+      </select>
+
+    </label>
+
+
+    <div class="two">
+
+      <label>
+        Date
+        <input id="date" type="date" required>
+      </label>
+
+      <label>
+        Time
+        <input id="time" type="time" required>
+      </label>
+
+    </div>
+
+
+    <label>
+      Non-medical requirement
+
+      <textarea
+        id="notes"
+        placeholder="Tell us what practical help you need..."
+      ></textarea>
+
+    </label>
+
+
+    <label class="check">
+
+      <input
+        id="agree"
+        type="checkbox"
+        required
+      >
+
+      <span>
+        I understand this is an independent service and does not guarantee
+        treatment, admission, priority or doctor access.
+      </span>
+
+    </label>
+
+
+    <button
+      type="submit"
+      class="btn"
+      id="submitButton"
+    >
+      Find & Request a Buddy
+    </button>
+
+  </form>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <b>Health Buddy</b>
+
+  <p>
+    Helping Patients • Supporting Families • Creating Opportunities
+  </p>
+
+  <p>
+    Near AIIMS Guwahati, Changsari, Assam
+  </p>
+
+  <p class="footerSmall">
+    Independent non-medical assistance service.
+  </p>
+
+</footer>
+
+
+<!-- MODAL -->
+
+<div id="modal" class="modal hidden">
+
+  <div class="modalbox">
+
+    <button
+      class="close"
+      onclick="closeModal()"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
