@@ -70,72 +70,97 @@ function startAdmin(auth, db) {
   const loginForm =
     document.getElementById("loginForm");
 
+
   if (!loginForm) {
+
     console.error("Login form not found.");
+
     return;
+
   }
 
 
-  loginForm.onsubmit = async (event) => {
+  loginForm.onsubmit =
+    async (event) => {
 
-    event.preventDefault();
-
-    const email =
-      document.getElementById("adminEmail")
-        .value.trim();
-
-    const password =
-      document.getElementById("adminPassword")
-        .value;
-
-    const message =
-      document.getElementById("loginMessage");
-
-    message.textContent = "Logging in...";
-    message.style.color = "";
+      event.preventDefault();
 
 
-    try {
+      const email =
+        document
+          .getElementById("adminEmail")
+          .value
+          .trim();
 
-      await auth.signInWithEmailAndPassword(
-        email,
-        password
-      );
 
-    } catch (error) {
+      const password =
+        document
+          .getElementById("adminPassword")
+          .value;
 
-      console.error("Firebase Login Error:", error);
+
+      const message =
+        document.getElementById("loginMessage");
+
 
       message.textContent =
-        "Login failed: " +
-        getAuthErrorMessage(error);
+        "Logging in...";
 
-      message.style.color = "#8d1d1d";
+      message.style.color = "";
+
+
+      try {
+
+        await auth.signInWithEmailAndPassword(
+          email,
+          password
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Firebase Login Error:",
+          error
+        );
+
+
+        message.textContent =
+          "Login failed: " +
+          getAuthErrorMessage(error);
+
+
+        message.style.color =
+          "#8d1d1d";
+
+      }
+
+    };
+
+
+  // ===================================================
+  // AUTH STATE
+  // ===================================================
+
+  auth.onAuthStateChanged(
+    async (user) => {
+
+      if (user) {
+
+        await checkAdmin(
+          auth,
+          db,
+          user
+        );
+
+      } else {
+
+        showLogin();
+
+      }
 
     }
-
-  };
-
-
-  // Check authentication state
-
-  auth.onAuthStateChanged(async (user) => {
-
-    if (user) {
-
-      await checkAdmin(
-        auth,
-        db,
-        user
-      );
-
-    } else {
-
-      showLogin();
-
-    }
-
-  });
+  );
 
 }
 
@@ -169,6 +194,7 @@ async function checkAdmin(
       await auth.signOut();
 
       return;
+
     }
 
 
@@ -187,6 +213,7 @@ async function checkAdmin(
       "Admin verification error:",
       error
     );
+
 
     document.getElementById(
       "loginMessage"
@@ -208,6 +235,7 @@ function showLogin() {
     "loginSection"
   ).style.display = "block";
 
+
   document.getElementById(
     "adminPanel"
   ).style.display = "none";
@@ -224,6 +252,7 @@ function showAdminPanel() {
   document.getElementById(
     "loginSection"
   ).style.display = "none";
+
 
   document.getElementById(
     "adminPanel"
@@ -254,6 +283,7 @@ document.addEventListener(
     const buddyForm =
       document.getElementById("buddyForm");
 
+
     if (!buddyForm) {
       return;
     }
@@ -264,29 +294,41 @@ document.addEventListener(
 
         event.preventDefault();
 
+
         const name =
-          document.getElementById("buddyName")
-            .value.trim();
+          document
+            .getElementById("buddyName")
+            .value
+            .trim();
+
 
         const phone =
-          document.getElementById("buddyPhone")
-            .value.trim();
+          document
+            .getElementById("buddyPhone")
+            .value
+            .trim();
+
 
         const qualification =
-          document.getElementById(
-            "buddyQualification"
-          ).value.trim();
+          document
+            .getElementById("buddyQualification")
+            .value
+            .trim();
+
 
         const languagesText =
-          document.getElementById(
-            "buddyLanguages"
-          ).value.trim();
+          document
+            .getElementById("buddyLanguages")
+            .value
+            .trim();
+
 
         const languages =
           languagesText
             .split(",")
             .map(language => language.trim())
             .filter(language => language);
+
 
         const message =
           document.getElementById(
@@ -325,12 +367,14 @@ document.addEventListener(
           message.style.color =
             "#176b32";
 
+
           buddyForm.reset();
 
 
           loadHospitalBuddies(
             firebase.firestore()
           );
+
 
           loadDashboard(
             firebase.firestore()
@@ -343,6 +387,7 @@ document.addEventListener(
             "Add Hospital Buddy error:",
             error
           );
+
 
           message.textContent =
             "Unable to add Hospital Buddy.";
@@ -369,6 +414,7 @@ async function loadHospitalBuddies(db) {
       "buddyTable"
     );
 
+
   if (!table) {
     return;
   }
@@ -393,6 +439,7 @@ async function loadHospitalBuddies(db) {
       `;
 
       return;
+
     }
 
 
@@ -403,13 +450,16 @@ async function loadHospitalBuddies(db) {
           const buddy =
             doc.data();
 
+
           const languages =
             Array.isArray(buddy.languages)
               ? buddy.languages.join(", ")
               : "";
 
+
           const status =
-            buddy.status || "unavailable";
+            buddy.status ||
+            "unavailable";
 
 
           return `
@@ -451,6 +501,7 @@ async function loadHospitalBuddies(db) {
 
                 ${
                   status === "available"
+
                     ? `
                       <button
                         class="smallBtn red"
@@ -459,6 +510,7 @@ async function loadHospitalBuddies(db) {
                         Make Unavailable
                       </button>
                     `
+
                     : `
                       <button
                         class="smallBtn green"
@@ -492,6 +544,7 @@ async function loadHospitalBuddies(db) {
       error
     );
 
+
     table.innerHTML = `
       <tr>
         <td colspan="6">
@@ -521,13 +574,16 @@ async function changeBuddyStatus(
       .collection("hospital_buddies")
       .doc(buddyId)
       .update({
+
         status: newStatus
+
       });
 
 
     loadHospitalBuddies(
       firebase.firestore()
     );
+
 
     loadDashboard(
       firebase.firestore()
@@ -540,6 +596,7 @@ async function changeBuddyStatus(
       "Status update error:",
       error
     );
+
 
     alert(
       "Unable to change Hospital Buddy status."
@@ -563,6 +620,7 @@ async function deleteBuddy(
       "Are you sure you want to delete this Hospital Buddy?"
     );
 
+
   if (!confirmDelete) {
     return;
   }
@@ -581,6 +639,7 @@ async function deleteBuddy(
       firebase.firestore()
     );
 
+
     loadDashboard(
       firebase.firestore()
     );
@@ -592,6 +651,7 @@ async function deleteBuddy(
       "Delete Hospital Buddy error:",
       error
     );
+
 
     alert(
       "Unable to delete Hospital Buddy."
@@ -612,6 +672,7 @@ async function loadBookings(db) {
     document.getElementById(
       "bookingTable"
     );
+
 
   if (!table) {
     return;
@@ -641,6 +702,7 @@ async function loadBookings(db) {
       `;
 
       return;
+
     }
 
 
@@ -651,9 +713,11 @@ async function loadBookings(db) {
           const booking =
             doc.data();
 
+
           const status =
             booking.status ||
             "pending";
+
 
           const bookingId =
             "HB-" +
@@ -716,6 +780,7 @@ async function loadBookings(db) {
 
                 ${
                   status === "pending"
+
                     ? `
                       <button
                         class="smallBtn green"
@@ -731,11 +796,13 @@ async function loadBookings(db) {
                         Reject
                       </button>
                     `
+
                     : ""
                 }
 
                 ${
                   status === "confirmed"
+
                     ? `
                       <button
                         class="smallBtn blue"
@@ -751,6 +818,7 @@ async function loadBookings(db) {
                         Cancel
                       </button>
                     `
+
                     : ""
                 }
 
@@ -769,6 +837,7 @@ async function loadBookings(db) {
       "Load bookings error:",
       error
     );
+
 
     table.innerHTML = `
       <tr>
@@ -799,13 +868,16 @@ async function changeBookingStatus(
       .collection("bookings")
       .doc(bookingId)
       .update({
+
         status: newStatus
+
       });
 
 
     loadBookings(
       firebase.firestore()
     );
+
 
     loadDashboard(
       firebase.firestore()
@@ -818,6 +890,7 @@ async function changeBookingStatus(
       "Booking status error:",
       error
     );
+
 
     alert(
       "Unable to update booking status."
@@ -858,24 +931,29 @@ async function loadDashboard(db) {
     let completed = 0;
 
 
-    bookingSnapshot.forEach(doc => {
+    bookingSnapshot.forEach(
+      doc => {
 
-      const status =
-        doc.data().status;
+        const status =
+          doc.data().status;
 
-      if (status === "pending") {
-        pending++;
+
+        if (status === "pending") {
+          pending++;
+        }
+
+
+        if (status === "confirmed") {
+          confirmed++;
+        }
+
+
+        if (status === "completed") {
+          completed++;
+        }
+
       }
-
-      if (status === "confirmed") {
-        confirmed++;
-      }
-
-      if (status === "completed") {
-        completed++;
-      }
-
-    });
+    );
 
 
     document.getElementById(
@@ -883,15 +961,18 @@ async function loadDashboard(db) {
     ).textContent =
       buddySnapshot.size;
 
+
     document.getElementById(
       "pendingCount"
     ).textContent =
       pending;
 
+
     document.getElementById(
       "confirmedCount"
     ).textContent =
       confirmed;
+
 
     document.getElementById(
       "completedCount"
@@ -959,10 +1040,15 @@ function getAuthErrorMessage(error) {
 function escapeHTML(value) {
 
   return String(value)
+
     .replace(/&/g, "&amp;")
+
     .replace(/</g, "&lt;")
+
     .replace(/>/g, "&gt;")
+
     .replace(/"/g, "&quot;")
+
     .replace(/'/g, "&#039;");
 
 }
