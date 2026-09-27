@@ -1,46 +1,29 @@
 const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
-
-  authDomain:
-    "hospital-buddy-2224d.firebaseapp.com",
-
-  projectId:
-    "hospital-buddy-2224d",
-
-  storageBucket:
-    "hospital-buddy-2224d.firebasestorage.app",
-
-  messagingSenderId:
-    "190919672635",
-
-  appId:
-    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
-
-  measurementId:
-    "G-7I3TZ2EFFR"
-
+  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+  authDomain: "hospital-buddy-2224d.firebaseapp.com",
+  projectId: "hospital-buddy-2224d",
+  storageBucket: "hospital-buddy-2224d.firebasestorage.app",
+  messagingSenderId: "190919672635",
+  appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+  measurementId: "G-7I3TZ2EFFR"
 };
 
 
-// --------------------------------------------------
+// =====================================================
 // LOAD FIREBASE
-// --------------------------------------------------
+// =====================================================
 
-const appScript =
-  document.createElement("script");
+const firebaseScript = document.createElement("script");
 
-appScript.src =
+firebaseScript.src =
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
 
-document.head.appendChild(appScript);
+document.head.appendChild(firebaseScript);
 
 
-appScript.onload = () => {
+firebaseScript.onload = () => {
 
-  const authScript =
-    document.createElement("script");
+  const authScript = document.createElement("script");
 
   authScript.src =
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
@@ -50,8 +33,7 @@ appScript.onload = () => {
 
   authScript.onload = () => {
 
-    const firestoreScript =
-      document.createElement("script");
+    const firestoreScript = document.createElement("script");
 
     firestoreScript.src =
       "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
@@ -63,31 +45,10 @@ appScript.onload = () => {
 
       firebase.initializeApp(firebaseConfig);
 
-      window.auth =
-        firebase.auth();
+      window.db = firebase.firestore();
+      window.auth = firebase.auth();
 
-      window.db =
-        firebase.firestore();
-
-
-      auth.onAuthStateChanged(user => {
-
-        if (user) {
-
-          showAdminPanel();
-
-        } else {
-
-          showLogin();
-
-        }
-
-      });
-
-
-      setupLogin();
-
-      setupBuddyForm();
+      setupAuthentication();
 
     };
 
@@ -96,393 +57,446 @@ appScript.onload = () => {
 };
 
 
-// --------------------------------------------------
-// LOGIN
-// --------------------------------------------------
+// =====================================================
+// AUTHENTICATION
+// =====================================================
 
-function setupLogin() {
+function setupAuthentication() {
 
-  document.getElementById(
-    "loginForm"
-  ).onsubmit = async event => {
+  const loginForm =
+    document.getElementById("loginForm");
 
-    event.preventDefault();
-
-
-    const email =
-      document.getElementById(
-        "adminEmail"
-      ).value.trim();
+  if (!loginForm) return;
 
 
-    const password =
-      document.getElementById(
-        "adminPassword"
-      ).value;
+  loginForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
 
 
-    const message =
-      document.getElementById(
-        "loginMessage"
-      );
+      const email =
+        document.getElementById("adminEmail")
+          .value.trim();
 
 
-    message.textContent =
-      "Logging in...";
+      const password =
+        document.getElementById("adminPassword")
+          .value;
 
 
-    try {
+      const message =
+        document.getElementById("loginMessage");
 
-      await auth.signInWithEmailAndPassword(
-        email,
-        password
-      );
-
-
-      message.textContent = "";
-
-    } catch (error) {
-
-      console.error(error);
 
       message.textContent =
-        "Login failed. Please check your email and password.";
+        "Checking login...";
+
+
+      try {
+
+        const credential =
+          await auth.signInWithEmailAndPassword(
+            email,
+            password
+          );
+
+
+        const uid =
+          credential.user.uid;
+
+
+        const adminDoc =
+          await db
+            .collection("admins")
+            .doc(uid)
+            .get();
+
+
+        if (!adminDoc.exists) {
+
+          await auth.signOut();
+
+          message.textContent =
+            "This account is not authorized as an administrator.";
+
+          return;
+
+        }
+
+
+        message.textContent = "";
+
+        showAdminPanel();
+
+        loadDashboard();
+
+      } catch (error) {
+
+        console.error(
+          "Login error:",
+          error
+        );
+
+
+        message.textContent =
+          "Login failed. Please check your email and password.";
+
+      }
 
     }
+  );
 
-  };
+
+  auth.onAuthStateChanged(
+    async (user) => {
+
+      if (!user) return;
+
+
+      try {
+
+        const adminDoc =
+          await db
+            .collection("admins")
+            .doc(user.uid)
+            .get();
+
+
+        if (adminDoc.exists) {
+
+          showAdminPanel();
+
+          loadDashboard();
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+    }
+  );
 
 }
 
 
-// --------------------------------------------------
-// SHOW LOGIN
-// --------------------------------------------------
-
-function showLogin() {
-
-  document.getElementById(
-    "loginSection"
-  ).style.display = "block";
-
-
-  document.getElementById(
-    "adminPanel"
-  ).style.display = "none";
-
-}
-
-
-// --------------------------------------------------
-// SHOW ADMIN
-// --------------------------------------------------
+// =====================================================
+// SHOW ADMIN PANEL
+// =====================================================
 
 function showAdminPanel() {
 
-  document.getElementById(
-    "loginSection"
-  ).style.display = "none";
+  document.getElementById("loginSection")
+    .style.display = "none";
 
 
-  document.getElementById(
-    "adminPanel"
-  ).style.display = "block";
+  document.getElementById("adminPanel")
+    .style.display = "block";
+
+}
 
 
-  loadBuddies();
+// =====================================================
+// LOGOUT
+// =====================================================
+
+async function logoutAdmin() {
+
+  await auth.signOut();
+
+  document.getElementById("adminPanel")
+    .style.display = "none";
+
+
+  document.getElementById("loginSection")
+    .style.display = "block";
+
+}
+
+
+window.logoutAdmin = logoutAdmin;
+
+
+// =====================================================
+// DASHBOARD
+// =====================================================
+
+async function loadDashboard() {
+
+  loadHospitalBuddies();
 
   loadBookings();
 
 }
 
 
-// --------------------------------------------------
-// LOGOUT
-// --------------------------------------------------
+// =====================================================
+// HOSPITAL BUDDIES
+// =====================================================
 
-async function logoutAdmin() {
-
-  await auth.signOut();
-
-}
-
-
-// --------------------------------------------------
-// ADD BUDDY
-// --------------------------------------------------
-
-function setupBuddyForm() {
-
-  document.getElementById(
-    "buddyForm"
-  ).onsubmit = async event => {
-
-    event.preventDefault();
-
-
-    const name =
-      document.getElementById(
-        "buddyName"
-      ).value.trim();
-
-
-    const phone =
-      document.getElementById(
-        "buddyPhone"
-      ).value.trim();
-
-
-    const qualification =
-      document.getElementById(
-        "buddyQualification"
-      ).value.trim();
-
-
-    const languages =
-      document.getElementById(
-        "buddyLanguages"
-      ).value
-        .split(",")
-        .map(x => x.trim())
-        .filter(Boolean);
-
-
-    try {
-
-      await db
-        .collection("health_buddies")
-        .add({
-
-          name: name,
-
-          phone: phone,
-
-          qualification: qualification,
-
-          languages: languages,
-
-          status: "available",
-
-          createdAt:
-            firebase.firestore
-              .FieldValue
-              .serverTimestamp()
-
-        });
-
-
-      document.getElementById(
-        "buddyForm"
-      ).reset();
-
-
-      document.getElementById(
-        "buddyMessage"
-      ).textContent =
-        "Buddy added successfully.";
-
-
-      loadBuddies();
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      document.getElementById(
-        "buddyMessage"
-      ).textContent =
-        "Could not add Buddy.";
-
-    }
-
-  };
-
-}
-
-
-// --------------------------------------------------
-// LOAD BUDDIES
-// --------------------------------------------------
-
-async function loadBuddies() {
-
-  const table =
-    document.getElementById(
-      "buddyTable"
-    );
-
-
-  table.innerHTML =
-    "<tr><td colspan='6'>Loading...</td></tr>";
-
+async function loadHospitalBuddies() {
 
   try {
 
     const snapshot =
       await db
-        .collection("health_buddies")
+        .collection("hospital_buddies")
         .get();
 
 
     let available = 0;
 
 
-    if (snapshot.empty) {
-
-      table.innerHTML =
-        "<tr><td colspan='6'>No Buddies found.</td></tr>";
-
-      document.getElementById(
-        "availableCount"
-      ).textContent = "0";
-
-      return;
-
-    }
+    const table =
+      document.getElementById("buddyTable");
 
 
-    table.innerHTML =
-      snapshot.docs.map(doc => {
-
-        const b = doc.data();
-
-        const status =
-          b.status || "unavailable";
+    table.innerHTML = "";
 
 
-        if (
-          status === "available"
-        ) {
+    snapshot.forEach(doc => {
 
-          available++;
-
-        }
+      const buddy = doc.data();
 
 
-        return `
+      if (buddy.status === "available") {
 
-          <tr>
+        available++;
 
-            <td>
-              ${escapeHTML(
-                b.name || ""
-              )}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                b.phone || ""
-              )}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                b.qualification || ""
-              )}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                Array.isArray(b.languages)
-                  ? b.languages.join(", ")
-                  : ""
-              )}
-            </td>
-
-            <td>
-
-              <span class="statusBadge ${
-                status === "available"
-                  ? "available"
-                  : "unavailable"
-              }">
-
-                ${escapeHTML(status)}
-
-              </span>
-
-            </td>
-
-            <td>
-
-              <button
-                class="smallBtn ${
-                  status === "available"
-                    ? "red"
-                    : "green"
-                }"
-                onclick="toggleBuddyStatus(
-                  '${doc.id}',
-                  '${status}'
-                )"
-              >
-
-                ${
-                  status === "available"
-                    ? "Make Unavailable"
-                    : "Make Available"
-                }
-
-              </button>
+      }
 
 
-              <button
-                class="smallBtn red"
-                onclick="deleteBuddy(
-                  '${doc.id}'
-                )"
-              >
-                Delete
-              </button>
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }).join("");
+      const languages =
+        Array.isArray(buddy.languages)
+          ? buddy.languages.join(", ")
+          : "";
 
 
-    document.getElementById(
-      "availableCount"
-    ).textContent =
-      available;
+      const statusClass =
+        buddy.status === "available"
+          ? "available"
+          : "unavailable";
+
+
+      const actionText =
+        buddy.status === "available"
+          ? "Set Unavailable"
+          : "Set Available";
+
+
+      const nextStatus =
+        buddy.status === "available"
+          ? "unavailable"
+          : "available";
+
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td>
+          ${escapeHTML(buddy.name || "")}
+        </td>
+
+        <td>
+          ${escapeHTML(buddy.phone || "")}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            buddy.qualification || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(languages)}
+        </td>
+
+        <td>
+
+          <span class="statusBadge ${statusClass}">
+            ${escapeHTML(
+              buddy.status || "unknown"
+            )}
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="smallBtn blue"
+            onclick="changeBuddyStatus(
+              '${doc.id}',
+              '${nextStatus}'
+            )"
+          >
+            ${actionText}
+          </button>
+
+          <button
+            class="smallBtn red"
+            onclick="deleteBuddy('${doc.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(row);
+
+    });
+
+
+    document.getElementById("availableCount")
+      .textContent = available;
 
 
   } catch (error) {
 
-    console.error(error);
-
-    table.innerHTML =
-      "<tr><td colspan='6'>Could not load Buddies.</td></tr>";
+    console.error(
+      "Error loading Hospital Buddies:",
+      error
+    );
 
   }
 
 }
 
 
-// --------------------------------------------------
+// =====================================================
+// ADD HOSPITAL BUDDY
+// =====================================================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const form =
+      document.getElementById("buddyForm");
+
+
+    if (!form) return;
+
+
+    form.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const name =
+          document.getElementById("buddyName")
+            .value.trim();
+
+
+        const phone =
+          document.getElementById("buddyPhone")
+            .value.trim();
+
+
+        const qualification =
+          document.getElementById(
+            "buddyQualification"
+          ).value.trim();
+
+
+        const languagesText =
+          document.getElementById(
+            "buddyLanguages"
+          ).value.trim();
+
+
+        const languages =
+          languagesText
+            .split(",")
+            .map(language => language.trim())
+            .filter(Boolean);
+
+
+        const message =
+          document.getElementById(
+            "buddyMessage"
+          );
+
+
+        try {
+
+          await db
+            .collection("hospital_buddies")
+            .add({
+
+              name: name,
+
+              phone: phone,
+
+              qualification: qualification,
+
+              languages: languages,
+
+              status: "available",
+
+              createdAt:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp()
+
+            });
+
+
+          message.textContent =
+            "Hospital Buddy added successfully.";
+
+
+          form.reset();
+
+          loadHospitalBuddies();
+
+
+        } catch (error) {
+
+          console.error(
+            "Error adding Hospital Buddy:",
+            error
+          );
+
+
+          message.textContent =
+            "Unable to add Hospital Buddy.";
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+// =====================================================
 // CHANGE BUDDY STATUS
-// --------------------------------------------------
+// =====================================================
 
-async function toggleBuddyStatus(
-  id,
-  currentStatus
+async function changeBuddyStatus(
+  buddyId,
+  newStatus
 ) {
-
-  const newStatus =
-    currentStatus === "available"
-      ? "unavailable"
-      : "available";
-
 
   try {
 
     await db
-      .collection("health_buddies")
-      .doc(id)
+      .collection("hospital_buddies")
+      .doc(buddyId)
       .update({
 
         status: newStatus
@@ -490,15 +504,18 @@ async function toggleBuddyStatus(
       });
 
 
-    loadBuddies();
+    loadHospitalBuddies();
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Status update error:",
+      error
+    );
 
     alert(
-      "Could not change Buddy status."
+      "Unable to update Buddy status."
     );
 
   }
@@ -506,38 +523,47 @@ async function toggleBuddyStatus(
 }
 
 
-// --------------------------------------------------
+window.changeBuddyStatus =
+  changeBuddyStatus;
+
+
+// =====================================================
 // DELETE BUDDY
-// --------------------------------------------------
+// =====================================================
 
-async function deleteBuddy(id) {
+async function deleteBuddy(buddyId) {
 
-  const confirmDelete =
-    confirm(
-      "Delete this Buddy permanently?"
-    );
+  if (
+    !confirm(
+      "Delete this Hospital Buddy?"
+    )
+  ) {
 
+    return;
 
-  if (!confirmDelete) return;
+  }
 
 
   try {
 
     await db
-      .collection("health_buddies")
-      .doc(id)
+      .collection("hospital_buddies")
+      .doc(buddyId)
       .delete();
 
 
-    loadBuddies();
+    loadHospitalBuddies();
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Delete error:",
+      error
+    );
 
     alert(
-      "Could not delete Buddy."
+      "Unable to delete Hospital Buddy."
     );
 
   }
@@ -545,253 +571,216 @@ async function deleteBuddy(id) {
 }
 
 
-// --------------------------------------------------
-// LOAD BOOKINGS
-// --------------------------------------------------
+window.deleteBuddy =
+  deleteBuddy;
+
+
+// =====================================================
+// BOOKINGS
+// =====================================================
 
 async function loadBookings() {
-
-  const table =
-    document.getElementById(
-      "bookingTable"
-    );
-
-
-  table.innerHTML =
-    "<tr><td colspan='8'>Loading...</td></tr>";
-
 
   try {
 
     const snapshot =
       await db
         .collection("bookings")
-        .orderBy(
-          "createdAt",
-          "desc"
-        )
         .get();
 
 
+    const table =
+      document.getElementById(
+        "bookingTable"
+      );
+
+
+    table.innerHTML = "";
+
+
     let pending = 0;
-
     let confirmed = 0;
-
     let completed = 0;
 
 
-    if (snapshot.empty) {
+    snapshot.forEach(doc => {
 
-      table.innerHTML =
-        "<tr><td colspan='8'>No bookings yet.</td></tr>";
-
-      updateBookingCounts(
-        0,
-        0,
-        0
-      );
-
-      return;
-
-    }
+      const booking = doc.data();
 
 
-    table.innerHTML =
-      snapshot.docs.map(doc => {
-
-        const b =
-          doc.data();
+      if (booking.status === "pending")
+        pending++;
 
 
-        const status =
-          b.status || "pending";
+      if (booking.status === "confirmed")
+        confirmed++;
 
 
-        if (
-          status === "pending"
-        ) pending++;
+      if (booking.status === "completed")
+        completed++;
 
 
-        if (
-          status === "confirmed"
-        ) confirmed++;
+      const row =
+        document.createElement("tr");
 
 
-        if (
-          status === "completed"
-        ) completed++;
+      const bookingId =
+        "HB-" +
+        doc.id
+          .substring(0, 7)
+          .toUpperCase();
 
 
-        const bookingId =
-          "HB-" +
-          doc.id
-            .substring(0, 7)
-            .toUpperCase();
+      row.innerHTML = `
+
+        <td>
+          <b>${escapeHTML(bookingId)}</b>
+        </td>
+
+        <td>
+          ${escapeHTML(
+            booking.name || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            booking.phone || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            booking.service || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            booking.date || ""
+          )}
+          <br>
+          ${escapeHTML(
+            booking.time || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            booking.buddyName ||
+            "Not assigned"
+          )}
+        </td>
+
+        <td>
+
+          <span class="statusBadge ${escapeHTML(
+            booking.status || ""
+          )}">
+
+            ${escapeHTML(
+              booking.status || "unknown"
+            )}
+
+          </span>
+
+        </td>
+
+        <td>
+
+          ${
+            booking.status === "pending"
+              ? `
+                <button
+                  class="smallBtn green"
+                  onclick="updateBooking(
+                    '${doc.id}',
+                    'confirmed'
+                  )"
+                >
+                  Confirm
+                </button>
+
+                <button
+                  class="smallBtn red"
+                  onclick="updateBooking(
+                    '${doc.id}',
+                    'rejected'
+                  )"
+                >
+                  Reject
+                </button>
+              `
+              : ""
+          }
+
+          ${
+            booking.status === "confirmed"
+              ? `
+                <button
+                  class="smallBtn blue"
+                  onclick="updateBooking(
+                    '${doc.id}',
+                    'completed'
+                  )"
+                >
+                  Complete
+                </button>
+
+                <button
+                  class="smallBtn red"
+                  onclick="updateBooking(
+                    '${doc.id}',
+                    'cancelled'
+                  )"
+                >
+                  Cancel
+                </button>
+              `
+              : ""
+          }
+
+        </td>
+
+      `;
 
 
-        return `
+      table.appendChild(row);
 
-          <tr>
-
-            <td>
-              <b>
-                ${bookingId}
-              </b>
-            </td>
+    });
 
 
-            <td>
-              ${escapeHTML(
-                b.name || ""
-              )}
-              <br>
-              <small>
-                ${escapeHTML(
-                  b.language || ""
-                )}
-              </small>
-            </td>
+    document.getElementById("pendingCount")
+      .textContent = pending;
 
 
-            <td>
-              ${escapeHTML(
-                b.phone || ""
-              )}
-            </td>
+    document.getElementById("confirmedCount")
+      .textContent = confirmed;
 
 
-            <td>
-              ${escapeHTML(
-                b.service || ""
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHTML(
-                b.date || ""
-              )}
-              <br>
-              ${escapeHTML(
-                b.time || ""
-              )}
-            </td>
-
-
-            <td>
-              ${escapeHTML(
-                b.buddyName || ""
-              )}
-            </td>
-
-
-            <td>
-
-              <span class="statusBadge ${status}">
-
-                ${escapeHTML(status)}
-
-              </span>
-
-            </td>
-
-
-            <td>
-
-              ${
-                status === "pending"
-                ? `
-
-                  <button
-                    class="smallBtn green"
-                    onclick="updateBooking(
-                      '${doc.id}',
-                      'confirmed'
-                    )"
-                  >
-                    Confirm
-                  </button>
-
-
-                  <button
-                    class="smallBtn red"
-                    onclick="updateBooking(
-                      '${doc.id}',
-                      'rejected'
-                    )"
-                  >
-                    Reject
-                  </button>
-
-                `
-                : ""
-              }
-
-
-              ${
-                status === "confirmed"
-                ? `
-
-                  <button
-                    class="smallBtn blue"
-                    onclick="updateBooking(
-                      '${doc.id}',
-                      'completed'
-                    )"
-                  >
-                    Completed
-                  </button>
-
-
-                  <button
-                    class="smallBtn red"
-                    onclick="updateBooking(
-                      '${doc.id}',
-                      'cancelled'
-                    )"
-                  >
-                    Cancel
-                  </button>
-
-                `
-                : ""
-              }
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }).join("");
-
-
-    updateBookingCounts(
-      pending,
-      confirmed,
-      completed
-    );
+    document.getElementById("completedCount")
+      .textContent = completed;
 
 
   } catch (error) {
 
-    console.error(error);
-
-    table.innerHTML =
-      "<tr><td colspan='8'>Could not load bookings.</td></tr>";
+    console.error(
+      "Error loading bookings:",
+      error
+    );
 
   }
 
 }
 
 
-// --------------------------------------------------
+// =====================================================
 // UPDATE BOOKING
-// --------------------------------------------------
+// =====================================================
 
 async function updateBooking(
   bookingId,
-  newStatus
+  status
 ) {
 
   try {
@@ -801,12 +790,7 @@ async function updateBooking(
       .doc(bookingId)
       .update({
 
-        status: newStatus,
-
-        updatedAt:
-          firebase.firestore
-            .FieldValue
-            .serverTimestamp()
+        status: status
 
       });
 
@@ -816,10 +800,14 @@ async function updateBooking(
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Booking update error:",
+      error
+    );
+
 
     alert(
-      "Could not update booking."
+      "Unable to update booking."
     );
 
   }
@@ -827,67 +815,26 @@ async function updateBooking(
 }
 
 
-// --------------------------------------------------
-// COUNTS
-// --------------------------------------------------
-
-function updateBookingCounts(
-  pending,
-  confirmed,
-  completed
-) {
-
-  document.getElementById(
-    "pendingCount"
-  ).textContent =
-    pending;
+window.updateBooking =
+  updateBooking;
 
 
-  document.getElementById(
-    "confirmedCount"
-  ).textContent =
-    confirmed;
-
-
-  document.getElementById(
-    "completedCount"
-  ).textContent =
-    completed;
-
-}
-
-
-// --------------------------------------------------
-// ESCAPE HTML
-// --------------------------------------------------
+// =====================================================
+// SECURITY / HTML ESCAPING
+// =====================================================
 
 function escapeHTML(value) {
 
   return String(value)
 
-    .replace(
-      /&/g,
-      "&amp;"
-    )
+    .replace(/&/g, "&amp;")
 
-    .replace(
-      /</g,
-      "&lt;"
-    )
+    .replace(/</g, "&lt;")
 
-    .replace(
-      />/g,
-      "&gt;"
-    )
+    .replace(/>/g, "&gt;")
 
-    .replace(
-      /"/g,
-      "&quot;"
-    )
+    .replace(/"/g, "&quot;")
 
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/'/g, "&#039;");
 
 }
