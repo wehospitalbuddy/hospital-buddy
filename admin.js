@@ -1,3 +1,12 @@
+// =====================================================
+// HOSPITAL BUDDY — ADMIN CONTROL SYSTEM
+// =====================================================
+
+
+// =====================================================
+// FIREBASE CONFIGURATION
+// =====================================================
+
 const firebaseConfig = {
   apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
   authDomain: "hospital-buddy-2224d.firebaseapp.com",
@@ -23,32 +32,33 @@ document.head.appendChild(firebaseScript);
 
 firebaseScript.onload = () => {
 
-  const authScript = document.createElement("script");
+  const firestoreScript = document.createElement("script");
 
-  authScript.src =
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+  firestoreScript.src =
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
 
-  document.head.appendChild(authScript);
-
-
-  authScript.onload = () => {
-
-    const firestoreScript = document.createElement("script");
-
-    firestoreScript.src =
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
-
-    document.head.appendChild(firestoreScript);
+  document.head.appendChild(firestoreScript);
 
 
-    firestoreScript.onload = () => {
+  firestoreScript.onload = () => {
+
+    const authScript = document.createElement("script");
+
+    authScript.src =
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+
+    document.head.appendChild(authScript);
+
+
+    authScript.onload = () => {
 
       firebase.initializeApp(firebaseConfig);
 
       window.db = firebase.firestore();
+
       window.auth = firebase.auth();
 
-      setupAuthentication();
+      startAdmin();
 
     };
 
@@ -58,20 +68,91 @@ firebaseScript.onload = () => {
 
 
 // =====================================================
-// AUTHENTICATION
+// START ADMIN
 // =====================================================
 
-function setupAuthentication() {
+function startAdmin() {
 
-  const loginForm =
-    document.getElementById("loginForm");
+  auth.onAuthStateChanged(async user => {
 
-  if (!loginForm) return;
+    if (user) {
+
+      try {
+
+        const adminDoc =
+          await db
+            .collection("admins")
+            .doc(user.uid)
+            .get();
 
 
-  loginForm.addEventListener(
-    "submit",
-    async (event) => {
+        if (!adminDoc.exists) {
+
+          await auth.signOut();
+
+          showLoginMessage(
+            "This account is not authorized as an administrator.",
+            true
+          );
+
+          return;
+        }
+
+
+        document.getElementById("loginSection")
+          .style.display = "none";
+
+
+        document.getElementById("adminPanel")
+          .style.display = "block";
+
+
+        loadDashboard();
+
+        loadBuddies();
+
+        loadBookings();
+
+      } catch (error) {
+
+        console.error(error);
+
+        showLoginMessage(
+          "Unable to verify administrator account.",
+          true
+        );
+
+      }
+
+    } else {
+
+      document.getElementById("loginSection")
+        .style.display = "block";
+
+
+      document.getElementById("adminPanel")
+        .style.display = "none";
+
+    }
+
+  };
+
+
+  setupLogin();
+
+  setupBuddyForm();
+
+}
+
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+function setupLogin() {
+
+  document.getElementById("loginForm")
+    .addEventListener("submit", async event => {
 
       event.preventDefault();
 
@@ -86,116 +167,72 @@ function setupAuthentication() {
           .value;
 
 
-      const message =
-        document.getElementById("loginMessage");
-
-
-      message.textContent =
-        "Checking login...";
+      showLoginMessage("Logging in...", false);
 
 
       try {
 
-        const credential =
-          await auth.signInWithEmailAndPassword(
-            email,
-            password
-          );
-
-
-        const uid =
-          credential.user.uid;
-
-
-        const adminDoc =
-          await db
-            .collection("admins")
-            .doc(uid)
-            .get();
-
-
-        if (!adminDoc.exists) {
-
-          await auth.signOut();
-
-          message.textContent =
-            "This account is not authorized as an administrator.";
-
-          return;
-
-        }
-
-
-        message.textContent = "";
-
-        showAdminPanel();
-
-        loadDashboard();
-
-      } catch (error) {
-
-        console.error(
-          "Login error:",
-          error
+        await auth.signInWithEmailAndPassword(
+          email,
+          password
         );
 
 
-        message.textContent =
-          "Login failed. Please check your email and password.";
+        showLoginMessage(
+          "Login successful.",
+          false
+        );
 
-      }
-
-    }
-  );
-
-
-  auth.onAuthStateChanged(
-    async (user) => {
-
-      if (!user) return;
-
-
-      try {
-
-        const adminDoc =
-          await db
-            .collection("admins")
-            .doc(user.uid)
-            .get();
-
-
-        if (adminDoc.exists) {
-
-          showAdminPanel();
-
-          loadDashboard();
-
-        }
 
       } catch (error) {
 
         console.error(error);
 
+
+        let message =
+          "Login failed. Please check your email and password.";
+
+
+        if (
+          error.code ===
+          "auth/invalid-credential"
+        ) {
+
+          message =
+            "Invalid email or password.";
+
+        }
+
+
+        showLoginMessage(
+          message,
+          true
+        );
+
       }
 
-    }
-  );
+    });
 
 }
 
 
 // =====================================================
-// SHOW ADMIN PANEL
+// LOGIN MESSAGE
 // =====================================================
 
-function showAdminPanel() {
+function showLoginMessage(message, error) {
 
-  document.getElementById("loginSection")
-    .style.display = "none";
+  const element =
+    document.getElementById("loginMessage");
 
 
-  document.getElementById("adminPanel")
-    .style.display = "block";
+  element.textContent = message;
+
+
+  element.className =
+    error
+      ? "message dangerText"
+      : "message successText";
 
 }
 
@@ -206,165 +243,14 @@ function showAdminPanel() {
 
 async function logoutAdmin() {
 
-  await auth.signOut();
-
-  document.getElementById("adminPanel")
-    .style.display = "none";
-
-
-  document.getElementById("loginSection")
-    .style.display = "block";
-
-}
-
-
-window.logoutAdmin = logoutAdmin;
-
-
-// =====================================================
-// DASHBOARD
-// =====================================================
-
-async function loadDashboard() {
-
-  loadHospitalBuddies();
-
-  loadBookings();
-
-}
-
-
-// =====================================================
-// HOSPITAL BUDDIES
-// =====================================================
-
-async function loadHospitalBuddies() {
-
   try {
 
-    const snapshot =
-      await db
-        .collection("hospital_buddies")
-        .get();
-
-
-    let available = 0;
-
-
-    const table =
-      document.getElementById("buddyTable");
-
-
-    table.innerHTML = "";
-
-
-    snapshot.forEach(doc => {
-
-      const buddy = doc.data();
-
-
-      if (buddy.status === "available") {
-
-        available++;
-
-      }
-
-
-      const languages =
-        Array.isArray(buddy.languages)
-          ? buddy.languages.join(", ")
-          : "";
-
-
-      const statusClass =
-        buddy.status === "available"
-          ? "available"
-          : "unavailable";
-
-
-      const actionText =
-        buddy.status === "available"
-          ? "Set Unavailable"
-          : "Set Available";
-
-
-      const nextStatus =
-        buddy.status === "available"
-          ? "unavailable"
-          : "available";
-
-
-      const row =
-        document.createElement("tr");
-
-
-      row.innerHTML = `
-
-        <td>
-          ${escapeHTML(buddy.name || "")}
-        </td>
-
-        <td>
-          ${escapeHTML(buddy.phone || "")}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            buddy.qualification || ""
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(languages)}
-        </td>
-
-        <td>
-
-          <span class="statusBadge ${statusClass}">
-            ${escapeHTML(
-              buddy.status || "unknown"
-            )}
-          </span>
-
-        </td>
-
-        <td>
-
-          <button
-            class="smallBtn blue"
-            onclick="changeBuddyStatus(
-              '${doc.id}',
-              '${nextStatus}'
-            )"
-          >
-            ${actionText}
-          </button>
-
-          <button
-            class="smallBtn red"
-            onclick="deleteBuddy('${doc.id}')"
-          >
-            Delete
-          </button>
-
-        </td>
-
-      `;
-
-
-      table.appendChild(row);
-
-    });
-
-
-    document.getElementById("availableCount")
-      .textContent = available;
-
+    await auth.signOut();
 
   } catch (error) {
 
     console.error(
-      "Error loading Hospital Buddies:",
+      "Logout error:",
       error
     );
 
@@ -377,119 +263,301 @@ async function loadHospitalBuddies() {
 // ADD HOSPITAL BUDDY
 // =====================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function setupBuddyForm() {
 
-    const form =
-      document.getElementById("buddyForm");
+  document.getElementById("buddyForm")
+    .addEventListener("submit", async event => {
 
-
-    if (!form) return;
+      event.preventDefault();
 
 
-    form.addEventListener(
-      "submit",
-      async (event) => {
-
-        event.preventDefault();
+      const name =
+        document.getElementById("buddyName")
+          .value.trim();
 
 
-        const name =
-          document.getElementById("buddyName")
-            .value.trim();
+      const phone =
+        document.getElementById("buddyPhone")
+          .value.trim();
 
 
-        const phone =
-          document.getElementById("buddyPhone")
-            .value.trim();
+      const qualification =
+        document.getElementById("buddyQualification")
+          .value.trim();
 
 
-        const qualification =
-          document.getElementById(
-            "buddyQualification"
-          ).value.trim();
+      const languageText =
+        document.getElementById("buddyLanguages")
+          .value.trim();
 
 
-        const languagesText =
-          document.getElementById(
-            "buddyLanguages"
-          ).value.trim();
+      const languages =
+        languageText
+          .split(",")
+          .map(language => language.trim())
+          .filter(language => language);
+
+
+      const message =
+        document.getElementById("buddyMessage");
+
+
+      message.textContent =
+        "Adding Hospital Buddy...";
+
+
+      message.className =
+        "message";
+
+
+      try {
+
+        await db
+          .collection("hospital_buddies")
+          .add({
+
+            name: name,
+
+            phone: phone,
+
+            qualification: qualification,
+
+            languages: languages,
+
+            status: "available",
+
+            createdAt:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+
+        message.textContent =
+          "Hospital Buddy added successfully.";
+
+
+        message.className =
+          "message successText";
+
+
+        document.getElementById("buddyForm")
+          .reset();
+
+
+        loadBuddies();
+
+        loadDashboard();
+
+
+      } catch (error) {
+
+        console.error(
+          "Add Buddy error:",
+          error
+        );
+
+
+        message.textContent =
+          "Unable to add Hospital Buddy.";
+
+
+        message.className =
+          "message dangerText";
+
+      }
+
+    });
+
+}
+
+
+// =====================================================
+// LOAD BUDDIES
+// =====================================================
+
+async function loadBuddies() {
+
+  const table =
+    document.getElementById("buddyTable");
+
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="6">
+        Loading Hospital Buddies...
+      </td>
+    </tr>
+  `;
+
+
+  try {
+
+    const snapshot =
+      await db
+        .collection("hospital_buddies")
+        .get();
+
+
+    if (snapshot.empty) {
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="6">
+            No Hospital Buddies have been added yet.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    table.innerHTML =
+      snapshot.docs.map(doc => {
+
+        const buddy =
+          doc.data();
 
 
         const languages =
-          languagesText
-            .split(",")
-            .map(language => language.trim())
-            .filter(Boolean);
+          Array.isArray(buddy.languages)
+            ? buddy.languages.join(", ")
+            : "";
 
 
-        const message =
-          document.getElementById(
-            "buddyMessage"
-          );
+        const status =
+          buddy.status || "unavailable";
 
 
-        try {
+        return `
 
-          await db
-            .collection("hospital_buddies")
-            .add({
+          <tr>
 
-              name: name,
-
-              phone: phone,
-
-              qualification: qualification,
-
-              languages: languages,
-
-              status: "available",
-
-              createdAt:
-                firebase.firestore
-                  .FieldValue
-                  .serverTimestamp()
-
-            });
+            <td>
+              <b>
+                ${escapeHTML(
+                  buddy.name || "Hospital Buddy"
+                )}
+              </b>
+            </td>
 
 
-          message.textContent =
-            "Hospital Buddy added successfully.";
+            <td>
+              ${escapeHTML(
+                buddy.phone || ""
+              )}
+            </td>
 
 
-          form.reset();
-
-          loadHospitalBuddies();
-
-
-        } catch (error) {
-
-          console.error(
-            "Error adding Hospital Buddy:",
-            error
-          );
+            <td>
+              ${escapeHTML(
+                buddy.qualification ||
+                "Not specified"
+              )}
+            </td>
 
 
-          message.textContent =
-            "Unable to add Hospital Buddy.";
+            <td>
+              ${escapeHTML(languages)}
+            </td>
 
-        }
 
-      }
+            <td>
+
+              <span
+                class="statusBadge ${
+                  status === "available"
+                    ? "available"
+                    : "unavailable"
+                }"
+              >
+                ${escapeHTML(status)}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              ${
+                status === "available"
+
+                  ? `
+
+                    <button
+                      class="smallBtn red"
+                      onclick="setBuddyStatus(
+                        '${doc.id}',
+                        'unavailable'
+                      )"
+                    >
+                      Make Unavailable
+                    </button>
+
+                  `
+
+                  : `
+
+                    <button
+                      class="smallBtn green"
+                      onclick="setBuddyStatus(
+                        '${doc.id}',
+                        'available'
+                      )"
+                    >
+                      Make Available
+                    </button>
+
+                  `
+              }
+
+
+              <button
+                class="smallBtn red"
+                onclick="deleteBuddy('${doc.id}')"
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }).join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Load Buddies error:",
+      error
     );
 
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="6">
+          Unable to load Hospital Buddies.
+        </td>
+      </tr>
+    `;
+
   }
-);
+
+}
 
 
 // =====================================================
 // CHANGE BUDDY STATUS
 // =====================================================
 
-async function changeBuddyStatus(
+async function setBuddyStatus(
   buddyId,
-  newStatus
+  status
 ) {
 
   try {
@@ -499,12 +567,14 @@ async function changeBuddyStatus(
       .doc(buddyId)
       .update({
 
-        status: newStatus
+        status: status
 
       });
 
 
-    loadHospitalBuddies();
+    loadBuddies();
+
+    loadDashboard();
 
 
   } catch (error) {
@@ -515,16 +585,12 @@ async function changeBuddyStatus(
     );
 
     alert(
-      "Unable to update Buddy status."
+      "Unable to change Hospital Buddy status."
     );
 
   }
 
 }
-
-
-window.changeBuddyStatus =
-  changeBuddyStatus;
 
 
 // =====================================================
@@ -533,11 +599,13 @@ window.changeBuddyStatus =
 
 async function deleteBuddy(buddyId) {
 
-  if (
-    !confirm(
-      "Delete this Hospital Buddy?"
-    )
-  ) {
+  const confirmed =
+    confirm(
+      "Are you sure you want to delete this Hospital Buddy?"
+    );
+
+
+  if (!confirmed) {
 
     return;
 
@@ -552,15 +620,18 @@ async function deleteBuddy(buddyId) {
       .delete();
 
 
-    loadHospitalBuddies();
+    loadBuddies();
+
+    loadDashboard();
 
 
   } catch (error) {
 
     console.error(
-      "Delete error:",
+      "Delete Buddy error:",
       error
     );
+
 
     alert(
       "Unable to delete Hospital Buddy."
@@ -571,15 +642,24 @@ async function deleteBuddy(buddyId) {
 }
 
 
-window.deleteBuddy =
-  deleteBuddy;
-
-
 // =====================================================
-// BOOKINGS
+// LOAD BOOKINGS
 // =====================================================
 
 async function loadBookings() {
+
+  const table =
+    document.getElementById("bookingTable");
+
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="8">
+        Loading booking requests...
+      </td>
+    </tr>
+  `;
+
 
   try {
 
@@ -589,185 +669,168 @@ async function loadBookings() {
         .get();
 
 
-    const table =
-      document.getElementById(
-        "bookingTable"
-      );
+    if (snapshot.empty) {
 
-
-    table.innerHTML = "";
-
-
-    let pending = 0;
-    let confirmed = 0;
-    let completed = 0;
-
-
-    snapshot.forEach(doc => {
-
-      const booking = doc.data();
-
-
-      if (booking.status === "pending")
-        pending++;
-
-
-      if (booking.status === "confirmed")
-        confirmed++;
-
-
-      if (booking.status === "completed")
-        completed++;
-
-
-      const row =
-        document.createElement("tr");
-
-
-      const bookingId =
-        "HB-" +
-        doc.id
-          .substring(0, 7)
-          .toUpperCase();
-
-
-      row.innerHTML = `
-
-        <td>
-          <b>${escapeHTML(bookingId)}</b>
-        </td>
-
-        <td>
-          ${escapeHTML(
-            booking.name || ""
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            booking.phone || ""
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            booking.service || ""
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            booking.date || ""
-          )}
-          <br>
-          ${escapeHTML(
-            booking.time || ""
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            booking.buddyName ||
-            "Not assigned"
-          )}
-        </td>
-
-        <td>
-
-          <span class="statusBadge ${escapeHTML(
-            booking.status || ""
-          )}">
-
-            ${escapeHTML(
-              booking.status || "unknown"
-            )}
-
-          </span>
-
-        </td>
-
-        <td>
-
-          ${
-            booking.status === "pending"
-              ? `
-                <button
-                  class="smallBtn green"
-                  onclick="updateBooking(
-                    '${doc.id}',
-                    'confirmed'
-                  )"
-                >
-                  Confirm
-                </button>
-
-                <button
-                  class="smallBtn red"
-                  onclick="updateBooking(
-                    '${doc.id}',
-                    'rejected'
-                  )"
-                >
-                  Reject
-                </button>
-              `
-              : ""
-          }
-
-          ${
-            booking.status === "confirmed"
-              ? `
-                <button
-                  class="smallBtn blue"
-                  onclick="updateBooking(
-                    '${doc.id}',
-                    'completed'
-                  )"
-                >
-                  Complete
-                </button>
-
-                <button
-                  class="smallBtn red"
-                  onclick="updateBooking(
-                    '${doc.id}',
-                    'cancelled'
-                  )"
-                >
-                  Cancel
-                </button>
-              `
-              : ""
-          }
-
-        </td>
-
+      table.innerHTML = `
+        <tr>
+          <td colspan="8">
+            No booking requests yet.
+          </td>
+        </tr>
       `;
 
+      return;
+    }
 
-      table.appendChild(row);
+
+    const bookings =
+      snapshot.docs.map(doc => ({
+
+        id: doc.id,
+
+        ...doc.data()
+
+      }));
+
+
+    bookings.sort((a, b) => {
+
+      const aTime =
+        a.createdAt?.toMillis
+          ? a.createdAt.toMillis()
+          : 0;
+
+
+      const bTime =
+        b.createdAt?.toMillis
+          ? b.createdAt.toMillis()
+          : 0;
+
+
+      return bTime - aTime;
 
     });
 
 
-    document.getElementById("pendingCount")
-      .textContent = pending;
+    table.innerHTML =
+      bookings.map(booking => {
+
+        const bookingId =
+          "HB-" +
+          booking.id
+            .substring(0, 7)
+            .toUpperCase();
 
 
-    document.getElementById("confirmedCount")
-      .textContent = confirmed;
+        const status =
+          booking.status || "pending";
 
 
-    document.getElementById("completedCount")
-      .textContent = completed;
+        return `
+
+          <tr>
+
+            <td>
+              <b>
+                ${escapeHTML(bookingId)}
+              </b>
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                booking.name || ""
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                booking.phone || ""
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                booking.service || ""
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                booking.date || ""
+              )}
+
+              <br>
+
+              ${escapeHTML(
+                booking.time || ""
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                booking.buddyName ||
+                "Hospital Buddy"
+              )}
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="statusBadge ${getStatusClass(status)}"
+              >
+                ${escapeHTML(status)}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              ${getBookingButtons(
+                booking.id,
+                status
+              )}
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }).join("");
 
 
   } catch (error) {
 
     console.error(
-      "Error loading bookings:",
+      "Load bookings error:",
       error
     );
+
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="8">
+          Unable to load booking requests.
+        </td>
+      </tr>
+    `;
 
   }
 
@@ -775,10 +838,89 @@ async function loadBookings() {
 
 
 // =====================================================
-// UPDATE BOOKING
+// BOOKING ACTION BUTTONS
 // =====================================================
 
-async function updateBooking(
+function getBookingButtons(
+  bookingId,
+  status
+) {
+
+  if (status === "pending") {
+
+    return `
+
+      <button
+        class="smallBtn green"
+        onclick="updateBookingStatus(
+          '${bookingId}',
+          'confirmed'
+        )"
+      >
+        Confirm
+      </button>
+
+
+      <button
+        class="smallBtn red"
+        onclick="updateBookingStatus(
+          '${bookingId}',
+          'rejected'
+        )"
+      >
+        Reject
+      </button>
+
+    `;
+
+  }
+
+
+  if (status === "confirmed") {
+
+    return `
+
+      <button
+        class="smallBtn blue"
+        onclick="updateBookingStatus(
+          '${bookingId}',
+          'completed'
+        )"
+      >
+        Completed
+      </button>
+
+
+      <button
+        class="smallBtn red"
+        onclick="updateBookingStatus(
+          '${bookingId}',
+          'cancelled'
+        )"
+      >
+        Cancel
+
+      </button>
+
+    `;
+
+  }
+
+
+  return `
+    <span>
+      No action
+    </span>
+  `;
+
+}
+
+
+// =====================================================
+// UPDATE BOOKING STATUS
+// =====================================================
+
+async function updateBookingStatus(
   bookingId,
   status
 ) {
@@ -790,24 +932,31 @@ async function updateBooking(
       .doc(bookingId)
       .update({
 
-        status: status
+        status: status,
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
 
       });
 
 
     loadBookings();
 
+    loadDashboard();
+
 
   } catch (error) {
 
     console.error(
-      "Booking update error:",
+      "Booking status error:",
       error
     );
 
 
     alert(
-      "Unable to update booking."
+      "Unable to update booking status."
     );
 
   }
@@ -815,12 +964,142 @@ async function updateBooking(
 }
 
 
-window.updateBooking =
-  updateBooking;
+// =====================================================
+// DASHBOARD
+// =====================================================
+
+async function loadDashboard() {
+
+  try {
+
+    const buddySnapshot =
+      await db
+        .collection("hospital_buddies")
+        .get();
+
+
+    let available = 0;
+
+
+    buddySnapshot.forEach(doc => {
+
+      if (
+        doc.data().status ===
+        "available"
+      ) {
+
+        available++;
+
+      }
+
+    });
+
+
+    document.getElementById(
+      "availableCount"
+    ).textContent = available;
+
+
+    const bookingSnapshot =
+      await db
+        .collection("bookings")
+        .get();
+
+
+    let pending = 0;
+
+    let confirmed = 0;
+
+    let completed = 0;
+
+
+    bookingSnapshot.forEach(doc => {
+
+      const status =
+        doc.data().status;
+
+
+      if (status === "pending") {
+
+        pending++;
+
+      }
+
+
+      if (status === "confirmed") {
+
+        confirmed++;
+
+      }
+
+
+      if (status === "completed") {
+
+        completed++;
+
+      }
+
+    });
+
+
+    document.getElementById(
+      "pendingCount"
+    ).textContent = pending;
+
+
+    document.getElementById(
+      "confirmedCount"
+    ).textContent = confirmed;
+
+
+    document.getElementById(
+      "completedCount"
+    ).textContent = completed;
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard error:",
+      error
+    );
+
+  }
+
+}
 
 
 // =====================================================
-// SECURITY / HTML ESCAPING
+// STATUS CSS CLASS
+// =====================================================
+
+function getStatusClass(status) {
+
+  const allowed = [
+    "pending",
+    "confirmed",
+    "rejected",
+    "cancelled",
+    "completed"
+  ];
+
+
+  if (
+    allowed.includes(status)
+  ) {
+
+    return status;
+
+  }
+
+
+  return "pending";
+
+}
+
+
+// =====================================================
+// HTML SECURITY
 // =====================================================
 
 function escapeHTML(value) {
