@@ -27,7 +27,6 @@ document.head.appendChild(firebaseScript);
 
 firebaseScript.onload = () => {
 
-  // Load Firebase Authentication
   const authScript = document.createElement("script");
 
   authScript.src =
@@ -38,7 +37,6 @@ firebaseScript.onload = () => {
 
   authScript.onload = () => {
 
-    // Load Firestore
     const firestoreScript = document.createElement("script");
 
     firestoreScript.src =
@@ -72,76 +70,72 @@ function startAdmin(auth, db) {
   const loginForm =
     document.getElementById("loginForm");
 
-
-  // Login
-  loginForm.onsubmit =
-    async (event) => {
-
-      event.preventDefault();
+  if (!loginForm) {
+    console.error("Login form not found.");
+    return;
+  }
 
 
-      const email =
-        document.getElementById("adminEmail")
-          .value.trim();
+  loginForm.onsubmit = async (event) => {
+
+    event.preventDefault();
+
+    const email =
+      document.getElementById("adminEmail")
+        .value.trim();
+
+    const password =
+      document.getElementById("adminPassword")
+        .value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+    message.textContent = "Logging in...";
+    message.style.color = "";
 
 
-      const password =
-        document.getElementById("adminPassword")
-          .value;
+    try {
 
+      await auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
 
-      const message =
-        document.getElementById("loginMessage");
+    } catch (error) {
 
+      console.error("Firebase Login Error:", error);
 
       message.textContent =
-        "Logging in...";
+        "Login failed: " +
+        getAuthErrorMessage(error);
 
-
-      try {
-
-        await auth.signInWithEmailAndPassword(
-          email,
-          password
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Login error:",
-          error
-        );
-
-
-        message.textContent =
-          "Login failed: " +
-          getAuthErrorMessage(error);
-
-      }
-
-    };
-
-
-  // Check login state
-  auth.onAuthStateChanged(
-    async (user) => {
-
-      if (user) {
-
-        await checkAdmin(
-          auth,
-          db,
-          user
-        );
-
-      } else {
-
-        showLogin();
-
-      }
+      message.style.color = "#8d1d1d";
 
     }
-  );
+
+  };
+
+
+  // Check authentication state
+
+  auth.onAuthStateChanged(async (user) => {
+
+    if (user) {
+
+      await checkAdmin(
+        auth,
+        db,
+        user
+      );
+
+    } else {
+
+      showLogin();
+
+    }
+
+  });
 
 }
 
@@ -175,7 +169,6 @@ async function checkAdmin(
       await auth.signOut();
 
       return;
-
     }
 
 
@@ -191,10 +184,9 @@ async function checkAdmin(
   } catch (error) {
 
     console.error(
-      "Admin check error:",
+      "Admin verification error:",
       error
     );
-
 
     document.getElementById(
       "loginMessage"
@@ -216,7 +208,6 @@ function showLogin() {
     "loginSection"
   ).style.display = "block";
 
-
   document.getElementById(
     "adminPanel"
   ).style.display = "none";
@@ -233,7 +224,6 @@ function showAdminPanel() {
   document.getElementById(
     "loginSection"
   ).style.display = "none";
-
 
   document.getElementById(
     "adminPanel"
@@ -264,7 +254,6 @@ document.addEventListener(
     const buddyForm =
       document.getElementById("buddyForm");
 
-
     if (!buddyForm) {
       return;
     }
@@ -275,35 +264,29 @@ document.addEventListener(
 
         event.preventDefault();
 
-
         const name =
           document.getElementById("buddyName")
             .value.trim();
 
-
         const phone =
           document.getElementById("buddyPhone")
             .value.trim();
-
 
         const qualification =
           document.getElementById(
             "buddyQualification"
           ).value.trim();
 
-
         const languagesText =
           document.getElementById(
             "buddyLanguages"
           ).value.trim();
-
 
         const languages =
           languagesText
             .split(",")
             .map(language => language.trim())
             .filter(language => language);
-
 
         const message =
           document.getElementById(
@@ -322,8 +305,7 @@ document.addEventListener(
 
               phone: phone,
 
-              qualification:
-                qualification,
+              qualification: qualification,
 
               languages: languages,
 
@@ -340,10 +322,8 @@ document.addEventListener(
           message.textContent =
             "Hospital Buddy added successfully.";
 
-
           message.style.color =
             "#176b32";
-
 
           buddyForm.reset();
 
@@ -351,7 +331,6 @@ document.addEventListener(
           loadHospitalBuddies(
             firebase.firestore()
           );
-
 
           loadDashboard(
             firebase.firestore()
@@ -361,10 +340,9 @@ document.addEventListener(
         } catch (error) {
 
           console.error(
-            "Add Buddy error:",
+            "Add Hospital Buddy error:",
             error
           );
-
 
           message.textContent =
             "Unable to add Hospital Buddy.";
@@ -391,7 +369,6 @@ async function loadHospitalBuddies(db) {
       "buddyTable"
     );
 
-
   if (!table) {
     return;
   }
@@ -416,7 +393,6 @@ async function loadHospitalBuddies(db) {
       `;
 
       return;
-
     }
 
 
@@ -427,12 +403,10 @@ async function loadHospitalBuddies(db) {
           const buddy =
             doc.data();
 
-
           const languages =
             Array.isArray(buddy.languages)
               ? buddy.languages.join(", ")
               : "";
-
 
           const status =
             buddy.status || "unavailable";
@@ -477,7 +451,6 @@ async function loadHospitalBuddies(db) {
 
                 ${
                   status === "available"
-
                     ? `
                       <button
                         class="smallBtn red"
@@ -486,7 +459,6 @@ async function loadHospitalBuddies(db) {
                         Make Unavailable
                       </button>
                     `
-
                     : `
                       <button
                         class="smallBtn green"
@@ -496,7 +468,6 @@ async function loadHospitalBuddies(db) {
                       </button>
                     `
                 }
-
 
                 <button
                   class="smallBtn red"
@@ -517,10 +488,9 @@ async function loadHospitalBuddies(db) {
   } catch (error) {
 
     console.error(
-      "Load Buddies error:",
+      "Load Hospital Buddies error:",
       error
     );
-
 
     table.innerHTML = `
       <tr>
@@ -551,16 +521,13 @@ async function changeBuddyStatus(
       .collection("hospital_buddies")
       .doc(buddyId)
       .update({
-
         status: newStatus
-
       });
 
 
     loadHospitalBuddies(
       firebase.firestore()
     );
-
 
     loadDashboard(
       firebase.firestore()
@@ -596,7 +563,6 @@ async function deleteBuddy(
       "Are you sure you want to delete this Hospital Buddy?"
     );
 
-
   if (!confirmDelete) {
     return;
   }
@@ -615,7 +581,6 @@ async function deleteBuddy(
       firebase.firestore()
     );
 
-
     loadDashboard(
       firebase.firestore()
     );
@@ -624,10 +589,9 @@ async function deleteBuddy(
   } catch (error) {
 
     console.error(
-      "Delete Buddy error:",
+      "Delete Hospital Buddy error:",
       error
     );
-
 
     alert(
       "Unable to delete Hospital Buddy."
@@ -648,7 +612,6 @@ async function loadBookings(db) {
     document.getElementById(
       "bookingTable"
     );
-
 
   if (!table) {
     return;
@@ -678,7 +641,6 @@ async function loadBookings(db) {
       `;
 
       return;
-
     }
 
 
@@ -689,11 +651,9 @@ async function loadBookings(db) {
           const booking =
             doc.data();
 
-
           const status =
             booking.status ||
             "pending";
-
 
           const bookingId =
             "HB-" +
@@ -707,9 +667,7 @@ async function loadBookings(db) {
 
               <td>
                 <b>
-                  ${escapeHTML(
-                    bookingId
-                  )}
+                  ${escapeHTML(bookingId)}
                 </b>
               </td>
 
@@ -749,18 +707,15 @@ async function loadBookings(db) {
               </td>
 
               <td>
-
                 <span class="statusBadge ${escapeHTML(status)}">
                   ${escapeHTML(status)}
                 </span>
-
               </td>
 
               <td>
 
                 ${
                   status === "pending"
-
                     ? `
                       <button
                         class="smallBtn green"
@@ -776,14 +731,11 @@ async function loadBookings(db) {
                         Reject
                       </button>
                     `
-
                     : ""
                 }
 
-
                 ${
                   status === "confirmed"
-
                     ? `
                       <button
                         class="smallBtn blue"
@@ -799,7 +751,6 @@ async function loadBookings(db) {
                         Cancel
                       </button>
                     `
-
                     : ""
                 }
 
@@ -818,7 +769,6 @@ async function loadBookings(db) {
       "Load bookings error:",
       error
     );
-
 
     table.innerHTML = `
       <tr>
@@ -849,16 +799,13 @@ async function changeBookingStatus(
       .collection("bookings")
       .doc(bookingId)
       .update({
-
         status: newStatus
-
       });
 
 
     loadBookings(
       firebase.firestore()
     );
-
 
     loadDashboard(
       firebase.firestore()
@@ -871,7 +818,6 @@ async function changeBookingStatus(
       "Booking status error:",
       error
     );
-
 
     alert(
       "Unable to update booking status."
@@ -912,29 +858,24 @@ async function loadDashboard(db) {
     let completed = 0;
 
 
-    bookingSnapshot.forEach(
-      doc => {
+    bookingSnapshot.forEach(doc => {
 
-        const status =
-          doc.data().status;
+      const status =
+        doc.data().status;
 
-
-        if (status === "pending") {
-          pending++;
-        }
-
-
-        if (status === "confirmed") {
-          confirmed++;
-        }
-
-
-        if (status === "completed") {
-          completed++;
-        }
-
+      if (status === "pending") {
+        pending++;
       }
-    );
+
+      if (status === "confirmed") {
+        confirmed++;
+      }
+
+      if (status === "completed") {
+        completed++;
+      }
+
+    });
 
 
     document.getElementById(
@@ -942,18 +883,15 @@ async function loadDashboard(db) {
     ).textContent =
       buddySnapshot.size;
 
-
     document.getElementById(
       "pendingCount"
     ).textContent =
       pending;
 
-
     document.getElementById(
       "confirmedCount"
     ).textContent =
       confirmed;
-
 
     document.getElementById(
       "completedCount"
@@ -977,9 +915,7 @@ async function loadDashboard(db) {
 // AUTH ERROR MESSAGE
 // =====================================================
 
-function getAuthErrorMessage(
-  error
-) {
+function getAuthErrorMessage(error) {
 
   switch (error.code) {
 
@@ -995,11 +931,21 @@ function getAuthErrorMessage(
     case "auth/invalid-credential":
       return "Incorrect email or password.";
 
+    case "auth/user-disabled":
+      return "This administrator account is disabled.";
+
     case "auth/too-many-requests":
       return "Too many attempts. Please try again later.";
 
+    case "auth/network-request-failed":
+      return "Network error. Check your internet connection.";
+
+    case "auth/operation-not-allowed":
+      return "Email/password sign-in is not enabled in Firebase.";
+
     default:
-      return "Unable to login. Please try again.";
+      return error.message ||
+        "Unable to login. Please try again.";
 
   }
 
@@ -1013,15 +959,10 @@ function getAuthErrorMessage(
 function escapeHTML(value) {
 
   return String(value)
-
     .replace(/&/g, "&amp;")
-
     .replace(/</g, "&lt;")
-
     .replace(/>/g, "&gt;")
-
     .replace(/"/g, "&quot;")
-
     .replace(/'/g, "&#039;");
 
 }
