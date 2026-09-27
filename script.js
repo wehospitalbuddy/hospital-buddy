@@ -1,7 +1,201 @@
-const buddies=[
-{id:"HB-001",name:"Assamese Buddy",langs:["Assamese","Hindi","English"],area:"Near AIIMS Guwahati",phone:"+91 XXXXX XXXXX",icon:"👨"},
-{id:"HB-002",name:"Bengali Buddy",langs:["Bengali","Assamese","Hindi"],area:"Changsari / North Guwahati",phone:"+91 XXXXX XXXXX",icon:"👩"},
-{id:"HB-003",name:"Multilingual Buddy",langs:["Assamese","Bodo","Hindi","English"],area:"AIIMS area",phone:"+91 XXXXX XXXXX",icon:"👨‍🦱"}];
-const bg=document.getElementById("buddies");
-bg.innerHTML=buddies.map(b=>`<article class="buddy"><div style="font-size:35px">${b.icon}</div><h3>${b.name}</h3><small>${b.id}</small><p><b>Languages:</b> ${b.langs.join(", ")}</p><p><b>Area:</b> ${b.area}</p><button class="btn" onclick="document.getElementById('book').scrollIntoView()">Request this Buddy</button></article>`).join("");
-document.getElementById("form").onsubmit=e=>{e.preventDefault();let b=buddies.find(x=>x.langs.includes(document.getElementById("lang").value))||buddies[0];let id="HB-"+Date.now().toString().slice(-7);document.getElementById("result").innerHTML=`<h2>Booking Request</h2><p><b>Booking ID:</b> ${id}</p><p>We matched your request with <b>${b.name}</b>.</p><div class="contact"><b>Assigned Buddy</b><br>${b.name}<br>ID: ${b.id}<br>Languages: ${b.langs.join(", ")}<br><b>Contact: ${b.phone}</b></div><p><b>Important:</b> The displayed number is a placeholder in this demo. In the real website, the Buddy's real number should be revealed only after an admin/database confirms the booking.</p><p>Service: ${document.getElementById("service").value}<br>Date: ${document.getElementById("date").value} &nbsp; Time: ${document.getElementById("time").value}</p>`;document.getElementById("modal").classList.remove("hidden")};function closeModal(){document.getElementById("modal").classList.add("hidden")}
+const firebaseConfig = {
+  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+  authDomain: "hospital-buddy-2224d.firebaseapp.com",
+  projectId: "hospital-buddy-2224d",
+  storageBucket: "hospital-buddy-2224d.firebasestorage.app",
+  messagingSenderId: "190919672635",
+  appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+  measurementId: "G-7I3TZ2EFFR"
+};
+
+const script = document.createElement("script");
+script.src = "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
+document.head.appendChild(script);
+
+script.onload = () => {
+  const firestoreScript = document.createElement("script");
+  firestoreScript.src = "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+  document.head.appendChild(firestoreScript);
+
+  firestoreScript.onload = () => {
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    loadBuddies(db);
+    setupBooking(db);
+  };
+};
+
+async function loadBuddies(db) {
+  const bg = document.getElementById("buddies");
+
+  try {
+    const snapshot = await db.collection("health_buddies")
+      .where("status", "==", "available")
+      .get();
+
+    if (snapshot.empty) {
+      bg.innerHTML = `
+        <article class="buddy">
+          <h3>No Buddy Available</h3>
+          <p>No Buddy is currently available.</p>
+        </article>
+      `;
+      return;
+    }
+
+    bg.innerHTML = snapshot.docs.map(doc => {
+      const b = doc.data();
+
+      return `
+        <article class="buddy">
+          <div style="font-size:35px">🤝</div>
+          <h3>${escapeHTML(b.name || "Health Buddy")}</h3>
+          <small>${escapeHTML(doc.id)}</small>
+          <p><b>Qualification:</b> ${escapeHTML(b.qualification || "Not specified")}</p>
+          <p><b>Phone:</b> Hidden until confirmation</p>
+          <button class="btn"
+            onclick="document.getElementById('book').scrollIntoView()">
+            Request this Buddy
+          </button>
+        </article>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Error loading Buddies:", error);
+
+    bg.innerHTML = `
+      <article class="buddy">
+        <h3>Unable to load Buddies</h3>
+        <p>Please try again later.</p>
+      </article>
+    `;
+  }
+}
+
+function setupBooking(db) {
+  document.getElementById("form").onsubmit = async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const language = document.getElementById("lang").value;
+    const service = document.getElementById("service").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const notes = document.getElementById("notes").value.trim();
+
+    try {
+      const buddySnapshot = await db.collection("health_buddies")
+        .where("status", "==", "available")
+        .get();
+
+      let buddy = null;
+
+      buddySnapshot.forEach(doc => {
+        if (!buddy && doc.data().languages &&
+            doc.data().languages.includes(language)) {
+          buddy = {
+            id: doc.id,
+            ...doc.data()
+          };
+        }
+      });
+
+      if (!buddy && !buddySnapshot.empty) {
+        const doc = buddySnapshot.docs[0];
+        buddy = {
+          id: doc.id,
+          ...doc.data()
+        };
+      }
+
+      if (!buddy) {
+        showResult(`
+          <h2>No Buddy Available</h2>
+          <p>Sorry, there is currently no available Buddy for this request.</p>
+        `);
+        return;
+      }
+
+      const bookingRef = await db.collection("bookings").add({
+        name: name,
+        phone: phone,
+        language: language,
+        service: service,
+        date: date,
+        time: time,
+        requirement: notes,
+        buddyId: buddy.id,
+        buddyName: buddy.name || "",
+        status: "pending",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      const bookingId = "HB-" + bookingRef.id.substring(0, 7).toUpperCase();
+
+      showResult(`
+        <h2>Booking Request</h2>
+
+        <p><b>Booking ID:</b> ${escapeHTML(bookingId)}</p>
+
+        <p>
+          We matched your request with
+          <b>${escapeHTML(buddy.name || "Health Buddy")}</b>.
+        </p>
+
+        <div class="contact">
+          <b>Assigned Buddy</b><br>
+          ${escapeHTML(buddy.name || "Health Buddy")}<br>
+          ID: ${escapeHTML(buddy.id)}<br>
+          Qualification: ${escapeHTML(buddy.qualification || "Not specified")}<br>
+          <b>Contact: Hidden until confirmation</b>
+        </div>
+
+        <p>
+          <b>Important:</b>
+          Your booking has been submitted successfully.
+          The Buddy's phone number will be shared only after confirmation.
+        </p>
+
+        <p>
+          <b>Service:</b> ${escapeHTML(service)}<br>
+          <b>Date:</b> ${escapeHTML(date)}<br>
+          <b>Time:</b> ${escapeHTML(time)}
+        </p>
+
+        <p>
+          <b>Status:</b> Pending confirmation
+        </p>
+      `);
+
+    } catch (error) {
+      console.error("Booking error:", error);
+
+      showResult(`
+        <h2>Booking Error</h2>
+        <p>We could not submit your booking.</p>
+        <p>Please try again.</p>
+      `);
+    }
+  };
+}
+
+function showResult(html) {
+  document.getElementById("result").innerHTML = html;
+  document.getElementById("modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.add("hidden");
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
