@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+
+  <title>Health Buddy — Admin Control</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    body {
+      background: #eef5f5;
+    }
+
+    .adminWrap {
+      max-width: 1150px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .adminHeader {
+      background: #102b34;
+      color: white;
+      padding: 25px;
+      border-radius: 18px;
+      margin-bottom: 25px;
+    }
+
+    .adminHeader h1 {
+      margin: 0;
+    }
+
+    .loginCard,
+    .adminCard {
+      background: white;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 25px;
+      box-shadow: 0 7px 25px rgba(0,0,0,.06);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+    }
+
+    .adminTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .adminTable th,
+    .adminTable td {
+      padding: 12px;
+      border-bottom: 1px solid #e5eeee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .adminTable th {
+      background: #eef5f5;
+    }
+
+    .smallBtn {
+      border: none;
+      border-radius: 7px;
+      padding: 7px 10px;
+      cursor: pointer;
+      margin: 2px;
+      font-weight: 700;
+    }
+
+    .green {
+      background: #dff5e5;
+      color: #176b32;
+    }
+
+    .red {
+      background: #fde0e0;
+      color: #8d1d1d;
+    }
+
+    .blue {
+      background: #e1eefb;
+      color: #1b4f7d;
+    }
+
+    .logout {
+      float: right;
+      background: #c51e25;
+      color: white;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .statusBadge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .available {
+      background: #dff5e5;
+      color: #176b32;
+    }
+
+    .unavailable {
+      background: #eee;
+      color: #555;
+    }
+
+    .pending {
+      background: #fff0c7;
+      color: #765500;
+    }
+
+    .confirmed {
+      background: #dff5e5;
+      color: #176b32;
+    }
+
+    .rejected,
+    .cancelled {
+      background: #fde0e0;
+      color: #8d1d1d;
+    }
+
+    .completed {
+      background: #e1eefb;
+      color: #1b4f7d;
+    }
+
+    .tableScroll {
+      overflow-x: auto;
+    }
+
+    @media(max-width:800px) {
+
+      .dashboard {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .adminTable {
+        min-width: 900px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="adminWrap">
+
+  <!-- LOGIN -->
+
+  <div id="loginSection">
+
+    <div class="adminHeader">
+
+      <h1>
+        Health Buddy
+      </h1>
+
+      <p>
+        Admin Control Panel
+      </p>
+
+    </div>
+
+
+    <div class="loginCard">
+
+      <h2>
+        Administrator Login
+      </h2>
+
+      <form id="loginForm">
+
+        <label>
+          Email
+          <input
+            id="adminEmail"
+            type="email"
+            required
+          >
+        </label>
+
+
+        <label>
+          Password
+          <input
+            id="adminPassword"
+            type="password"
+            required
+          >
+        </label>
+
+
+        <button
+          class="btn"
+          type="submit"
+        >
+          Login
+        </button>
+
+      </form>
+
+      <p id="loginMessage"></p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ADMIN PANEL -->
+
+  <div id="adminPanel" style="display:none;">
+
+    <div class="adminHeader">
+
+      <button
+        class="logout"
+        onclick="logoutAdmin()"
+      >
+        Logout
+      </button>
+
+      <h1>
+        Health Buddy
+      </h1>
+
+      <p>
+        Admin Control Panel
+      </p>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="dashboard">
+
+      <div class="stat">
+
+        <span>
+          Available Buddies
+        </span>
+
+        <strong id="availableCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <span>
+          Pending Bookings
+        </span>
+
+        <strong id="pendingCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <span>
+          Confirmed
+        </span>
+
+        <strong id="confirmedCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <span>
+          Completed
+        </span>
+
+        <strong id="completedCount">
+          0
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ADD BUDDY -->
+
+    <div class="adminCard">
+
+      <h2>
+        Add New Buddy
+      </h2>
+
+      <form id="buddyForm">
+
+        <label>
+          Name
+          <input
+            id="buddyName"
+            required
+          >
+        </label>
+
+
+        <label>
+          Phone
+          <input
+            id="buddyPhone"
+            type="tel"
+            required
+          >
+        </label>
+
+
+        <label>
+          Qualification
+          <input
+            id="buddyQualification"
+            placeholder="Graduate"
+            required
+          >
+        </label>
+
+
+        <label>
+          Languages
+          <input
+            id="buddyLanguages"
+            placeholder="Assamese, English, Hindi"
+            required
+          >
+        </label>
+
+
+        <button
+          type="submit"
+          class="btn"
+        >
+          Add Buddy
+        </button>
+
+      </form>
+
+      <p id="buddyMessage"></p>
+
+    </div>
+
+
+    <!-- BUDDIES -->
+
+    <div class="adminCard">
+
+      <h2>
+        Manage Buddies
+      </h2>
+
+      <div class="tableScroll">
+
+        <table class="adminTable">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Name
+              </th>
+
+              <th>
+                Phone
+              </th>
+
+              <th>
+                Qualification
+              </th>
+
+              <th>
+                Languages
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                Actions
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="buddyTable">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- BOOKINGS -->
+
+    <div class="adminCard">
+
+      <h2>
+        Booking Requests
+      </h2>
+
+      <div class="tableScroll">
+
+        <table class="adminTable">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Booking
+              </th>
+
+              <th>
+                Patient
+              </th>
+
+              <th>
+                Phone
+              </th>
+
+              <th>
+                Service
+              </th>
+
+              <th>
+                Date / Time
+              </th>
+
+              <th>
+                Buddy
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                Actions
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="bookingTable">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>
