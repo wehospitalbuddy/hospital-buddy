@@ -2,20 +2,14 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
-  >
-
-  <title>Health Buddy — Admin Control</title>
+  <title>Hospital Buddy — Admin Control</title>
 
   <link rel="stylesheet" href="styles.css">
 
   <style>
-
     body {
       background: #eef5f5;
     }
@@ -63,6 +57,7 @@
     .stat strong {
       display: block;
       font-size: 30px;
+      margin-top: 5px;
     }
 
     .adminTable {
@@ -114,6 +109,7 @@
       padding: 9px 14px;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: 700;
     }
 
     .statusBadge {
@@ -130,7 +126,7 @@
     }
 
     .unavailable {
-      background: #eee;
+      background: #eeeeee;
       color: #555;
     }
 
@@ -159,6 +155,19 @@
       overflow-x: auto;
     }
 
+    .message {
+      margin-top: 15px;
+      font-weight: 700;
+    }
+
+    .dangerText {
+      color: #a9171d;
+    }
+
+    .successText {
+      color: #176b32;
+    }
+
     @media(max-width:800px) {
 
       .dashboard {
@@ -166,11 +175,22 @@
       }
 
       .adminTable {
-        min-width: 900px;
+        min-width: 950px;
       }
 
     }
 
+    @media(max-width:500px) {
+
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .adminWrap {
+        padding: 20px 12px;
+      }
+
+    }
   </style>
 
 </head>
@@ -180,15 +200,15 @@
 
 <div class="adminWrap">
 
-  <!-- LOGIN -->
+  <!-- ==============================
+       LOGIN
+  =============================== -->
 
   <div id="loginSection">
 
     <div class="adminHeader">
 
-      <h1>
-        Health Buddy
-      </h1>
+      <h1>Hospital Buddy</h1>
 
       <p>
         Admin Control Panel
@@ -203,13 +223,20 @@
         Administrator Login
       </h2>
 
+      <p>
+        Authorized Hospital Buddy administrators only.
+      </p>
+
+
       <form id="loginForm">
 
         <label>
           Email
+
           <input
             id="adminEmail"
             type="email"
+            autocomplete="username"
             required
           >
         </label>
@@ -217,9 +244,11 @@
 
         <label>
           Password
+
           <input
             id="adminPassword"
             type="password"
+            autocomplete="current-password"
             required
           >
         </label>
@@ -234,28 +263,39 @@
 
       </form>
 
-      <p id="loginMessage"></p>
+
+      <p
+        id="loginMessage"
+        class="message"
+      ></p>
 
     </div>
 
   </div>
 
 
-  <!-- ADMIN PANEL -->
+  <!-- ==============================
+       ADMIN PANEL
+  =============================== -->
 
-  <div id="adminPanel" style="display:none;">
+  <div
+    id="adminPanel"
+    style="display:none;"
+  >
 
     <div class="adminHeader">
 
       <button
         class="logout"
+        type="button"
         onclick="logoutAdmin()"
       >
         Logout
       </button>
 
+
       <h1>
-        Health Buddy
+        Hospital Buddy
       </h1>
 
       <p>
@@ -265,14 +305,16 @@
     </div>
 
 
-    <!-- STATS -->
+    <!-- ==============================
+         DASHBOARD STATISTICS
+    =============================== -->
 
     <div class="dashboard">
 
       <div class="stat">
 
         <span>
-          Available Buddies
+          Available Hospital Buddies
         </span>
 
         <strong id="availableCount">
@@ -323,20 +365,30 @@
     </div>
 
 
-    <!-- ADD BUDDY -->
+    <!-- ==============================
+         ADD HOSPITAL BUDDY
+    =============================== -->
 
     <div class="adminCard">
 
       <h2>
-        Add New Buddy
+        Add New Hospital Buddy
       </h2>
+
+      <p>
+        Add a person who will provide non-medical
+        hospital assistance.
+      </p>
+
 
       <form id="buddyForm">
 
         <label>
           Name
+
           <input
             id="buddyName"
+            type="text"
             required
           >
         </label>
@@ -344,6 +396,7 @@
 
         <label>
           Phone
+
           <input
             id="buddyPhone"
             type="tel"
@@ -354,8 +407,10 @@
 
         <label>
           Qualification
+
           <input
             id="buddyQualification"
+            type="text"
             placeholder="Graduate"
             required
           >
@@ -364,8 +419,10 @@
 
         <label>
           Languages
+
           <input
             id="buddyLanguages"
+            type="text"
             placeholder="Assamese, English, Hindi"
             required
           >
@@ -376,23 +433,30 @@
           type="submit"
           class="btn"
         >
-          Add Buddy
+          Add Hospital Buddy
         </button>
 
       </form>
 
-      <p id="buddyMessage"></p>
+
+      <p
+        id="buddyMessage"
+        class="message"
+      ></p>
 
     </div>
 
 
-    <!-- BUDDIES -->
+    <!-- ==============================
+         MANAGE HOSPITAL BUDDIES
+    =============================== -->
 
     <div class="adminCard">
 
       <h2>
-        Manage Buddies
+        Manage Hospital Buddies
       </h2>
+
 
       <div class="tableScroll">
 
@@ -430,6 +494,7 @@
 
           </thead>
 
+
           <tbody id="buddyTable">
 
           </tbody>
@@ -441,13 +506,16 @@
     </div>
 
 
-    <!-- BOOKINGS -->
+    <!-- ==============================
+         BOOKING REQUESTS
+    =============================== -->
 
     <div class="adminCard">
 
       <h2>
-        Booking Requests
+        Hospital Buddy Booking Requests
       </h2>
+
 
       <div class="tableScroll">
 
@@ -478,7 +546,7 @@
               </th>
 
               <th>
-                Buddy
+                Hospital Buddy
               </th>
 
               <th>
@@ -493,6 +561,7 @@
 
           </thead>
 
+
           <tbody id="bookingTable">
 
           </tbody>
@@ -503,6 +572,7 @@
 
     </div>
 
+
   </div>
 
 </div>
@@ -511,4 +581,5 @@
 <script src="admin.js"></script>
 
 </body>
+
 </html>
