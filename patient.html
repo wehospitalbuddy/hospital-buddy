@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Hospital Buddy Patient Dashboard"
+  >
+
+  <title>Hospital Buddy | Patient Dashboard</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #111827;
+    }
+
+    .brand img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 20px;
+    }
+
+    .brand small {
+      color: #6b7280;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .loginBox,
+    .dashboard {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+
+    .loginBox {
+      max-width: 450px;
+      margin: 70px auto;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      margin-top: 8px;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 22px;
+      background: #2563eb;
+      color: white;
+    }
+
+    .logout {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .error {
+      margin-top: 15px;
+      color: #dc2626;
+      display: none;
+    }
+
+    .welcome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .profile {
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 30px;
+    }
+
+    .profile p {
+      margin: 8px 0;
+    }
+
+    .booking {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+
+    .bookingId {
+      font-weight: bold;
+      color: #2563eb;
+      margin-bottom: 12px;
+    }
+
+    .booking p {
+      margin: 7px 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 20px;
+      background: #fff7ed;
+      color: #c2410c;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    .empty {
+      padding: 30px;
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 14px;
+      color: #6b7280;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .newBooking {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 13px 18px;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 650px) {
+
+      .welcome {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .dashboard,
+      .loginBox {
+        padding: 22px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div class="nav">
+
+    <a
+      href="index.html"
+      class="brand"
+    >
+
+      <img
+        src="logo.png"
+        alt="Hospital Buddy"
+      >
+
+      <div>
+
+        <strong>
+          Hospital Buddy
+        </strong>
+
+        <small>
+          Assist • Guide • Support
+        </small>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</header>
+
+
+<main class="container">
+
+
+  <!-- =================================================
+       LOGIN
+  ================================================== -->
+
+  <section
+    id="loginSection"
+    class="loginBox"
+  >
+
+    <h1>
+      Patient Login
+    </h1>
+
+    <p class="subtitle">
+      Login to manage your Hospital Buddy
+      requests and view your booking status.
+    </p>
+
+
+    <form id="loginForm">
+
+
+      <label>
+
+        Email
+
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="email"
+        >
+
+      </label>
+
+
+      <label>
+
+        Password
+
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        >
+
+      </label>
+
+
+      <button
+        id="loginButton"
+        class="primary"
+        type="submit"
+      >
+
+        Login
+
+      </button>
+
+
+      <div
+        id="loginError"
+        class="error"
+      ></div>
+
+
+    </form>
+
+  </section>
+
+
+
+  <!-- =================================================
+       DASHBOARD
+  ================================================== -->
+
+  <section
+    id="dashboardSection"
+    class="dashboard hidden"
+  >
+
+
+    <div class="welcome">
+
+      <div>
+
+        <h1>
+          Patient Dashboard
+        </h1>
+
+        <p
+          id="welcomeText"
+          class="subtitle"
+        >
+          Welcome.
+        </p>
+
+      </div>
+
+
+      <button
+        id="logoutButton"
+        class="logout"
+      >
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+
+    <!-- PROFILE -->
+
+    <div class="profile">
+
+      <h3>
+        My Profile
+      </h3>
+
+
+      <p>
+
+        <strong>
+          Name:
+        </strong>
+
+        <span id="profileName">
+          -
+        </span>
+
+      </p>
+
+
+      <p>
+
+        <strong>
+          Email:
+        </strong>
+
+        <span id="profileEmail">
+          -
+        </span>
+
+      </p>
+
+
+      <p>
+
+        <strong>
+          Phone:
+        </strong>
+
+        <span id="profilePhone">
+          -
+        </span>
+
+      </p>
+
+    </div>
+
+
+
+    <!-- BOOKINGS -->
+
+    <h2>
+      My Booking Requests
+    </h2>
+
+
+    <div id="bookings">
+
+      <div class="empty">
+        Loading your bookings...
+      </div>
+
+    </div>
+
+
+    <a
+      href="index.html#book"
+      class="newBooking"
+    >
+
+      🤝 Request a Hospital Buddy
+
+    </a>
+
+
+  </section>
+
+
+</main>
+
+
+
+<script>
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+
+  authDomain:
+    "hospital-buddy-2224d.firebaseapp.com",
+
+  projectId:
+    "hospital-buddy-2224d",
+
+  storageBucket:
+    "hospital-buddy-2224d.firebasestorage.app",
+
+  messagingSenderId:
+    "190919672635",
+
+  appId:
+    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+
+  measurementId:
+    "G-7I3TZ2EFFR"
+
+};
+
+
+// =====================================================
+// LOAD FIREBASE
+// =====================================================
+
+const appScript =
+  document.createElement("script");
+
+appScript.src =
+  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
+
+
+appScript.onload = function () {
+
+  const authScript =
+    document.createElement("script");
+
+  authScript.src =
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+
+
+  authScript.onload = function () {
+
+    const firestoreScript =
+      document.createElement("script");
+
+    firestoreScript.src =
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+
+
+    firestoreScript.onload =
+      initializePatientApp;
+
+
+    document.head.appendChild(
+      firestoreScript
+    );
+
+  };
+
+
+  document.head.appendChild(
+    authScript
+  );
+
+};
+
+
+document.head.appendChild(
+  appScript
+);
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+function initializePatientApp() {
+
+
+  if (!firebase.apps.length) {
+
+    firebase.initializeApp(
+      firebaseConfig
+    );
+
+  }
+
+
+  const auth =
+    firebase.auth();
+
+
+  const db =
+    firebase.firestore();
+
+
+  // ===================================================
+  // AUTH STATE
+  // ===================================================
+
+  auth.onAuthStateChanged(
+    async function (user) {
+
+      if (user) {
+
+        document
+          .getElementById("loginSection")
+          .classList.add("hidden");
+
+
+        document
+          .getElementById("dashboardSection")
+          .classList.remove("hidden");
+
+
+        await loadPatient(
+          db,
+          user
+        );
+
+
+        await loadBookings(
+          db,
+          user
+        );
+
+      } else {
+
+        document
+          .getElementById("loginSection")
+          .classList.remove("hidden");
+
+
+        document
+          .getElementById("dashboardSection")
+          .classList.add("hidden");
+
+      }
+
+    }
+  );
+
+
+  // ===================================================
+  // LOGIN
+  // ===================================================
+
+  document
+    .getElementById("loginForm")
+    .addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        const button =
+          document
+            .getElementById("loginButton");
+
+
+        const errorBox =
+          document
+            .getElementById("loginError");
+
+
+        button.disabled =
+          true;
+
+
+        button.textContent =
+          "Logging in...";
+
+
+        errorBox.style.display =
+          "none";
+
+
+        try {
+
+          await auth.signInWithEmailAndPassword(
+            email,
+            password
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Login error:",
+            error
+          );
+
+
+          errorBox.textContent =
+            getAuthErrorMessage(
+              error
+            );
+
+
+          errorBox.style.display =
+            "block";
+
+
+        } finally {
+
+          button.disabled =
+            false;
+
+
+          button.textContent =
+            "Login";
+
+        }
+
+      }
+    );
+
+
+  // ===================================================
+  // LOGOUT
+  // ===================================================
+
+  document
+    .getElementById("logoutButton")
+    .addEventListener(
+      "click",
+      async function () {
+
+        try {
+
+          await auth.signOut();
+
+        } catch (error) {
+
+          console.error(
+            "Logout error:",
+            error
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+// =====================================================
+// LOAD PATIENT PROFILE
+// =====================================================
+
+async function loadPatient(
+  db,
+  user
+) {
+
+  try {
+
+    const patientDoc =
+      await db
+        .collection("patients")
+        .doc(user.uid)
+        .get();
+
+
+    if (patientDoc.exists) {
+
+      const data =
+        patientDoc.data();
+
+
+      document
+        .getElementById("profileName")
+        .textContent =
+          data.name || "Patient";
+
+
+      document
+        .getElementById("profileEmail")
+        .textContent =
+          data.email ||
+          user.email ||
+          "-";
+
+
+      document
+        .getElementById("profilePhone")
+        .textContent =
+          data.phone || "-";
+
+
+      document
+        .getElementById("welcomeText")
+        .textContent =
+          "Welcome, " +
+          (data.name || "Patient") +
+          ".";
+
+
+    } else {
+
+      document
+        .getElementById("profileName")
+        .textContent =
+          "Patient";
+
+
+      document
+        .getElementById("profileEmail")
+        .textContent =
+          user.email || "-";
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Patient profile error:",
+      error
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// LOAD PATIENT BOOKINGS
+// =====================================================
+
+async function loadBookings(
+  db,
+  user
+) {
+
+  const container =
+    document.getElementById(
+      "bookings"
+    );
+
+
+  try {
+
+    const snapshot =
+      await db
+        .collection("bookings")
+        .where(
+          "patientId",
+          "==",
+          user.uid
+        )
+        .get();
+
+
+    if (snapshot.empty) {
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          <h3>
+            No booking requests yet
+          </h3>
+
+          <p>
+            You have not requested a
+            Hospital Buddy yet.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    const bookings =
+      snapshot.docs
+        .map(function (doc) {
+
+          return {
+
+            id:
+              doc.id,
+
+            ...doc.data()
+
+          };
+
+        })
+        .sort(function (a, b) {
+
+          const aTime =
+            a.createdAt &&
+            a.createdAt.toMillis
+              ? a.createdAt.toMillis()
+              : 0;
+
+
+          const bTime =
+            b.createdAt &&
+            b.createdAt.toMillis
+              ? b.createdAt.toMillis()
+              : 0;
+
+
+          return bTime - aTime;
+
+        });
+
+
+    container.innerHTML =
+      bookings
+        .map(function (booking) {
+
+          return `
+
+            <article class="booking">
+
+              <div class="bookingId">
+
+                Booking ID:
+                ${escapeHTML(
+                  booking.bookingId ||
+                  booking.id
+                )}
+
+              </div>
+
+
+              <p>
+
+                <strong>
+                  Hospital:
+                </strong>
+
+                ${escapeHTML(
+                  booking.hospital ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  District:
+                </strong>
+
+                ${escapeHTML(
+                  booking.district ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Service:
+                </strong>
+
+                ${escapeHTML(
+                  booking.service ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Date:
+                </strong>
+
+                ${escapeHTML(
+                  booking.date ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Time:
+                </strong>
+
+                ${escapeHTML(
+                  booking.time ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Language:
+                </strong>
+
+                ${escapeHTML(
+                  booking.language ||
+                  "-"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Hospital Buddy:
+                </strong>
+
+                ${escapeHTML(
+                  booking.buddyName ||
+                  "Not assigned"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Status:
+                </strong>
+
+                <span class="status">
+
+                  ${escapeHTML(
+                    booking.status ||
+                    "pending"
+                  )}
+
+                </span>
+
+              </p>
+
+            </article>
+
+          `;
+
+        })
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Booking loading error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <h3>
+          Unable to load bookings
+        </h3>
+
+        <p>
+          Please try again later.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+// =====================================================
+// AUTH ERROR MESSAGES
+// =====================================================
+
+function getAuthErrorMessage(
+  error
+) {
+
+  switch (error.code) {
+
+    case "auth/invalid-email":
+
+      return "Please enter a valid email address.";
+
+    case "auth/user-not-found":
+
+      return "No patient account was found with this email.";
+
+    case "auth/wrong-password":
+
+      return "Incorrect password.";
+
+    case "auth/invalid-credential":
+
+      return "Incorrect email or password.";
+
+    case "auth/too-many-requests":
+
+      return "Too many login attempts. Please try again later.";
+
+    default:
+
+      return "Unable to login. Please check your email and password.";
+
+  }
+
+}
+
+
+// =====================================================
+// HTML SECURITY
+// =====================================================
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
