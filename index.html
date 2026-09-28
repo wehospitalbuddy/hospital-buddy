@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
 
   <meta
@@ -18,7 +17,6 @@
   <title>Hospital Buddy | A Helping Hand</title>
 
   <link rel="stylesheet" href="styles.css">
-
 </head>
 
 
@@ -187,8 +185,8 @@
 
     <p>
 
-      Select your district, hospital, service,
-      language, date and time. We help connect
+      Select your hospital, service, language,
+      date and time. We help connect
       you with an available Hospital Buddy.
 
     </p>
@@ -621,7 +619,7 @@
 
       Complete the short form below.
       We will look for an available Hospital Buddy
-      for your selected service.
+      for your selected hospital and service.
 
     </p>
 
@@ -630,6 +628,10 @@
 
       <div>
         ✓ Simple request
+      </div>
+
+      <div>
+        ✓ Hospital selection
       </div>
 
       <div>
@@ -655,7 +657,9 @@
     <form id="form">
 
 
-      <!-- NAME -->
+      <!-- =================================================
+           PATIENT NAME
+      ================================================= -->
 
       <label>
 
@@ -675,7 +679,9 @@
 
 
 
-      <!-- PHONE -->
+      <!-- =================================================
+           PHONE
+      ================================================= -->
 
       <label>
 
@@ -695,7 +701,89 @@
 
 
 
-      <!-- LANGUAGE -->
+      <!-- =================================================
+           STATE
+      ================================================= -->
+
+      <label>
+
+        <span>
+          State
+        </span>
+
+        <select
+          id="state"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+          <option value="Assam">
+            Assam
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- =================================================
+           DISTRICT
+      ================================================= -->
+
+      <label>
+
+        <span>
+          District
+        </span>
+
+        <select
+          id="district"
+          required
+        >
+
+          <option value="">
+            Select District
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- =================================================
+           HOSPITAL
+      ================================================= -->
+
+      <label>
+
+        <span>
+          Hospital
+        </span>
+
+        <select
+          id="hospital"
+          required
+          disabled
+        >
+
+          <option value="">
+            Select Hospital
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- =================================================
+           LANGUAGE
+      ================================================= -->
 
       <label>
 
@@ -707,10 +795,6 @@
           id="lang"
           required
         >
-
-          <option value="">
-            Select Language
-          </option>
 
           <option value="Assamese">
             Assamese
@@ -738,54 +822,9 @@
 
 
 
-      <!-- DISTRICT -->
-
-      <label>
-
-        <span>
-          District
-        </span>
-
-        <select
-          id="district"
-          required
-        >
-
-          <option value="">
-            Select District
-          </option>
-
-        </select>
-
-      </label>
-
-
-
-      <!-- HOSPITAL -->
-
-      <label>
-
-        <span>
-          Hospital
-        </span>
-
-        <select
-          id="hospital"
-          required
-          disabled
-        >
-
-          <option value="">
-            Select District First
-          </option>
-
-        </select>
-
-      </label>
-
-
-
-      <!-- SERVICE -->
+      <!-- =================================================
+           SERVICE
+      ================================================= -->
 
       <label>
 
@@ -818,6 +857,10 @@
             Elderly Assistance
           </option>
 
+          <option value="Family Support">
+            Family Support
+          </option>
+
           <option value="Outstation Support">
             Outstation Support
           </option>
@@ -828,7 +871,9 @@
 
 
 
-      <!-- DATE + TIME -->
+      <!-- =================================================
+           DATE + TIME
+      ================================================= -->
 
       <div class="formTwo">
 
@@ -865,7 +910,9 @@
 
 
 
-      <!-- NOTES -->
+      <!-- =================================================
+           NOTES
+      ================================================= -->
 
       <label>
 
@@ -883,7 +930,9 @@
 
 
 
-      <!-- AGREEMENT -->
+      <!-- =================================================
+           AGREEMENT
+      ================================================= -->
 
       <label class="agreement">
 
@@ -1187,6 +1236,236 @@
   </div>
 
 </div>
+
+
+
+<!-- =====================================================
+     HOSPITAL DATA
+===================================================== -->
+
+<script>
+
+const hospitalData = {
+
+  "Assam": {
+
+    "Kamrup Metropolitan": [
+
+      "AIIMS Guwahati",
+      "Gauhati Medical College & Hospital (GMCH)",
+      "Dr. B. Borooah Cancer Institute",
+      "GNRC Hospitals, Dispur",
+      "GNRC Hospitals, Six Mile",
+      "Nemcare Hospital",
+      "Down Town Hospital",
+      "Hayat Hospital",
+      "International Hospital",
+      "Pratiksha Hospital"
+    ],
+
+    "Kamrup": [
+
+      "Rajarshi Bhagyachandra District Hospital",
+      "Mirza Community Health Centre",
+      "North Guwahati Community Health Centre"
+    ],
+
+    "Dibrugarh": [
+
+      "Assam Medical College & Hospital",
+      "Dibrugarh District Hospital"
+    ],
+
+    "Cachar": [
+
+      "Silchar Medical College & Hospital",
+      "Silchar Civil Hospital"
+    ],
+
+    "Jorhat": [
+
+      "Jorhat Medical College & Hospital",
+      "Jorhat Civil Hospital"
+    ],
+
+    "Bongaigaon": [
+
+      "Bongaigaon Civil Hospital"
+    ],
+
+    "Nagaon": [
+
+      "Nagaon Medical College & Hospital",
+      "Nagaon Civil Hospital"
+    ],
+
+    "Sonitpur": [
+
+      "Tezpur Medical College & Hospital",
+      "Tezpur Civil Hospital"
+    ],
+
+    "Tinsukia": [
+
+      "Tinsukia Civil Hospital"
+    ],
+
+    "Sivasagar": [
+
+      "Sivasagar Civil Hospital"
+    ],
+
+    "Lakhimpur": [
+
+      "North Lakhimpur Civil Hospital"
+    ],
+
+    "Barpeta": [
+
+      "Fakhruddin Ali Ahmed Medical College & Hospital",
+      "Barpeta Civil Hospital"
+    ]
+
+  }
+
+};
+
+
+
+/* =====================================================
+   STATE → DISTRICT
+===================================================== */
+
+const stateSelect =
+  document.getElementById("state");
+
+const districtSelect =
+  document.getElementById("district");
+
+const hospitalSelect =
+  document.getElementById("hospital");
+
+
+stateSelect.addEventListener(
+  "change",
+  function () {
+
+    districtSelect.innerHTML =
+      '<option value="">Select District</option>';
+
+    hospitalSelect.innerHTML =
+      '<option value="">Select Hospital</option>';
+
+    hospitalSelect.disabled = true;
+
+
+    const state =
+      stateSelect.value;
+
+
+    if (
+      !state ||
+      !hospitalData[state]
+    ) {
+
+      districtSelect.disabled = true;
+
+      return;
+
+    }
+
+
+    districtSelect.disabled = false;
+
+
+    Object.keys(
+      hospitalData[state]
+    )
+    .sort()
+    .forEach(
+      function (district) {
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          district;
+
+        option.textContent =
+          district;
+
+        districtSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
+  }
+);
+
+
+
+/* =====================================================
+   DISTRICT → HOSPITAL
+===================================================== */
+
+districtSelect.addEventListener(
+  "change",
+  function () {
+
+    hospitalSelect.innerHTML =
+      '<option value="">Select Hospital</option>';
+
+    hospitalSelect.disabled = true;
+
+
+    const state =
+      stateSelect.value;
+
+    const district =
+      districtSelect.value;
+
+
+    if (
+      !state ||
+      !district ||
+      !hospitalData[state] ||
+      !hospitalData[state][district]
+    ) {
+
+      return;
+
+    }
+
+
+    hospitalSelect.disabled = false;
+
+
+    hospitalData[state][district]
+      .forEach(
+        function (hospital) {
+
+          const option =
+            document.createElement("option");
+
+          option.value =
+            hospital;
+
+          option.textContent =
+            hospital;
+
+          hospitalSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+  }
+);
+
+</script>
 
 
 
