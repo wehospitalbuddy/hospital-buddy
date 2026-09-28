@@ -1,15 +1,20 @@
 // =====================================================
-// FIREBASE CONFIGURATION
+// HOSPITAL BUDDY — ADMIN CONTROL PANEL
+// =====================================================
+
+
+// =====================================================
+// FIREBASE CONFIG
 // =====================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxfRCo3z0YLo_q5yrhnZHejYR41PzGDiw",
+  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
   authDomain: "hospital-buddy-2224d.firebaseapp.com",
   projectId: "hospital-buddy-2224d",
   storageBucket: "hospital-buddy-2224d.firebasestorage.app",
   messagingSenderId: "190919672635",
   appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
-  measurementId: "G-Z13TZ2EFFR"
+  measurementId: "G-7I3TZ2EFFR"
 };
 
 
@@ -17,55 +22,43 @@ const firebaseConfig = {
 // LOAD FIREBASE
 // =====================================================
 
-const firebaseScript = document.createElement("script");
+const firebaseAppScript = document.createElement("script");
 
-firebaseScript.src =
+firebaseAppScript.src =
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
 
-document.head.appendChild(firebaseScript);
+document.head.appendChild(firebaseAppScript);
 
 
-firebaseScript.onload = () => {
+firebaseAppScript.onload = () => {
 
-  const authScript = document.createElement("script");
+  const firebaseAuthScript = document.createElement("script");
 
-  authScript.src =
+  firebaseAuthScript.src =
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
 
-  document.head.appendChild(authScript);
+  document.head.appendChild(firebaseAuthScript);
 
 
-  authScript.onload = () => {
+  firebaseAuthScript.onload = () => {
 
-    const firestoreScript = document.createElement("script");
+    const firebaseFirestoreScript =
+      document.createElement("script");
 
-    firestoreScript.src =
+    firebaseFirestoreScript.src =
       "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
 
-    document.head.appendChild(firestoreScript);
+    document.head.appendChild(firebaseFirestoreScript);
 
 
-    firestoreScript.onload = () => {
+    firebaseFirestoreScript.onload = () => {
 
-      try {
+      firebase.initializeApp(firebaseConfig);
 
-        firebase.initializeApp(firebaseConfig);
+      window.auth = firebase.auth();
+      window.db = firebase.firestore();
 
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        console.log("Firebase initialized successfully.");
-
-        startAdmin(auth, db);
-
-      } catch (error) {
-
-        console.error(
-          "Firebase initialization error:",
-          error
-        );
-
-      }
+      startAdminSystem();
 
     };
 
@@ -75,120 +68,177 @@ firebaseScript.onload = () => {
 
 
 // =====================================================
-// START ADMIN
+// START ADMIN SYSTEM
 // =====================================================
 
-function startAdmin(auth, db) {
+function startAdminSystem() {
 
   const loginForm =
     document.getElementById("loginForm");
 
 
-  if (!loginForm) {
+  if (loginForm) {
 
-    console.error("Login form not found.");
-
-    return;
+    loginForm.addEventListener(
+      "submit",
+      loginAdmin
+    );
 
   }
 
 
-  loginForm.onsubmit = async (event) => {
+  auth.onAuthStateChanged(
+    async user => {
 
-    event.preventDefault();
+      if (!user) {
 
+        showLogin();
 
-    const email =
-      document.getElementById("adminEmail")
-        .value
-        .trim();
+        return;
 
-
-    const password =
-      document.getElementById("adminPassword")
-        .value;
+      }
 
 
-    const message =
-      document.getElementById("loginMessage");
+      const allowed =
+        await verifyAdmin(user);
 
 
-    message.textContent =
-      "Logging in...";
+      if (!allowed) {
 
-    message.style.color = "";
+        await auth.signOut();
 
+        showLogin();
 
-    try {
+        showLoginMessage(
+          "This account does not have administrator access.",
+          true
+        );
 
-      await auth.signInWithEmailAndPassword(
-        email,
-        password
-      );
+        return;
 
-
-    } catch (error) {
-
-      console.error(
-        "Firebase Login Error:",
-        error
-      );
+      }
 
 
-      message.textContent =
-        "Login failed: " +
-        getAuthErrorMessage(error);
+      showAdminPanel();
 
+      loadDashboard();
 
-      message.style.color =
-        "#8d1d1d";
+      loadBuddies();
+
+      loadBookings();
 
     }
-
-  };
-
-
-  // ===================================================
-  // CHECK AUTHENTICATION STATE
-  // ===================================================
-
-  auth.onAuthStateChanged(async (user) => {
-
-    if (user) {
-
-      console.log(
-        "Logged in user:",
-        user.uid
-      );
-
-
-      await checkAdmin(
-        auth,
-        db,
-        user
-      );
-
-
-    } else {
-
-      showLogin();
-
-    }
-
-  });
+  );
 
 }
 
 
 // =====================================================
-// CHECK ADMIN
+// ADMIN LOGIN
 // =====================================================
 
-async function checkAdmin(
-  auth,
-  db,
-  user
-) {
+async function loginAdmin(event) {
+
+  event.preventDefault();
+
+
+  const email =
+    document
+      .getElementById("adminEmail")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("adminPassword")
+      .value;
+
+
+  showLoginMessage(
+    "Signing in...",
+    false
+  );
+
+
+  try {
+
+    await auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Login error:",
+      error
+    );
+
+
+    let message =
+      "Unable to sign in.";
+
+
+    if (
+      error.code ===
+      "auth/invalid-credential"
+    ) {
+
+      message =
+        "Incorrect email or password.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/user-not-found"
+    ) {
+
+      message =
+        "No account found with this email.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/wrong-password"
+    ) {
+
+      message =
+        "Incorrect password.";
+
+    }
+
+
+    if (
+      error.code ===
+      "auth/invalid-email"
+    ) {
+
+      message =
+        "Please enter a valid email address.";
+
+    }
+
+
+    showLoginMessage(
+      message,
+      true
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// VERIFY ADMIN
+// =====================================================
+
+async function verifyAdmin(user) {
 
   try {
 
@@ -199,43 +249,7 @@ async function checkAdmin(
         .get();
 
 
-    if (!adminDoc.exists) {
-
-      const message =
-        document.getElementById(
-          "loginMessage"
-        );
-
-
-      if (message) {
-
-        message.textContent =
-          "This account is not authorized as an administrator.";
-
-        message.style.color =
-          "#8d1d1d";
-
-      }
-
-
-      await auth.signOut();
-
-      return;
-
-    }
-
-
-    // Admin verified
-
-    showAdminPanel();
-
-
-    loadDashboard(db);
-
-    loadHospitalBuddies(db);
-
-    loadBookings(db);
-
+    return adminDoc.exists;
 
   } catch (error) {
 
@@ -245,21 +259,7 @@ async function checkAdmin(
     );
 
 
-    const message =
-      document.getElementById(
-        "loginMessage"
-      );
-
-
-    if (message) {
-
-      message.textContent =
-        "Unable to verify administrator access.";
-
-      message.style.color =
-        "#8d1d1d";
-
-    }
+    return false;
 
   }
 
@@ -267,7 +267,29 @@ async function checkAdmin(
 
 
 // =====================================================
-// SHOW LOGIN
+// LOGOUT
+// =====================================================
+
+async function logoutAdmin() {
+
+  try {
+
+    await auth.signOut();
+
+  } catch (error) {
+
+    console.error(
+      "Logout error:",
+      error
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// SHOW / HIDE SECTIONS
 // =====================================================
 
 function showLogin() {
@@ -302,10 +324,6 @@ function showLogin() {
 }
 
 
-// =====================================================
-// SHOW ADMIN PANEL
-// =====================================================
-
 function showAdminPanel() {
 
   const loginSection =
@@ -339,14 +357,165 @@ function showAdminPanel() {
 
 
 // =====================================================
-// LOGOUT
+// LOGIN MESSAGE
 // =====================================================
 
-function logoutAdmin() {
+function showLoginMessage(
+  message,
+  error
+) {
 
-  firebase
-    .auth()
-    .signOut();
+  const element =
+    document.getElementById(
+      "loginMessage"
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.textContent =
+    message;
+
+
+  element.style.color =
+    error
+      ? "#b00020"
+      : "#176b32";
+
+}
+
+
+// =====================================================
+// DASHBOARD
+// =====================================================
+
+async function loadDashboard() {
+
+  try {
+
+    const buddySnapshot =
+      await db
+        .collection("hospital_buddies")
+        .get();
+
+
+    const bookingSnapshot =
+      await db
+        .collection("bookings")
+        .get();
+
+
+    let available =
+      0;
+
+
+    let pending =
+      0;
+
+
+    let confirmed =
+      0;
+
+
+    let completed =
+      0;
+
+
+    buddySnapshot.forEach(
+      doc => {
+
+        const data =
+          doc.data();
+
+
+        if (
+          data.status ===
+          "available"
+        ) {
+
+          available++;
+
+        }
+
+      }
+    );
+
+
+    bookingSnapshot.forEach(
+      doc => {
+
+        const data =
+          doc.data();
+
+
+        if (
+          data.status ===
+          "pending"
+        ) {
+
+          pending++;
+
+        }
+
+
+        if (
+          data.status ===
+          "confirmed"
+        ) {
+
+          confirmed++;
+
+        }
+
+
+        if (
+          data.status ===
+          "completed"
+        ) {
+
+          completed++;
+
+        }
+
+      }
+    );
+
+
+    setText(
+      "availableCount",
+      available
+    );
+
+
+    setText(
+      "pendingCount",
+      pending
+    );
+
+
+    setText(
+      "confirmedCount",
+      confirmed
+    );
+
+
+    setText(
+      "completedCount",
+      completed
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard error:",
+      error
+    );
+
+  }
 
 }
 
@@ -355,159 +524,156 @@ function logoutAdmin() {
 // ADD HOSPITAL BUDDY
 // =====================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+const buddyForm =
+  document.getElementById(
+    "buddyForm"
+  );
 
-    const buddyForm =
-      document.getElementById(
-        "buddyForm"
+
+if (buddyForm) {
+
+  buddyForm.addEventListener(
+    "submit",
+    addBuddy
+  );
+
+}
+
+
+async function addBuddy(event) {
+
+  event.preventDefault();
+
+
+  const name =
+    document
+      .getElementById("buddyName")
+      .value
+      .trim();
+
+
+  const phone =
+    document
+      .getElementById("buddyPhone")
+      .value
+      .trim();
+
+
+  const qualification =
+    document
+      .getElementById(
+        "buddyQualification"
+      )
+      .value
+      .trim();
+
+
+  const languagesText =
+    document
+      .getElementById(
+        "buddyLanguages"
+      )
+      .value
+      .trim();
+
+
+  const languages =
+    languagesText
+      .split(",")
+      .map(
+        language =>
+          language.trim()
+      )
+      .filter(
+        language =>
+          language.length > 0
       );
 
 
-    if (!buddyForm) {
+  const message =
+    document.getElementById(
+      "buddyMessage"
+    );
 
-      return;
+
+  try {
+
+    await db
+      .collection("hospital_buddies")
+      .add({
+
+        name: name,
+
+        phone: phone,
+
+        qualification:
+          qualification,
+
+        languages:
+          languages,
+
+        status:
+          "available",
+
+        createdAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    if (message) {
+
+      message.textContent =
+        "Hospital Buddy added successfully.";
+
+      message.style.color =
+        "#176b32";
 
     }
 
 
-    buddyForm.onsubmit =
-      async (event) => {
+    buddyForm.reset();
 
-        event.preventDefault();
+    loadBuddies();
 
-
-        const name =
-          document.getElementById(
-            "buddyName"
-          )
-          .value
-          .trim();
+    loadDashboard();
 
 
-        const phone =
-          document.getElementById(
-            "buddyPhone"
-          )
-          .value
-          .trim();
+  } catch (error) {
+
+    console.error(
+      "Add Buddy error:",
+      error
+    );
 
 
-        const qualification =
-          document.getElementById(
-            "buddyQualification"
-          )
-          .value
-          .trim();
+    if (message) {
 
+      message.textContent =
+        "Unable to add Hospital Buddy.";
 
-        const languagesText =
-          document.getElementById(
-            "buddyLanguages"
-          )
-          .value
-          .trim();
+      message.style.color =
+        "#b00020";
 
-
-        const languages =
-          languagesText
-            .split(",")
-            .map(
-              language =>
-                language.trim()
-            )
-            .filter(
-              language =>
-                language
-            );
-
-
-        const message =
-          document.getElementById(
-            "buddyMessage"
-          );
-
-
-        try {
-
-          await firebase
-            .firestore()
-            .collection(
-              "hospital_buddies"
-            )
-            .add({
-
-              name: name,
-
-              phone: phone,
-
-              qualification:
-                qualification,
-
-              languages:
-                languages,
-
-              status:
-                "available",
-
-              createdAt:
-                firebase.firestore
-                  .FieldValue
-                  .serverTimestamp()
-
-            });
-
-
-          message.textContent =
-            "Hospital Buddy added successfully.";
-
-
-          message.style.color =
-            "#176b32";
-
-
-          buddyForm.reset();
-
-
-          loadHospitalBuddies(
-            firebase.firestore()
-          );
-
-
-          loadDashboard(
-            firebase.firestore()
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "Add Hospital Buddy error:",
-            error
-          );
-
-
-          message.textContent =
-            "Unable to add Hospital Buddy.";
-
-
-          message.style.color =
-            "#8d1d1d";
-
-        }
-
-      };
+    }
 
   }
-);
+
+}
 
 
 // =====================================================
-// LOAD HOSPITAL BUDDIES
+// LOAD BUDDIES
 // =====================================================
 
-async function loadHospitalBuddies(db) {
+async function loadBuddies() {
 
   const table =
     document.getElementById(
@@ -516,19 +682,24 @@ async function loadHospitalBuddies(db) {
 
 
   if (!table) {
-
     return;
-
   }
+
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="6">
+        Loading Hospital Buddies...
+      </td>
+    </tr>
+  `;
 
 
   try {
 
     const snapshot =
       await db
-        .collection(
-          "hospital_buddies"
-        )
+        .collection("hospital_buddies")
         .get();
 
 
@@ -547,111 +718,134 @@ async function loadHospitalBuddies(db) {
     }
 
 
+    let html = "";
+
+
+    snapshot.forEach(
+      doc => {
+
+        const buddy =
+          doc.data();
+
+
+        const languages =
+          Array.isArray(
+            buddy.languages
+          )
+            ? buddy.languages.join(", ")
+            : "";
+
+
+        const status =
+          buddy.status ||
+          "unavailable";
+
+
+        const statusClass =
+          status === "available"
+            ? "available"
+            : "unavailable";
+
+
+        const actionText =
+          status === "available"
+            ? "Set Unavailable"
+            : "Set Available";
+
+
+        html += `
+
+          <tr>
+
+            <td>
+              <strong>
+                ${escapeHTML(
+                  buddy.name ||
+                  "Hospital Buddy"
+                )}
+              </strong>
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                buddy.phone ||
+                "Not provided"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                buddy.qualification ||
+                "Not specified"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                languages ||
+                "Not specified"
+              )}
+            </td>
+
+
+            <td>
+
+              <span
+                class="statusBadge ${statusClass}"
+              >
+                ${escapeHTML(
+                  status
+                )}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <button
+                class="smallBtn blue"
+                type="button"
+                onclick="toggleBuddyStatus(
+                  '${doc.id}',
+                  '${escapeJS(status)}'
+                )"
+              >
+                ${actionText}
+              </button>
+
+
+              <button
+                class="smallBtn red"
+                type="button"
+                onclick="deleteBuddy(
+                  '${doc.id}'
+                )"
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
     table.innerHTML =
-      snapshot.docs
-        .map(doc => {
-
-          const buddy =
-            doc.data();
-
-
-          const languages =
-            Array.isArray(
-              buddy.languages
-            )
-              ? buddy.languages.join(", ")
-              : "";
-
-
-          const status =
-            buddy.status ||
-            "unavailable";
-
-
-          return `
-            <tr>
-
-              <td>
-                <b>
-                  ${escapeHTML(
-                    buddy.name ||
-                    "Hospital Buddy"
-                  )}
-                </b>
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  buddy.phone ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  buddy.qualification ||
-                  "Not specified"
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  languages
-                )}
-              </td>
-
-              <td>
-                <span
-                  class="statusBadge ${escapeHTML(status)}"
-                >
-                  ${escapeHTML(status)}
-                </span>
-              </td>
-
-              <td>
-
-                ${
-                  status === "available"
-
-                    ? `
-                      <button
-                        class="smallBtn red"
-                        onclick="changeBuddyStatus('${doc.id}', 'unavailable')"
-                      >
-                        Make Unavailable
-                      </button>
-                    `
-
-                    : `
-                      <button
-                        class="smallBtn green"
-                        onclick="changeBuddyStatus('${doc.id}', 'available')"
-                      >
-                        Make Available
-                      </button>
-                    `
-                }
-
-                <button
-                  class="smallBtn red"
-                  onclick="deleteBuddy('${doc.id}')"
-                >
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-          `;
-
-        })
-        .join("");
+      html;
 
 
   } catch (error) {
 
     console.error(
-      "Load Hospital Buddies error:",
+      "Load buddies error:",
       error
     );
 
@@ -670,50 +864,52 @@ async function loadHospitalBuddies(db) {
 
 
 // =====================================================
-// CHANGE BUDDY STATUS
+// TOGGLE BUDDY STATUS
 // =====================================================
 
-async function changeBuddyStatus(
+async function toggleBuddyStatus(
   buddyId,
-  newStatus
+  currentStatus
 ) {
+
+  const newStatus =
+    currentStatus === "available"
+      ? "unavailable"
+      : "available";
+
 
   try {
 
-    await firebase
-      .firestore()
-      .collection(
-        "hospital_buddies"
-      )
+    await db
+      .collection("hospital_buddies")
       .doc(buddyId)
       .update({
 
         status:
-          newStatus
+          newStatus,
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
 
       });
 
 
-    loadHospitalBuddies(
-      firebase.firestore()
-    );
+    loadBuddies();
 
-
-    loadDashboard(
-      firebase.firestore()
-    );
-
+    loadDashboard();
 
   } catch (error) {
 
     console.error(
-      "Status update error:",
+      "Buddy status error:",
       error
     );
 
 
     alert(
-      "Unable to change Hospital Buddy status."
+      "Unable to change Buddy status."
     );
 
   }
@@ -722,51 +918,40 @@ async function changeBuddyStatus(
 
 
 // =====================================================
-// DELETE HOSPITAL BUDDY
+// DELETE BUDDY
 // =====================================================
 
 async function deleteBuddy(
   buddyId
 ) {
 
-  const confirmDelete =
+  const confirmed =
     confirm(
       "Are you sure you want to delete this Hospital Buddy?"
     );
 
 
-  if (!confirmDelete) {
-
+  if (!confirmed) {
     return;
-
   }
 
 
   try {
 
-    await firebase
-      .firestore()
-      .collection(
-        "hospital_buddies"
-      )
+    await db
+      .collection("hospital_buddies")
       .doc(buddyId)
       .delete();
 
 
-    loadHospitalBuddies(
-      firebase.firestore()
-    );
+    loadBuddies();
 
-
-    loadDashboard(
-      firebase.firestore()
-    );
-
+    loadDashboard();
 
   } catch (error) {
 
     console.error(
-      "Delete Hospital Buddy error:",
+      "Delete buddy error:",
       error
     );
 
@@ -784,7 +969,7 @@ async function deleteBuddy(
 // LOAD BOOKINGS
 // =====================================================
 
-async function loadBookings(db) {
+async function loadBookings() {
 
   const table =
     document.getElementById(
@@ -793,23 +978,24 @@ async function loadBookings(db) {
 
 
   if (!table) {
-
     return;
-
   }
+
+
+  table.innerHTML = `
+    <tr>
+      <td colspan="8">
+        Loading booking requests...
+      </td>
+    </tr>
+  `;
 
 
   try {
 
     const snapshot =
       await db
-        .collection(
-          "bookings"
-        )
-        .orderBy(
-          "createdAt",
-          "desc"
-        )
+        .collection("bookings")
         .get();
 
 
@@ -818,7 +1004,7 @@ async function loadBookings(db) {
       table.innerHTML = `
         <tr>
           <td colspan="8">
-            No booking requests yet.
+            No booking requests found.
           </td>
         </tr>
       `;
@@ -828,139 +1014,66 @@ async function loadBookings(db) {
     }
 
 
+    const buddies =
+      await getBuddyList();
+
+
+    const docs =
+      snapshot.docs.slice();
+
+
+    docs.sort(
+      (a, b) => {
+
+        const aData =
+          a.data();
+
+
+        const bData =
+          b.data();
+
+
+        const aTime =
+          getTimestampMillis(
+            aData.createdAt
+          );
+
+
+        const bTime =
+          getTimestampMillis(
+            bData.createdAt
+          );
+
+
+        return bTime - aTime;
+
+      }
+    );
+
+
+    let html = "";
+
+
+    docs.forEach(
+      doc => {
+
+        const booking =
+          doc.data();
+
+
+        html +=
+          renderBookingRow(
+            doc.id,
+            booking,
+            buddies
+          );
+
+      }
+    );
+
+
     table.innerHTML =
-      snapshot.docs
-        .map(doc => {
-
-          const booking =
-            doc.data();
-
-
-          const status =
-            booking.status ||
-            "pending";
-
-
-          const bookingId =
-            "HB-" +
-            doc.id
-              .substring(0, 7)
-              .toUpperCase();
-
-
-          return `
-            <tr>
-
-              <td>
-                <b>
-                  ${escapeHTML(
-                    bookingId
-                  )}
-                </b>
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  booking.name ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  booking.phone ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  booking.service ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  booking.date ||
-                  ""
-                )}
-                <br>
-                ${escapeHTML(
-                  booking.time ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  booking.buddyName ||
-                  "Hospital Buddy"
-                )}
-              </td>
-
-              <td>
-                <span
-                  class="statusBadge ${escapeHTML(status)}"
-                >
-                  ${escapeHTML(status)}
-                </span>
-              </td>
-
-              <td>
-
-                ${
-                  status === "pending"
-
-                    ? `
-                      <button
-                        class="smallBtn green"
-                        onclick="changeBookingStatus('${doc.id}', 'confirmed')"
-                      >
-                        Confirm
-                      </button>
-
-                      <button
-                        class="smallBtn red"
-                        onclick="changeBookingStatus('${doc.id}', 'rejected')"
-                      >
-                        Reject
-                      </button>
-                    `
-
-                    : ""
-                }
-
-
-                ${
-                  status === "confirmed"
-
-                    ? `
-                      <button
-                        class="smallBtn blue"
-                        onclick="changeBookingStatus('${doc.id}', 'completed')"
-                      >
-                        Completed
-                      </button>
-
-                      <button
-                        class="smallBtn red"
-                        onclick="changeBookingStatus('${doc.id}', 'cancelled')"
-                      >
-                        Cancel
-                      </button>
-                    `
-
-                    : ""
-                }
-
-              </td>
-
-            </tr>
-          `;
-
-        })
-        .join("");
+      html;
 
 
   } catch (error) {
@@ -985,50 +1098,535 @@ async function loadBookings(db) {
 
 
 // =====================================================
-// CHANGE BOOKING STATUS
+// RENDER BOOKING ROW
 // =====================================================
 
-async function changeBookingStatus(
+function renderBookingRow(
   bookingId,
-  newStatus
+  booking,
+  buddies
+) {
+
+  const status =
+    booking.status ||
+    "pending";
+
+
+  const statusClass =
+    getStatusClass(status);
+
+
+  const displayBookingId =
+    booking.bookingId ||
+    (
+      "HB-" +
+      bookingId
+        .substring(0, 7)
+        .toUpperCase()
+    );
+
+
+  const assignedBuddy =
+    booking.buddyName ||
+    "Not assigned";
+
+
+  const dateTime =
+    [
+      booking.date || "",
+      booking.time || ""
+    ]
+      .filter(Boolean)
+      .join(" • ");
+
+
+  let actions = "";
+
+
+  if (
+    status === "pending"
+  ) {
+
+    actions += `
+
+      <button
+        class="smallBtn green"
+        type="button"
+        onclick="confirmBooking(
+          '${bookingId}'
+        )"
+      >
+        Confirm
+      </button>
+
+
+      <button
+        class="smallBtn red"
+        type="button"
+        onclick="rejectBooking(
+          '${bookingId}'
+        )"
+      >
+        Reject
+      </button>
+
+    `;
+
+  }
+
+
+  if (
+    status === "confirmed"
+  ) {
+
+    actions += `
+
+      <button
+        class="smallBtn blue"
+        type="button"
+        onclick="completeBooking(
+          '${bookingId}'
+        )"
+      >
+        Complete
+      </button>
+
+
+      <button
+        class="smallBtn red"
+        type="button"
+        onclick="cancelBooking(
+          '${bookingId}'
+        )"
+      >
+        Cancel
+      </button>
+
+    `;
+
+  }
+
+
+  if (
+    status === "pending" ||
+    status === "confirmed"
+  ) {
+
+    actions += `
+
+      <br>
+
+      <select
+        onchange="reassignBooking(
+          '${bookingId}',
+          this.value
+        )"
+        style="
+          margin-top:6px;
+          padding:7px;
+          border-radius:7px;
+          border:1px solid #ccc;
+        "
+      >
+
+        <option value="">
+          Assign / Reassign
+        </option>
+
+        ${buddies
+          .filter(
+            buddy =>
+              buddy.status ===
+              "available"
+          )
+          .map(
+            buddy => `
+
+              <option
+                value="${buddy.id}"
+                ${
+                  booking.buddyId ===
+                  buddy.id
+                    ? "selected"
+                    : ""
+                }
+              >
+                ${escapeHTML(
+                  buddy.name ||
+                  "Hospital Buddy"
+                )}
+              </option>
+
+            `
+          )
+          .join("")}
+
+      </select>
+
+    `;
+
+  }
+
+
+  return `
+
+    <tr>
+
+      <td>
+
+        <strong>
+          ${escapeHTML(
+            displayBookingId
+          )}
+        </strong>
+
+      </td>
+
+
+      <td>
+
+        <strong>
+          ${escapeHTML(
+            booking.name ||
+            "Not provided"
+          )}
+        </strong>
+
+        ${
+          booking.email
+            ? `
+              <br>
+              <small>
+                ${escapeHTML(
+                  booking.email
+                )}
+              </small>
+            `
+            : ""
+        }
+
+      </td>
+
+
+      <td>
+
+        ${status === "confirmed"
+          || status === "completed"
+
+          ? escapeHTML(
+              booking.phone ||
+              "Not provided"
+            )
+
+          : `
+              <span class="privateText">
+                Hidden until confirmation
+              </span>
+            `
+        }
+
+      </td>
+
+
+      <td>
+
+        ${escapeHTML(
+          booking.service ||
+          "Not specified"
+        )}
+
+        ${
+          booking.language
+            ? `
+              <br>
+              <small>
+                Language:
+                ${escapeHTML(
+                  booking.language
+                )}
+              </small>
+            `
+            : ""
+        }
+
+      </td>
+
+
+      <td>
+
+        ${escapeHTML(
+          dateTime ||
+          "Not specified"
+        )}
+
+        ${
+          booking.requirement
+            ? `
+              <br><br>
+              <small>
+                <b>Requirement:</b>
+                ${escapeHTML(
+                  booking.requirement
+                )}
+              </small>
+            `
+            : ""
+        }
+
+      </td>
+
+
+      <td>
+
+        <strong>
+          ${escapeHTML(
+            assignedBuddy
+          )}
+        </strong>
+
+
+        ${
+          booking.buddyId
+            ? `
+              <br>
+              <small>
+                ID:
+                ${escapeHTML(
+                  booking.buddyId
+                )}
+              </small>
+            `
+            : ""
+        }
+
+
+        ${
+          (
+            status === "confirmed" ||
+            status === "completed"
+          ) &&
+          booking.buddyPhone
+            ? `
+              <br>
+              <small>
+                📞
+                ${escapeHTML(
+                  booking.buddyPhone
+                )}
+              </small>
+            `
+            : ""
+        }
+
+      </td>
+
+
+      <td>
+
+        <span
+          class="statusBadge ${statusClass}"
+        >
+          ${escapeHTML(
+            status
+          )}
+        </span>
+
+      </td>
+
+
+      <td>
+
+        ${actions}
+
+      </td>
+
+    </tr>
+
+  `;
+
+}
+
+
+// =====================================================
+// GET BUDDY LIST
+// =====================================================
+
+async function getBuddyList() {
+
+  const snapshot =
+    await db
+      .collection("hospital_buddies")
+      .get();
+
+
+  return snapshot.docs.map(
+    doc => ({
+
+      id: doc.id,
+
+      ...doc.data()
+
+    })
+  );
+
+}
+
+
+// =====================================================
+// CONFIRM BOOKING
+// =====================================================
+
+async function confirmBooking(
+  bookingId
 ) {
 
   try {
 
-    await firebase
-      .firestore()
+    const bookingRef =
+      db
+        .collection("bookings")
+        .doc(bookingId);
+
+
+    const bookingSnapshot =
+      await bookingRef.get();
+
+
+    if (!bookingSnapshot.exists) {
+
+      alert(
+        "Booking no longer exists."
+      );
+
+      return;
+
+    }
+
+
+    const booking =
+      bookingSnapshot.data();
+
+
+    let buddy = null;
+
+
+    if (booking.buddyId) {
+
+      const buddySnapshot =
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .doc(
+            booking.buddyId
+          )
+          .get();
+
+
+      if (
+        buddySnapshot.exists
+      ) {
+
+        buddy = {
+          id:
+            buddySnapshot.id,
+
+          ...buddySnapshot.data()
+        };
+
+      }
+
+    }
+
+
+    if (!buddy) {
+
+      const buddies =
+        await getBuddyList();
+
+
+      buddy =
+        buddies.find(
+          item =>
+            item.id ===
+            booking.buddyId
+        );
+
+    }
+
+
+    if (!buddy) {
+
+      alert(
+        "Please assign a Hospital Buddy before confirming."
+      );
+
+      return;
+
+    }
+
+
+    await bookingRef.update({
+
+      status:
+        "confirmed",
+
+      buddyName:
+        buddy.name || "",
+
+      buddyPhone:
+        buddy.phone || "",
+
+      confirmedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp(),
+
+      updatedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+
+    });
+
+
+    await db
       .collection(
-        "bookings"
+        "hospital_buddies"
       )
-      .doc(bookingId)
+      .doc(
+        buddy.id
+      )
       .update({
 
         status:
-          newStatus
+          "unavailable",
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
 
       });
 
 
-    loadBookings(
-      firebase.firestore()
-    );
+    loadBookings();
 
+    loadBuddies();
 
-    loadDashboard(
-      firebase.firestore()
-    );
+    loadDashboard();
 
 
   } catch (error) {
 
     console.error(
-      "Booking status error:",
+      "Confirm booking error:",
       error
     );
 
 
     alert(
-      "Unable to update booking status."
+      "Unable to confirm booking."
     );
 
   }
@@ -1037,10 +1635,82 @@ async function changeBookingStatus(
 
 
 // =====================================================
-// DASHBOARD
+// REJECT BOOKING
 // =====================================================
 
-async function loadDashboard(db) {
+async function rejectBooking(
+  bookingId
+) {
+
+  const confirmed =
+    confirm(
+      "Reject this booking request?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    await db
+      .collection("bookings")
+      .doc(bookingId)
+      .update({
+
+        status:
+          "rejected",
+
+        rejectedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    loadBookings();
+
+    loadDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Reject booking error:",
+      error
+    );
+
+
+    alert(
+      "Unable to reject booking."
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// REASSIGN BOOKING
+// =====================================================
+
+async function reassignBooking(
+  bookingId,
+  buddyId
+) {
+
+  if (!buddyId) {
+    return;
+  }
+
 
   try {
 
@@ -1049,127 +1719,64 @@ async function loadDashboard(db) {
         .collection(
           "hospital_buddies"
         )
-        .where(
-          "status",
-          "==",
-          "available"
+        .doc(
+          buddyId
         )
         .get();
 
 
-    const bookingSnapshot =
-      await db
-        .collection(
-          "bookings"
-        )
-        .get();
+    if (
+      !buddySnapshot.exists
+    ) {
 
-
-    let pending = 0;
-
-    let confirmed = 0;
-
-    let completed = 0;
-
-
-    bookingSnapshot.forEach(
-      doc => {
-
-        const status =
-          doc.data().status;
-
-
-        if (
-          status === "pending"
-        ) {
-
-          pending++;
-
-        }
-
-
-        if (
-          status === "confirmed"
-        ) {
-
-          confirmed++;
-
-        }
-
-
-        if (
-          status === "completed"
-        ) {
-
-          completed++;
-
-        }
-
-      }
-    );
-
-
-    const availableCount =
-      document.getElementById(
-        "availableCount"
+      alert(
+        "Hospital Buddy not found."
       );
 
-
-    const pendingCount =
-      document.getElementById(
-        "pendingCount"
-      );
-
-
-    const confirmedCount =
-      document.getElementById(
-        "confirmedCount"
-      );
-
-
-    const completedCount =
-      document.getElementById(
-        "completedCount"
-      );
-
-
-    if (availableCount) {
-
-      availableCount.textContent =
-        buddySnapshot.size;
+      return;
 
     }
 
 
-    if (pendingCount) {
-
-      pendingCount.textContent =
-        pending;
-
-    }
+    const buddy =
+      buddySnapshot.data();
 
 
-    if (confirmedCount) {
+    await db
+      .collection("bookings")
+      .doc(bookingId)
+      .update({
 
-      confirmedCount.textContent =
-        confirmed;
+        buddyId:
+          buddySnapshot.id,
 
-    }
+        buddyName:
+          buddy.name || "",
+
+        buddyPhone:
+          buddy.phone || "",
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
 
 
-    if (completedCount) {
-
-      completedCount.textContent =
-        completed;
-
-    }
+    loadBookings();
 
 
   } catch (error) {
 
     console.error(
-      "Dashboard error:",
+      "Reassign booking error:",
       error
+    );
+
+
+    alert(
+      "Unable to reassign Hospital Buddy."
     );
 
   }
@@ -1178,64 +1785,303 @@ async function loadDashboard(db) {
 
 
 // =====================================================
-// AUTH ERROR MESSAGE
+// COMPLETE BOOKING
 // =====================================================
 
-function getAuthErrorMessage(
-  error
+async function completeBooking(
+  bookingId
 ) {
 
-  switch (error.code) {
-
-    case "auth/invalid-email":
-
-      return "Invalid email address.";
-
-
-    case "auth/user-not-found":
-
-      return "Administrator account not found.";
+  const confirmed =
+    confirm(
+      "Mark this booking as completed?"
+    );
 
 
-    case "auth/wrong-password":
-
-      return "Incorrect password.";
-
-
-    case "auth/invalid-credential":
-
-      return "Incorrect email or password.";
+  if (!confirmed) {
+    return;
+  }
 
 
-    case "auth/user-disabled":
+  try {
 
-      return "This administrator account is disabled.";
-
-
-    case "auth/too-many-requests":
-
-      return "Too many attempts. Please try again later.";
+    const bookingRef =
+      db
+        .collection("bookings")
+        .doc(bookingId);
 
 
-    case "auth/network-request-failed":
-
-      return "Network error. Check your internet connection.";
-
-
-    case "auth/operation-not-allowed":
-
-      return "Email/password sign-in is not enabled in Firebase.";
+    const bookingSnapshot =
+      await bookingRef.get();
 
 
-    case "auth/api-key-not-valid":
+    const booking =
+      bookingSnapshot.data();
 
-      return "Firebase API key is invalid. Please check the Firebase configuration.";
 
+    await bookingRef.update({
+
+      status:
+        "completed",
+
+      completedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp(),
+
+      updatedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+
+    });
+
+
+    if (
+      booking &&
+      booking.buddyId
+    ) {
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(
+          booking.buddyId
+        )
+        .update({
+
+          status:
+            "available",
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+    }
+
+
+    loadBookings();
+
+    loadBuddies();
+
+    loadDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Complete booking error:",
+      error
+    );
+
+
+    alert(
+      "Unable to complete booking."
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// CANCEL BOOKING
+// =====================================================
+
+async function cancelBooking(
+  bookingId
+) {
+
+  const confirmed =
+    confirm(
+      "Cancel this confirmed booking?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    const bookingRef =
+      db
+        .collection("bookings")
+        .doc(bookingId);
+
+
+    const bookingSnapshot =
+      await bookingRef.get();
+
+
+    const booking =
+      bookingSnapshot.data();
+
+
+    await bookingRef.update({
+
+      status:
+        "cancelled",
+
+      cancelledAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp(),
+
+      updatedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+
+    });
+
+
+    if (
+      booking &&
+      booking.buddyId
+    ) {
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(
+          booking.buddyId
+        )
+        .update({
+
+          status:
+            "available",
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+    }
+
+
+    loadBookings();
+
+    loadBuddies();
+
+    loadDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Cancel booking error:",
+      error
+    );
+
+
+    alert(
+      "Unable to cancel booking."
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// STATUS CLASS
+// =====================================================
+
+function getStatusClass(
+  status
+) {
+
+  switch (status) {
+
+    case "pending":
+      return "pending";
+
+    case "confirmed":
+      return "confirmed";
+
+    case "rejected":
+      return "rejected";
+
+    case "cancelled":
+      return "cancelled";
+
+    case "completed":
+      return "completed";
 
     default:
+      return "unavailable";
 
-      return error.message ||
-        "Unable to login. Please try again.";
+  }
+
+}
+
+
+// =====================================================
+// TIMESTAMP
+// =====================================================
+
+function getTimestampMillis(
+  timestamp
+) {
+
+  if (!timestamp) {
+    return 0;
+  }
+
+
+  if (
+    typeof timestamp.toMillis ===
+    "function"
+  ) {
+
+    return timestamp.toMillis();
+
+  }
+
+
+  if (
+    timestamp.seconds
+  ) {
+
+    return (
+      timestamp.seconds *
+      1000
+    );
+
+  }
+
+
+  return 0;
+
+}
+
+
+// =====================================================
+// SET TEXT
+// =====================================================
+
+function setText(
+  id,
+  value
+) {
+
+  const element =
+    document.getElementById(id);
+
+
+  if (element) {
+
+    element.textContent =
+      value;
 
   }
 
@@ -1250,7 +2096,9 @@ function escapeHTML(
   value
 ) {
 
-  return String(value)
+  return String(
+    value ?? ""
+  )
 
     .replace(
       /&/g,
@@ -1275,6 +2123,37 @@ function escapeHTML(
     .replace(
       /'/g,
       "&#039;"
+    );
+
+}
+
+
+// =====================================================
+// JAVASCRIPT STRING SECURITY
+// =====================================================
+
+function escapeJS(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    )
+    .replace(
+      /\n/g,
+      "\\n"
+    )
+    .replace(
+      /\r/g,
+      "\\r"
     );
 
 }
