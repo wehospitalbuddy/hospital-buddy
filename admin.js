@@ -1,10 +1,6 @@
 // =====================================================
 // HOSPITAL BUDDY — ADMIN CONTROL PANEL
-// =====================================================
-
-
-// =====================================================
-// FIREBASE CONFIG
+// Complete admin.js
 // =====================================================
 
 const firebaseConfig = {
@@ -19,7 +15,7 @@ const firebaseConfig = {
 
 
 // =====================================================
-// LOAD FIREBASE
+// FIREBASE INITIALIZATION
 // =====================================================
 
 const firebaseAppScript = document.createElement("script");
@@ -32,26 +28,25 @@ document.head.appendChild(firebaseAppScript);
 
 firebaseAppScript.onload = () => {
 
-  const firebaseAuthScript = document.createElement("script");
+  const authScript = document.createElement("script");
 
-  firebaseAuthScript.src =
+  authScript.src =
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
 
-  document.head.appendChild(firebaseAuthScript);
+  document.head.appendChild(authScript);
 
 
-  firebaseAuthScript.onload = () => {
+  authScript.onload = () => {
 
-    const firebaseFirestoreScript =
-      document.createElement("script");
+    const firestoreScript = document.createElement("script");
 
-    firebaseFirestoreScript.src =
+    firestoreScript.src =
       "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
 
-    document.head.appendChild(firebaseFirestoreScript);
+    document.head.appendChild(firestoreScript);
 
 
-    firebaseFirestoreScript.onload = () => {
+    firestoreScript.onload = () => {
 
       firebase.initializeApp(firebaseConfig);
 
@@ -75,7 +70,6 @@ function startAdminSystem() {
 
   const loginForm =
     document.getElementById("loginForm");
-
 
   if (loginForm) {
 
@@ -121,11 +115,9 @@ function startAdminSystem() {
 
       showAdminPanel();
 
-      loadDashboard();
-
-      loadBuddies();
-
-      loadBookings();
+      await loadDashboard();
+      await loadBuddies();
+      await loadBookings();
 
     }
   );
@@ -140,7 +132,6 @@ function startAdminSystem() {
 async function loginAdmin(event) {
 
   event.preventDefault();
-
 
   const email =
     document
@@ -181,8 +172,7 @@ async function loginAdmin(event) {
 
 
     if (
-      error.code ===
-      "auth/invalid-credential"
+      error.code === "auth/invalid-credential"
     ) {
 
       message =
@@ -190,10 +180,8 @@ async function loginAdmin(event) {
 
     }
 
-
-    if (
-      error.code ===
-      "auth/user-not-found"
+    else if (
+      error.code === "auth/user-not-found"
     ) {
 
       message =
@@ -201,10 +189,8 @@ async function loginAdmin(event) {
 
     }
 
-
-    if (
-      error.code ===
-      "auth/wrong-password"
+    else if (
+      error.code === "auth/wrong-password"
     ) {
 
       message =
@@ -212,10 +198,8 @@ async function loginAdmin(event) {
 
     }
 
-
-    if (
-      error.code ===
-      "auth/invalid-email"
+    else if (
+      error.code === "auth/invalid-email"
     ) {
 
       message =
@@ -258,7 +242,6 @@ async function verifyAdmin(user) {
       error
     );
 
-
     return false;
 
   }
@@ -289,21 +272,17 @@ async function logoutAdmin() {
 
 
 // =====================================================
-// SHOW / HIDE SECTIONS
+// SHOW LOGIN
 // =====================================================
 
 function showLogin() {
 
   const loginSection =
-    document.getElementById(
-      "loginSection"
-    );
+    document.getElementById("loginSection");
 
 
   const adminPanel =
-    document.getElementById(
-      "adminPanel"
-    );
+    document.getElementById("adminPanel");
 
 
   if (loginSection) {
@@ -324,18 +303,18 @@ function showLogin() {
 }
 
 
+// =====================================================
+// SHOW ADMIN PANEL
+// =====================================================
+
 function showAdminPanel() {
 
   const loginSection =
-    document.getElementById(
-      "loginSection"
-    );
+    document.getElementById("loginSection");
 
 
   const adminPanel =
-    document.getElementById(
-      "adminPanel"
-    );
+    document.getElementById("adminPanel");
 
 
   if (loginSection) {
@@ -366,9 +345,7 @@ function showLoginMessage(
 ) {
 
   const element =
-    document.getElementById(
-      "loginMessage"
-    );
+    document.getElementById("loginMessage");
 
 
   if (!element) {
@@ -408,20 +385,10 @@ async function loadDashboard() {
         .get();
 
 
-    let available =
-      0;
-
-
-    let pending =
-      0;
-
-
-    let confirmed =
-      0;
-
-
-    let completed =
-      0;
+    let available = 0;
+    let pending = 0;
+    let confirmed = 0;
+    let completed = 0;
 
 
     buddySnapshot.forEach(
@@ -432,8 +399,7 @@ async function loadDashboard() {
 
 
         if (
-          data.status ===
-          "available"
+          data.status === "available"
         ) {
 
           available++;
@@ -452,28 +418,23 @@ async function loadDashboard() {
 
 
         if (
-          data.status ===
-          "pending"
+          data.status === "pending"
         ) {
 
           pending++;
 
         }
 
-
-        if (
-          data.status ===
-          "confirmed"
+        else if (
+          data.status === "confirmed"
         ) {
 
           confirmed++;
 
         }
 
-
-        if (
-          data.status ===
-          "completed"
+        else if (
+          data.status === "completed"
         ) {
 
           completed++;
@@ -521,164 +482,13 @@ async function loadDashboard() {
 
 
 // =====================================================
-// ADD HOSPITAL BUDDY
-// =====================================================
-
-const buddyForm =
-  document.getElementById(
-    "buddyForm"
-  );
-
-
-if (buddyForm) {
-
-  buddyForm.addEventListener(
-    "submit",
-    addBuddy
-  );
-
-}
-
-
-async function addBuddy(event) {
-
-  event.preventDefault();
-
-
-  const name =
-    document
-      .getElementById("buddyName")
-      .value
-      .trim();
-
-
-  const phone =
-    document
-      .getElementById("buddyPhone")
-      .value
-      .trim();
-
-
-  const qualification =
-    document
-      .getElementById(
-        "buddyQualification"
-      )
-      .value
-      .trim();
-
-
-  const languagesText =
-    document
-      .getElementById(
-        "buddyLanguages"
-      )
-      .value
-      .trim();
-
-
-  const languages =
-    languagesText
-      .split(",")
-      .map(
-        language =>
-          language.trim()
-      )
-      .filter(
-        language =>
-          language.length > 0
-      );
-
-
-  const message =
-    document.getElementById(
-      "buddyMessage"
-    );
-
-
-  try {
-
-    await db
-      .collection("hospital_buddies")
-      .add({
-
-        name: name,
-
-        phone: phone,
-
-        qualification:
-          qualification,
-
-        languages:
-          languages,
-
-        status:
-          "available",
-
-        createdAt:
-          firebase.firestore
-            .FieldValue
-            .serverTimestamp(),
-
-        updatedAt:
-          firebase.firestore
-            .FieldValue
-            .serverTimestamp()
-
-      });
-
-
-    if (message) {
-
-      message.textContent =
-        "Hospital Buddy added successfully.";
-
-      message.style.color =
-        "#176b32";
-
-    }
-
-
-    buddyForm.reset();
-
-    loadBuddies();
-
-    loadDashboard();
-
-
-  } catch (error) {
-
-    console.error(
-      "Add Buddy error:",
-      error
-    );
-
-
-    if (message) {
-
-      message.textContent =
-        "Unable to add Hospital Buddy.";
-
-      message.style.color =
-        "#b00020";
-
-    }
-
-  }
-
-}
-
-
-// =====================================================
 // LOAD BUDDIES
 // =====================================================
 
 async function loadBuddies() {
 
   const table =
-    document.getElementById(
-      "buddyTable"
-    );
+    document.getElementById("buddyTable");
 
 
   if (!table) {
@@ -729,28 +539,93 @@ async function loadBuddies() {
 
 
         const languages =
-          Array.isArray(
-            buddy.languages
-          )
+          Array.isArray(buddy.languages)
             ? buddy.languages.join(", ")
             : "";
 
 
         const status =
-          buddy.status ||
-          "unavailable";
+          buddy.status || "pending";
 
 
-        const statusClass =
-          status === "available"
-            ? "available"
-            : "unavailable";
+        let statusClass =
+          "pending";
 
 
-        const actionText =
-          status === "available"
-            ? "Set Unavailable"
-            : "Set Available";
+        if (status === "available") {
+          statusClass = "available";
+        }
+
+        else if (status === "unavailable") {
+          statusClass = "unavailable";
+        }
+
+        else if (status === "approved") {
+          statusClass = "available";
+        }
+
+
+        let actionButtons = "";
+
+
+        if (status === "pending") {
+
+          actionButtons += `
+            <button
+              class="smallBtn green"
+              type="button"
+              onclick="approveBuddy('${escapeJS(doc.id)}')"
+            >
+              Approve
+            </button>
+          `;
+
+        }
+
+        else if (status === "available") {
+
+          actionButtons += `
+            <button
+              class="smallBtn blue"
+              type="button"
+              onclick="toggleBuddyStatus(
+                '${escapeJS(doc.id)}',
+                'available'
+              )"
+            >
+              Set Unavailable
+            </button>
+          `;
+
+        }
+
+        else if (status === "unavailable") {
+
+          actionButtons += `
+            <button
+              class="smallBtn blue"
+              type="button"
+              onclick="toggleBuddyStatus(
+                '${escapeJS(doc.id)}',
+                'unavailable'
+              )"
+            >
+              Set Available
+            </button>
+          `;
+
+        }
+
+
+        actionButtons += `
+          <button
+            class="smallBtn red"
+            type="button"
+            onclick="deleteBuddy('${escapeJS(doc.id)}')"
+          >
+            Delete
+          </button>
+        `;
 
 
         html += `
@@ -764,6 +639,20 @@ async function loadBuddies() {
                   "Hospital Buddy"
                 )}
               </strong>
+
+              ${
+                buddy.email
+                  ? `
+                    <br>
+                    <small>
+                      ${escapeHTML(
+                        buddy.email
+                      )}
+                    </small>
+                  `
+                  : ""
+              }
+
             </td>
 
 
@@ -796,9 +685,7 @@ async function loadBuddies() {
               <span
                 class="statusBadge ${statusClass}"
               >
-                ${escapeHTML(
-                  status
-                )}
+                ${escapeHTML(status)}
               </span>
 
             </td>
@@ -806,27 +693,7 @@ async function loadBuddies() {
 
             <td>
 
-              <button
-                class="smallBtn blue"
-                type="button"
-                onclick="toggleBuddyStatus(
-                  '${doc.id}',
-                  '${escapeJS(status)}'
-                )"
-              >
-                ${actionText}
-              </button>
-
-
-              <button
-                class="smallBtn red"
-                type="button"
-                onclick="deleteBuddy(
-                  '${doc.id}'
-                )"
-              >
-                Delete
-              </button>
+              ${actionButtons}
 
             </td>
 
@@ -857,6 +724,72 @@ async function loadBuddies() {
         </td>
       </tr>
     `;
+
+  }
+
+}
+
+
+// =====================================================
+// APPROVE BUDDY
+// =====================================================
+
+async function approveBuddy(
+  buddyId
+) {
+
+  const confirmed =
+    confirm(
+      "Approve this Hospital Buddy registration?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    await db
+      .collection("hospital_buddies")
+      .doc(buddyId)
+      .update({
+
+        status:
+          "available",
+
+        approved:
+          true,
+
+        approvedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    await loadBuddies();
+    await loadDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Approve Buddy error:",
+      error
+    );
+
+
+    alert(
+      "Unable to approve this Buddy."
+    );
 
   }
 
@@ -896,9 +829,9 @@ async function toggleBuddyStatus(
       });
 
 
-    loadBuddies();
+    await loadBuddies();
+    await loadDashboard();
 
-    loadDashboard();
 
   } catch (error) {
 
@@ -944,14 +877,14 @@ async function deleteBuddy(
       .delete();
 
 
-    loadBuddies();
+    await loadBuddies();
+    await loadDashboard();
 
-    loadDashboard();
 
   } catch (error) {
 
     console.error(
-      "Delete buddy error:",
+      "Delete Buddy error:",
       error
     );
 
@@ -972,9 +905,7 @@ async function deleteBuddy(
 async function loadBookings() {
 
   const table =
-    document.getElementById(
-      "bookingTable"
-    );
+    document.getElementById("bookingTable");
 
 
   if (!table) {
@@ -1025,23 +956,15 @@ async function loadBookings() {
     docs.sort(
       (a, b) => {
 
-        const aData =
-          a.data();
-
-
-        const bData =
-          b.data();
-
-
         const aTime =
           getTimestampMillis(
-            aData.createdAt
+            a.data().createdAt
           );
 
 
         const bTime =
           getTimestampMillis(
-            bData.createdAt
+            b.data().createdAt
           );
 
 
@@ -1057,14 +980,10 @@ async function loadBookings() {
     docs.forEach(
       doc => {
 
-        const booking =
-          doc.data();
-
-
         html +=
           renderBookingRow(
             doc.id,
-            booking,
+            doc.data(),
             buddies
           );
 
@@ -1108,8 +1027,7 @@ function renderBookingRow(
 ) {
 
   const status =
-    booking.status ||
-    "pending";
+    booking.status || "pending";
 
 
   const statusClass =
@@ -1143,9 +1061,7 @@ function renderBookingRow(
   let actions = "";
 
 
-  if (
-    status === "pending"
-  ) {
+  if (status === "pending") {
 
     actions += `
 
@@ -1153,7 +1069,7 @@ function renderBookingRow(
         class="smallBtn green"
         type="button"
         onclick="confirmBooking(
-          '${bookingId}'
+          '${escapeJS(bookingId)}'
         )"
       >
         Confirm
@@ -1164,7 +1080,7 @@ function renderBookingRow(
         class="smallBtn red"
         type="button"
         onclick="rejectBooking(
-          '${bookingId}'
+          '${escapeJS(bookingId)}'
         )"
       >
         Reject
@@ -1175,9 +1091,7 @@ function renderBookingRow(
   }
 
 
-  if (
-    status === "confirmed"
-  ) {
+  if (status === "confirmed") {
 
     actions += `
 
@@ -1185,7 +1099,7 @@ function renderBookingRow(
         class="smallBtn blue"
         type="button"
         onclick="completeBooking(
-          '${bookingId}'
+          '${escapeJS(bookingId)}'
         )"
       >
         Complete
@@ -1196,7 +1110,7 @@ function renderBookingRow(
         class="smallBtn red"
         type="button"
         onclick="cancelBooking(
-          '${bookingId}'
+          '${escapeJS(bookingId)}'
         )"
       >
         Cancel
@@ -1218,7 +1132,7 @@ function renderBookingRow(
 
       <select
         onchange="reassignBooking(
-          '${bookingId}',
+          '${escapeJS(bookingId)}',
           this.value
         )"
         style="
@@ -1230,23 +1144,26 @@ function renderBookingRow(
       >
 
         <option value="">
-          Assign / Reassign
+          ${
+            booking.buddyId
+              ? "Reassign Buddy"
+              : "Assign Buddy"
+          }
         </option>
 
         ${buddies
           .filter(
             buddy =>
-              buddy.status ===
-              "available"
+              buddy.status === "available" ||
+              buddy.id === booking.buddyId
           )
           .map(
             buddy => `
 
               <option
-                value="${buddy.id}"
+                value="${escapeHTML(buddy.id)}"
                 ${
-                  booking.buddyId ===
-                  buddy.id
+                  booking.buddyId === buddy.id
                     ? "selected"
                     : ""
                 }
@@ -1310,15 +1227,16 @@ function renderBookingRow(
 
       <td>
 
-        ${status === "confirmed"
-          || status === "completed"
+        ${
+          status === "confirmed" ||
+          status === "completed"
 
-          ? escapeHTML(
-              booking.phone ||
-              "Not provided"
-            )
+            ? escapeHTML(
+                booking.phone ||
+                "Not provided"
+              )
 
-          : `
+            : `
               <span class="privateText">
                 Hidden until confirmation
               </span>
@@ -1406,6 +1324,7 @@ function renderBookingRow(
             status === "completed"
           ) &&
           booking.buddyPhone
+
             ? `
               <br>
               <small>
@@ -1415,6 +1334,7 @@ function renderBookingRow(
                 )}
               </small>
             `
+
             : ""
         }
 
@@ -1426,9 +1346,7 @@ function renderBookingRow(
         <span
           class="statusBadge ${statusClass}"
         >
-          ${escapeHTML(
-            status
-          )}
+          ${escapeHTML(status)}
         </span>
 
       </td>
@@ -1462,12 +1380,177 @@ async function getBuddyList() {
   return snapshot.docs.map(
     doc => ({
 
-      id: doc.id,
+      id:
+        doc.id,
 
       ...doc.data()
 
     })
   );
+
+}
+
+
+// =====================================================
+// REASSIGN / ASSIGN BOOKING
+// =====================================================
+
+async function reassignBooking(
+  bookingId,
+  buddyId
+) {
+
+  if (!buddyId) {
+    return;
+  }
+
+
+  try {
+
+    const bookingRef =
+      db
+        .collection("bookings")
+        .doc(bookingId);
+
+
+    const bookingSnapshot =
+      await bookingRef.get();
+
+
+    if (!bookingSnapshot.exists) {
+
+      alert(
+        "Booking not found."
+      );
+
+      return;
+
+    }
+
+
+    const booking =
+      bookingSnapshot.data();
+
+
+    const buddySnapshot =
+      await db
+        .collection("hospital_buddies")
+        .doc(buddyId)
+        .get();
+
+
+    if (!buddySnapshot.exists) {
+
+      alert(
+        "Hospital Buddy not found."
+      );
+
+      return;
+
+    }
+
+
+    const buddy =
+      buddySnapshot.data();
+
+
+    // If another Buddy was previously assigned
+    // and booking is confirmed, release them.
+    if (
+      booking.buddyId &&
+      booking.buddyId !== buddyId &&
+      booking.status === "confirmed"
+    ) {
+
+      try {
+
+        await db
+          .collection("hospital_buddies")
+          .doc(booking.buddyId)
+          .update({
+
+            status:
+              "available",
+
+            updatedAt:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+      } catch (releaseError) {
+
+        console.error(
+          "Unable to release previous Buddy:",
+          releaseError
+        );
+
+      }
+
+    }
+
+
+    await bookingRef.update({
+
+      buddyId:
+        buddySnapshot.id,
+
+      buddyName:
+        buddy.name || "",
+
+      buddyPhone:
+        buddy.phone || "",
+
+      updatedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+
+    });
+
+
+    // A confirmed booking occupies the Buddy.
+    if (
+      booking.status === "confirmed"
+    ) {
+
+      await db
+        .collection("hospital_buddies")
+        .doc(buddySnapshot.id)
+        .update({
+
+          status:
+            "unavailable",
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+    }
+
+
+    await loadBookings();
+    await loadBuddies();
+    await loadDashboard();
+
+
+  } catch (error) {
+
+    console.error(
+      "Reassign booking error:",
+      error
+    );
+
+
+    alert(
+      "Unable to assign Hospital Buddy."
+    );
+
+  }
 
 }
 
@@ -1507,58 +1590,45 @@ async function confirmBooking(
       bookingSnapshot.data();
 
 
-    let buddy = null;
-
-
-    if (booking.buddyId) {
-
-      const buddySnapshot =
-        await db
-          .collection(
-            "hospital_buddies"
-          )
-          .doc(
-            booking.buddyId
-          )
-          .get();
-
-
-      if (
-        buddySnapshot.exists
-      ) {
-
-        buddy = {
-          id:
-            buddySnapshot.id,
-
-          ...buddySnapshot.data()
-        };
-
-      }
-
-    }
-
-
-    if (!buddy) {
-
-      const buddies =
-        await getBuddyList();
-
-
-      buddy =
-        buddies.find(
-          item =>
-            item.id ===
-            booking.buddyId
-        );
-
-    }
-
-
-    if (!buddy) {
+    if (!booking.buddyId) {
 
       alert(
         "Please assign a Hospital Buddy before confirming."
+      );
+
+      return;
+
+    }
+
+
+    const buddySnapshot =
+      await db
+        .collection("hospital_buddies")
+        .doc(booking.buddyId)
+        .get();
+
+
+    if (!buddySnapshot.exists) {
+
+      alert(
+        "Assigned Hospital Buddy was not found."
+      );
+
+      return;
+
+    }
+
+
+    const buddy =
+      buddySnapshot.data();
+
+
+    if (
+      buddy.status !== "available"
+    ) {
+
+      alert(
+        "The assigned Hospital Buddy is not available."
       );
 
       return;
@@ -1591,12 +1661,8 @@ async function confirmBooking(
 
 
     await db
-      .collection(
-        "hospital_buddies"
-      )
-      .doc(
-        buddy.id
-      )
+      .collection("hospital_buddies")
+      .doc(booking.buddyId)
       .update({
 
         status:
@@ -1610,11 +1676,9 @@ async function confirmBooking(
       });
 
 
-    loadBookings();
-
-    loadBuddies();
-
-    loadDashboard();
+    await loadBookings();
+    await loadBuddies();
+    await loadDashboard();
 
 
   } catch (error) {
@@ -1676,9 +1740,8 @@ async function rejectBooking(
       });
 
 
-    loadBookings();
-
-    loadDashboard();
+    await loadBookings();
+    await loadDashboard();
 
 
   } catch (error) {
@@ -1691,92 +1754,6 @@ async function rejectBooking(
 
     alert(
       "Unable to reject booking."
-    );
-
-  }
-
-}
-
-
-// =====================================================
-// REASSIGN BOOKING
-// =====================================================
-
-async function reassignBooking(
-  bookingId,
-  buddyId
-) {
-
-  if (!buddyId) {
-    return;
-  }
-
-
-  try {
-
-    const buddySnapshot =
-      await db
-        .collection(
-          "hospital_buddies"
-        )
-        .doc(
-          buddyId
-        )
-        .get();
-
-
-    if (
-      !buddySnapshot.exists
-    ) {
-
-      alert(
-        "Hospital Buddy not found."
-      );
-
-      return;
-
-    }
-
-
-    const buddy =
-      buddySnapshot.data();
-
-
-    await db
-      .collection("bookings")
-      .doc(bookingId)
-      .update({
-
-        buddyId:
-          buddySnapshot.id,
-
-        buddyName:
-          buddy.name || "",
-
-        buddyPhone:
-          buddy.phone || "",
-
-        updatedAt:
-          firebase.firestore
-            .FieldValue
-            .serverTimestamp()
-
-      });
-
-
-    loadBookings();
-
-
-  } catch (error) {
-
-    console.error(
-      "Reassign booking error:",
-      error
-    );
-
-
-    alert(
-      "Unable to reassign Hospital Buddy."
     );
 
   }
@@ -1815,6 +1792,17 @@ async function completeBooking(
       await bookingRef.get();
 
 
+    if (!bookingSnapshot.exists) {
+
+      alert(
+        "Booking not found."
+      );
+
+      return;
+
+    }
+
+
     const booking =
       bookingSnapshot.data();
 
@@ -1837,18 +1825,11 @@ async function completeBooking(
     });
 
 
-    if (
-      booking &&
-      booking.buddyId
-    ) {
+    if (booking.buddyId) {
 
       await db
-        .collection(
-          "hospital_buddies"
-        )
-        .doc(
-          booking.buddyId
-        )
+        .collection("hospital_buddies")
+        .doc(booking.buddyId)
         .update({
 
           status:
@@ -1864,11 +1845,9 @@ async function completeBooking(
     }
 
 
-    loadBookings();
-
-    loadBuddies();
-
-    loadDashboard();
+    await loadBookings();
+    await loadBuddies();
+    await loadDashboard();
 
 
   } catch (error) {
@@ -1919,6 +1898,17 @@ async function cancelBooking(
       await bookingRef.get();
 
 
+    if (!bookingSnapshot.exists) {
+
+      alert(
+        "Booking not found."
+      );
+
+      return;
+
+    }
+
+
     const booking =
       bookingSnapshot.data();
 
@@ -1941,18 +1931,11 @@ async function cancelBooking(
     });
 
 
-    if (
-      booking &&
-      booking.buddyId
-    ) {
+    if (booking.buddyId) {
 
       await db
-        .collection(
-          "hospital_buddies"
-        )
-        .doc(
-          booking.buddyId
-        )
+        .collection("hospital_buddies")
+        .doc(booking.buddyId)
         .update({
 
           status:
@@ -1968,11 +1951,9 @@ async function cancelBooking(
     }
 
 
-    loadBookings();
-
-    loadBuddies();
-
-    loadDashboard();
+    await loadBookings();
+    await loadBuddies();
+    await loadDashboard();
 
 
   } catch (error) {
@@ -2016,6 +1997,12 @@ function getStatusClass(
 
     case "completed":
       return "completed";
+
+    case "available":
+      return "available";
+
+    case "unavailable":
+      return "unavailable";
 
     default:
       return "unavailable";
@@ -2139,21 +2126,60 @@ function escapeJS(
   return String(
     value ?? ""
   )
+
     .replace(
       /\\/g,
       "\\\\"
     )
+
     .replace(
       /'/g,
       "\\'"
     )
+
     .replace(
       /\n/g,
       "\\n"
     )
+
     .replace(
       /\r/g,
       "\\r"
     );
 
 }
+
+
+// =====================================================
+// GLOBAL FUNCTIONS
+// =====================================================
+
+window.loginAdmin =
+  loginAdmin;
+
+window.logoutAdmin =
+  logoutAdmin;
+
+window.approveBuddy =
+  approveBuddy;
+
+window.toggleBuddyStatus =
+  toggleBuddyStatus;
+
+window.deleteBuddy =
+  deleteBuddy;
+
+window.confirmBooking =
+  confirmBooking;
+
+window.rejectBooking =
+  rejectBooking;
+
+window.reassignBooking =
+  reassignBooking;
+
+window.completeBooking =
+  completeBooking;
+
+window.cancelBooking =
+  cancelBooking;
