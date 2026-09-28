@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8">
 
   <meta
@@ -17,6 +18,7 @@
   <title>Hospital Buddy | A Helping Hand</title>
 
   <link rel="stylesheet" href="styles.css">
+
 </head>
 
 
@@ -185,8 +187,8 @@
 
     <p>
 
-      Select your service, language,
-      date and time. We help connect
+      Select your district, hospital, service,
+      language, date and time. We help connect
       you with an available Hospital Buddy.
 
     </p>
@@ -706,6 +708,10 @@
           required
         >
 
+          <option value="">
+            Select Language
+          </option>
+
           <option value="Assamese">
             Assamese
           </option>
@@ -724,6 +730,53 @@
 
           <option value="Bodo">
             Bodo
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- DISTRICT -->
+
+      <label>
+
+        <span>
+          District
+        </span>
+
+        <select
+          id="district"
+          required
+        >
+
+          <option value="">
+            Select District
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- HOSPITAL -->
+
+      <label>
+
+        <span>
+          Hospital
+        </span>
+
+        <select
+          id="hospital"
+          required
+          disabled
+        >
+
+          <option value="">
+            Select District First
           </option>
 
         </select>
