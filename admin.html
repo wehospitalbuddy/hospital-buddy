@@ -15,234 +15,723 @@
     content="Hospital Buddy Administration"
   >
 
-  <title>Hospital Buddy | Admin</title>
+  <title>Hospital Buddy | Admin Panel</title>
 
   <link rel="stylesheet" href="styles.css">
 
   <style>
 
     /* =====================================================
-       ADMIN PAGE
+       ADMIN SYSTEM — STAGE 1
     ===================================================== */
 
-    .adminPage {
-      max-width: 1150px;
+    :root {
+      --hb-red: #c51e25;
+      --hb-red-dark: #a9171d;
+      --hb-dark: #102f39;
+      --hb-dark-2: #173f4a;
+      --hb-bg: #f4f7f8;
+      --hb-card: #ffffff;
+      --hb-text: #17252b;
+      --hb-muted: #6b7b82;
+      --hb-border: #e1e8eb;
+      --hb-green: #198754;
+      --hb-blue: #1769aa;
+      --hb-orange: #d97706;
+      --hb-shadow: 0 12px 35px rgba(16,47,57,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--hb-bg);
+      color: var(--hb-text);
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .adminTopbar {
+      background: #fff;
+      border-bottom: 1px solid var(--hb-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .adminTopbarInner {
+      max-width: 1400px;
       margin: auto;
-      padding: 60px 20px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
 
-    .adminLoginBox {
-      max-width: 500px;
-      margin: 40px auto;
+    .adminBrand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--hb-text);
+    }
+
+    .adminBrand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .adminBrandText strong {
+      display: block;
+      font-size: 20px;
+    }
+
+    .adminBrandText span {
+      display: block;
+      color: var(--hb-muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .adminTopRight {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .adminUserBadge {
+      background: #f2f6f7;
+      border: 1px solid var(--hb-border);
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--hb-muted);
+    }
+
+
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
+    #loginSection {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .loginCard {
+      width: 100%;
+      max-width: 470px;
       background: white;
-      padding: 35px;
-      border-radius: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.07);
+      border-radius: 24px;
+      padding: 38px;
+      box-shadow: var(--hb-shadow);
+      border: 1px solid var(--hb-border);
     }
 
-    .adminLoginBox h1 {
-      margin-top: 0;
+    .loginLogo {
+      text-align: center;
+      margin-bottom: 25px;
     }
 
-    .adminHeader {
+    .loginLogo img {
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+    }
+
+    .loginLogo h1 {
+      margin: 10px 0 5px;
+      font-size: 28px;
+    }
+
+    .loginLogo p {
+      margin: 0;
+      color: var(--hb-muted);
+    }
+
+    .loginLabel {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .loginInput {
+      width: 100%;
+      border: 1px solid #ccd8dc;
+      border-radius: 12px;
+      padding: 14px;
+      outline: none;
+      background: white;
+    }
+
+    .loginInput:focus {
+      border-color: var(--hb-red);
+      box-shadow: 0 0 0 3px rgba(197,30,37,.08);
+    }
+
+    .loginButton {
+      width: 100%;
+      margin-top: 24px;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px;
+      color: white;
+      background: var(--hb-red);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .loginButton:hover {
+      background: var(--hb-red-dark);
+    }
+
+    .loginMessage {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       ADMIN PANEL
+    ===================================================== */
+
+    #adminPanel {
+      display: none;
+    }
+
+    .adminLayout {
+      max-width: 1400px;
+      margin: auto;
+      padding: 28px 22px 60px;
+    }
+
+    .dashboardHeader {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .dashboardHeader h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .dashboardHeader p {
+      color: var(--hb-muted);
+      margin: 7px 0 0;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 15px;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .btnRed {
+      background: var(--hb-red);
+    }
+
+    .btnRed:hover {
+      background: var(--hb-red-dark);
+    }
+
+    .btnGreen {
+      background: var(--hb-green);
+    }
+
+    .btnBlue {
+      background: var(--hb-blue);
+    }
+
+    .btnDark {
+      background: var(--hb-dark);
+    }
+
+    .btnOrange {
+      background: var(--hb-orange);
+    }
+
+    .btnGray {
+      background: #64747a;
+    }
+
+    .btnDanger {
+      background: #b4232b;
+    }
+
+
+    /* =====================================================
+       STATISTICS
+    ===================================================== */
+
+    .statGrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .statCard {
+      background: white;
+      border: 1px solid var(--hb-border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 7px 25px rgba(16,47,57,.05);
+    }
+
+    .statIcon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f6;
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .statCard span {
+      display: block;
+      color: var(--hb-muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .statCard strong {
+      font-size: 30px;
+    }
+
+
+    /* =====================================================
+       NAVIGATION TABS
+    ===================================================== */
+
+    .adminTabs {
+      display: flex;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--hb-border);
+      padding: 7px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+
+    .adminTab {
+      border: 0;
+      background: transparent;
+      padding: 11px 17px;
+      border-radius: 9px;
+      font-weight: 700;
+      color: var(--hb-muted);
+      white-space: nowrap;
+    }
+
+    .adminTab.active {
+      background: var(--hb-dark);
+      color: white;
+    }
+
+
+    /* =====================================================
+       CONTENT CARD
+    ===================================================== */
+
+    .panelCard {
+      background: white;
+      border: 1px solid var(--hb-border);
+      border-radius: 18px;
+      box-shadow: 0 7px 25px rgba(16,47,57,.05);
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    .panelHeader {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--hb-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 30px;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
-    .adminHeader h1 {
+    .panelHeader h2 {
       margin: 0;
+      font-size: 20px;
     }
 
-    .adminStatus {
-      padding: 10px 15px;
-      border-radius: 10px;
-      background: #eaf4f4;
-      font-weight: 700;
-      color: #17323d;
+    .panelHeader p {
+      margin: 5px 0 0;
+      color: var(--hb-muted);
+      font-size: 13px;
     }
 
-    .adminCards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 30px;
+    .panelBody {
+      padding: 20px;
     }
 
-    .adminStat {
-      background: white;
-      padding: 25px;
-      border-radius: 18px;
-      box-shadow: 0 7px 25px rgba(0,0,0,.05);
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .tableWrap {
+      width: 100%;
+      overflow-x: auto;
     }
 
-    .adminStat span {
-      display: block;
-      font-size: 14px;
-      color: #68777d;
-      margin-bottom: 5px;
+    .adminTable {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
     }
 
-    .adminStat strong {
-      font-size: 32px;
+    .adminTable th {
+      background: #f6f8f9;
+      color: #52656c;
+      text-align: left;
+      padding: 13px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      border-bottom: 1px solid var(--hb-border);
     }
 
-    .requestList {
-      display: grid;
-      gap: 18px;
+    .adminTable td {
+      padding: 14px 13px;
+      border-bottom: 1px solid #edf1f2;
+      vertical-align: top;
+      font-size: 13px;
     }
 
-    .requestCard {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 7px 25px rgba(0,0,0,.06);
-      border-left: 5px solid #c51e25;
+    .adminTable tr:hover td {
+      background: #fafcfc;
     }
 
-    .requestTop {
+
+    /* =====================================================
+       STATUS BADGES
+    ===================================================== */
+
+    .statusBadge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .statusPending {
+      background: #fff4d6;
+      color: #8a6100;
+    }
+
+    .statusApproved,
+    .statusAvailable,
+    .statusConfirmed,
+    .statusCompleted {
+      background: #dff5e7;
+      color: #176b32;
+    }
+
+    .statusRejected,
+    .statusCancelled,
+    .statusUnavailable {
+      background: #fce1e3;
+      color: #9f1d27;
+    }
+
+
+    /* =====================================================
+       ACTIONS
+    ===================================================== */
+
+    .actionGroup {
       display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: flex-start;
       flex-wrap: wrap;
+      gap: 7px;
     }
 
-    .requestTop h3 {
-      margin: 0 0 5px;
-      font-size: 22px;
-    }
-
-    .pendingBadge {
-      background: #fff3cd;
-      color: #856404;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
+    .smallBtn {
+      border: 0;
+      border-radius: 7px;
+      padding: 7px 9px;
+      color: white;
+      font-size: 11px;
       font-weight: 700;
+      white-space: nowrap;
     }
 
-    .approvedBadge {
-      background: #d4edda;
-      color: #155724;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-    }
 
-    .rejectedBadge {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-    }
+    /* =====================================================
+       ASSIGN SELECT
+    ===================================================== */
 
-    .requestInfo {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px 25px;
-      margin: 20px 0;
-    }
-
-    .infoItem {
-      background: #f5f8f8;
-      padding: 12px;
-      border-radius: 10px;
-    }
-
-    .infoItem small {
-      display: block;
-      color: #68777d;
-      margin-bottom: 3px;
-    }
-
-    .infoItem strong {
-      display: block;
-    }
-
-    .requestActions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .approveBtn {
-      background: #198754;
-    }
-
-    .approveBtn:hover {
-      background: #146c43;
-    }
-
-    .rejectBtn {
-      background: #c51e25;
-    }
-
-    .secondaryBtn {
-      background: #17323d;
-    }
-
-    .secondaryBtn:hover {
-      background: #10242c;
-    }
-
-    .logoutBtn {
-      background: #17323d;
-    }
-
-    .emptyBox {
+    .assignSelect {
+      margin-top: 7px;
+      width: 100%;
+      min-width: 150px;
+      padding: 8px;
+      border: 1px solid #ccd8dc;
+      border-radius: 8px;
       background: white;
-      padding: 45px;
-      border-radius: 18px;
-      text-align: center;
-      box-shadow: 0 7px 25px rgba(0,0,0,.05);
+      font-size: 12px;
     }
 
-    .emptyBox .icon {
-      font-size: 45px;
+
+    /* =====================================================
+       EMPTY / LOADING
+    ===================================================== */
+
+    .loadingBox,
+    .emptyBox,
+    .errorBox {
+      padding: 45px 20px;
+      text-align: center;
+      color: var(--hb-muted);
     }
 
-    .loading {
-      text-align: center;
-      padding: 40px;
+    .emptyIcon {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
 
     .errorBox {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+      color: #9f1d27;
+      background: #fff1f2;
     }
 
-    .detailRow {
-      margin-bottom: 15px;
+
+    /* =====================================================
+       ADD BUDDY FORM
+    ===================================================== */
+
+    .addBuddyGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
     }
 
-    .detailRow strong {
+    .field {
       display: block;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field span {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #ccd8dc;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .field textarea {
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--hb-red);
+    }
+
+    #buddyMessage {
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,24,29,.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modalBox {
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .modalClose {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      border: 0;
+      background: #eef2f3;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 22px;
+    }
+
+    .detailGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .detailItem {
+      background: #f6f8f9;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .detailItem small {
+      display: block;
+      color: var(--hb-muted);
       margin-bottom: 4px;
     }
 
-    .detailRow span {
-      color: #52656c;
+    .detailItem strong {
+      display: block;
+      word-break: break-word;
     }
 
-    @media (max-width: 800px) {
+    .detailFull {
+      grid-column: 1 / -1;
+    }
 
-      .adminCards {
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 950px) {
+
+      .statGrid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 650px) {
+
+      .adminTopbarInner {
+        padding: 11px 14px;
+      }
+
+      .adminUserBadge {
+        display: none;
+      }
+
+      .adminLayout {
+        padding: 20px 12px 45px;
+      }
+
+      .dashboardHeader {
+        flex-direction: column;
+      }
+
+      .dashboardHeader h1 {
+        font-size: 25px;
+      }
+
+      .statGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .statCard {
+        padding: 15px;
+      }
+
+      .statCard strong {
+        font-size: 24px;
+      }
+
+      .addBuddyGrid {
         grid-template-columns: 1fr;
       }
 
-      .requestInfo {
+      .field.full {
+        grid-column: auto;
+      }
+
+      .detailGrid {
         grid-template-columns: 1fr;
+      }
+
+      .detailFull {
+        grid-column: auto;
+      }
+
+      .loginCard {
+        padding: 25px 20px;
       }
 
     }
@@ -256,57 +745,60 @@
 
 
 <!-- =====================================================
-     HEADER
+     TOP BAR
 ===================================================== -->
 
-<header class="siteHeader">
+<header class="adminTopbar">
 
-  <div class="nav">
+  <div class="adminTopbarInner">
 
     <a
-      class="brand"
       href="index.html"
+      class="adminBrand"
     >
 
       <img
         src="logo.png"
-        alt="Hospital Buddy Logo"
+        alt="Hospital Buddy"
       >
 
-      <div class="brandText">
+      <div class="adminBrandText">
 
         <strong>
           Hospital Buddy
         </strong>
 
-        <small>
-          Assist • Guide • Support
-        </small>
+        <span>
+          Administration
+        </span>
 
       </div>
 
     </a>
 
 
-    <nav class="desktopNav">
+    <div
+      id="adminTopRight"
+      class="adminTopRight"
+      style="display:none;"
+    >
 
-      <a href="index.html">
-        Home
-      </a>
+      <div
+        id="adminUserBadge"
+        class="adminUserBadge"
+      >
+        Administrator
+      </div>
 
-      <a href="index.html#services">
-        Services
-      </a>
+      <button
+        type="button"
+        class="btn btnDark"
+        onclick="logoutAdmin()"
+      >
+        Logout
+      </button>
 
-      <a href="index.html#buddies">
-        Buddies
-      </a>
-
-      <a href="index.html#book">
-        Book
-      </a>
-
-    </nav>
+    </div>
 
   </div>
 
@@ -315,142 +807,118 @@
 
 
 <!-- =====================================================
-     MAIN
+     LOGIN
 ===================================================== -->
 
-<main>
+<section id="loginSection">
 
+  <div class="loginCard">
 
-<div class="adminPage">
+    <div class="loginLogo">
 
-
-  <!-- =================================================
-       LOGIN
-  ================================================= -->
-
-  <section
-    id="loginSection"
-    class="adminLoginBox"
-  >
-
-    <div class="sectionHeading">
-
-      <span class="sectionLabel">
-        ADMINISTRATION
-      </span>
+      <img
+        src="logo.png"
+        alt="Hospital Buddy"
+      >
 
       <h1>
         Admin Login
       </h1>
 
       <p>
-        Sign in to manage Hospital Buddy registrations.
+        Secure access to the Hospital Buddy control panel.
       </p>
 
     </div>
 
 
-    <form id="adminLoginForm">
+    <form id="loginForm">
 
-      <label>
-
-        <span>
-          Email Address
-        </span>
-
-        <input
-          id="adminEmail"
-          type="email"
-          placeholder="Enter admin email"
-          required
-          autocomplete="email"
-        >
-
+      <label class="loginLabel">
+        Email Address
       </label>
 
+      <input
+        id="adminEmail"
+        class="loginInput"
+        type="email"
+        placeholder="Enter administrator email"
+        autocomplete="email"
+        required
+      >
 
-      <label>
 
-        <span>
-          Password
-        </span>
-
-        <input
-          id="adminPassword"
-          type="password"
-          placeholder="Enter password"
-          required
-          autocomplete="current-password"
-        >
-
+      <label class="loginLabel">
+        Password
       </label>
+
+      <input
+        id="adminPassword"
+        class="loginInput"
+        type="password"
+        placeholder="Enter password"
+        autocomplete="current-password"
+        required
+      >
 
 
       <button
+        id="loginButton"
+        class="loginButton"
         type="submit"
-        class="btn primaryBtn"
-        style="width:100%;"
       >
-
-        🔐 Login
-
+        🔐 Sign In
       </button>
 
 
-      <p
-        id="loginError"
-        class="errorBox"
-        style="display:none;"
-      ></p>
+      <div
+        id="loginMessage"
+        class="loginMessage"
+      ></div>
 
     </form>
 
-  </section>
+  </div>
+
+</section>
 
 
 
-  <!-- =================================================
-       ADMIN DASHBOARD
-  ================================================= -->
+<!-- =====================================================
+     ADMIN PANEL
+===================================================== -->
 
-  <section
-    id="dashboardSection"
-    style="display:none;"
-  >
+<main
+  id="adminPanel"
+>
+
+  <div class="adminLayout">
 
 
-    <div class="adminHeader">
+    <!-- HEADER -->
+
+    <div class="dashboardHeader">
 
       <div>
 
-        <span class="sectionLabel">
-          ADMIN PANEL
-        </span>
-
         <h1>
-          Buddy Management
+          Admin Control Panel
         </h1>
 
         <p>
-          Review and manage Hospital Buddy registrations.
+          Manage Hospital Buddies and patient booking requests.
         </p>
 
       </div>
 
 
-      <div>
-
-        <button
-          id="logoutButton"
-          class="btn logoutBtn"
-          type="button"
-        >
-
-          Logout
-
-        </button>
-
-      </div>
+      <button
+        type="button"
+        class="btn btnDark"
+        onclick="logoutAdmin()"
+      >
+        Logout
+      </button>
 
     </div>
 
@@ -460,12 +928,34 @@
          STATISTICS
     ================================================= -->
 
-    <div class="adminCards">
+    <div class="statGrid">
 
-      <div class="adminStat">
+
+      <div class="statCard">
+
+        <div class="statIcon">
+          🤝
+        </div>
 
         <span>
-          Pending Requests
+          Available Buddies
+        </span>
+
+        <strong id="availableCount">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="statCard">
+
+        <div class="statIcon">
+          📋
+        </div>
+
+        <span>
+          Pending Bookings
         </span>
 
         <strong id="pendingCount">
@@ -475,64 +965,492 @@
       </div>
 
 
-      <div class="adminStat">
+      <div class="statCard">
+
+        <div class="statIcon">
+          📅
+        </div>
 
         <span>
-          Approved Buddies
+          Confirmed
         </span>
 
-        <strong id="approvedCount">
+        <strong id="confirmedCount">
           0
         </strong>
 
       </div>
 
 
-      <div class="adminStat">
+      <div class="statCard">
+
+        <div class="statIcon">
+          ✓
+        </div>
 
         <span>
-          Total Registrations
+          Completed
         </span>
 
-        <strong id="totalCount">
+        <strong id="completedCount">
           0
         </strong>
 
       </div>
+
 
     </div>
 
 
 
     <!-- =================================================
-         REQUESTS
+         TABS
     ================================================= -->
 
-    <div>
+    <div class="adminTabs">
 
-      <h2>
-        Buddy Registrations
-      </h2>
-
-      <div
-        id="requestList"
-        class="requestList"
+      <button
+        type="button"
+        class="adminTab active"
+        onclick="showAdminTab('dashboard', this)"
       >
+        📊 Dashboard
+      </button>
 
-        <div class="loading">
-          Loading Buddy registrations...
-        </div>
+      <button
+        type="button"
+        class="adminTab"
+        onclick="showAdminTab('buddies', this)"
+      >
+        🤝 Buddies
+      </button>
 
-      </div>
+      <button
+        type="button"
+        class="adminTab"
+        onclick="showAdminTab('bookings', this)"
+      >
+        📅 Bookings
+      </button>
+
+      <button
+        type="button"
+        class="adminTab"
+        onclick="showAdminTab('addBuddy', this)"
+      >
+        ➕ Add Buddy
+      </button>
 
     </div>
 
 
-  </section>
+
+    <!-- =================================================
+         DASHBOARD TAB
+    ================================================= -->
+
+    <section
+      id="dashboardTab"
+      class="adminTabContent"
+    >
+
+      <div class="panelCard">
+
+        <div class="panelHeader">
+
+          <div>
+
+            <h2>
+              Hospital Buddy Operations
+            </h2>
+
+            <p>
+              Overview of your current Buddy availability
+              and patient bookings.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn btnBlue"
+            onclick="refreshAdminData()"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
 
 
-</div>
+        <div class="panelBody">
 
+          <div class="emptyBox">
+
+            <div class="emptyIcon">
+              🏥
+            </div>
+
+            <h3>
+              Hospital Buddy Management
+            </h3>
+
+            <p>
+              Use the tabs above to manage Buddy registrations,
+              availability and patient booking requests.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BUDDIES TAB
+    ================================================= -->
+
+    <section
+      id="buddiesTab"
+      class="adminTabContent"
+      style="display:none;"
+    >
+
+      <div class="panelCard">
+
+        <div class="panelHeader">
+
+          <div>
+
+            <h2>
+              Hospital Buddies
+            </h2>
+
+            <p>
+              Review registered Buddies and manage availability.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn btnBlue"
+            onclick="loadBuddies(); loadDashboard();"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+
+        <div class="tableWrap">
+
+          <table class="adminTable">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Buddy
+                </th>
+
+                <th>
+                  Phone
+                </th>
+
+                <th>
+                  Qualification
+                </th>
+
+                <th>
+                  Languages
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="buddyTable">
+
+              <tr>
+
+                <td
+                  colspan="6"
+                  class="loadingBox"
+                >
+                  Loading Hospital Buddies...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BOOKINGS TAB
+    ================================================= -->
+
+    <section
+      id="bookingsTab"
+      class="adminTabContent"
+      style="display:none;"
+    >
+
+      <div class="panelCard">
+
+        <div class="panelHeader">
+
+          <div>
+
+            <h2>
+              Patient Booking Requests
+            </h2>
+
+            <p>
+              Manage, assign and process Hospital Buddy requests.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn btnBlue"
+            onclick="loadBookings(); loadDashboard();"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+
+        <div class="tableWrap">
+
+          <table class="adminTable">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Booking
+                </th>
+
+                <th>
+                  Patient
+                </th>
+
+                <th>
+                  Phone
+                </th>
+
+                <th>
+                  Service
+                </th>
+
+                <th>
+                  Date / Time
+                </th>
+
+                <th>
+                  Assigned Buddy
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="bookingTable">
+
+              <tr>
+
+                <td
+                  colspan="8"
+                  class="loadingBox"
+                >
+                  Loading booking requests...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ADD BUDDY TAB
+    ================================================= -->
+
+    <section
+      id="addBuddyTab"
+      class="adminTabContent"
+      style="display:none;"
+    >
+
+      <div class="panelCard">
+
+        <div class="panelHeader">
+
+          <div>
+
+            <h2>
+              Add Hospital Buddy
+            </h2>
+
+            <p>
+              Manually add a Buddy to the system.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="panelBody">
+
+          <form id="buddyForm">
+
+            <div class="addBuddyGrid">
+
+
+              <label class="field">
+
+                <span>
+                  Full Name
+                </span>
+
+                <input
+                  id="buddyName"
+                  type="text"
+                  placeholder="Buddy name"
+                  required
+                >
+
+              </label>
+
+
+              <label class="field">
+
+                <span>
+                  Phone
+                </span>
+
+                <input
+                  id="buddyPhone"
+                  type="tel"
+                  placeholder="Phone number"
+                  required
+                >
+
+              </label>
+
+
+              <label class="field">
+
+                <span>
+                  Qualification
+                </span>
+
+                <input
+                  id="buddyQualification"
+                  type="text"
+                  placeholder="Example: Graduate"
+                  required
+                >
+
+              </label>
+
+
+              <label class="field">
+
+                <span>
+                  Languages
+                </span>
+
+                <input
+                  id="buddyLanguages"
+                  type="text"
+                  placeholder="Assamese, Hindi, English"
+                  required
+                >
+
+              </label>
+
+
+              <label class="field full">
+
+                <span>
+                  Notes
+                </span>
+
+                <textarea
+                  rows="4"
+                  placeholder="Optional notes"
+                ></textarea>
+
+              </label>
+
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="btn btnGreen"
+              style="margin-top:18px;"
+            >
+              ➕ Add Hospital Buddy
+            </button>
+
+
+            <div id="buddyMessage"></div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </div>
 
 </main>
 
@@ -547,11 +1465,11 @@
   class="modal hidden"
 >
 
-  <div class="modalbox">
+  <div class="modalBox">
 
     <button
       type="button"
-      class="close"
+      class="modalClose"
       onclick="closeDetailsModal()"
     >
       ×
@@ -569,6 +1487,18 @@
      FIREBASE
 ===================================================== -->
 
+<script>
+
+  /*
+   * Firebase is loaded here directly.
+   * We are intentionally NOT loading admin.js in this
+   * version because this page contains the complete
+   * administrator system.
+   */
+
+</script>
+
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -579,719 +1509,2252 @@
 
 <script>
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+  /* =====================================================
+     FIREBASE CONFIG
+  ===================================================== */
 
-const firebaseConfig = {
+  const firebaseConfig = {
 
-  apiKey:
-    "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+    apiKey:
+      "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
 
-  authDomain:
-    "hospital-buddy-2224d.firebaseapp.com",
+    authDomain:
+      "hospital-buddy-2224d.firebaseapp.com",
 
-  projectId:
-    "hospital-buddy-2224d",
+    projectId:
+      "hospital-buddy-2224d",
 
-  storageBucket:
-    "hospital-buddy-2224d.firebasestorage.app",
+    storageBucket:
+      "hospital-buddy-2224d.firebasestorage.app",
 
-  messagingSenderId:
-    "190919672635",
+    messagingSenderId:
+      "190919672635",
 
-  appId:
-    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+    appId:
+      "1:190919672635:web:8fe14cc8036fd0cb542d1e",
 
-  measurementId:
-    "G-7I3TZ2EFFR"
+    measurementId:
+      "G-7I3TZ2EFFR"
 
-};
-
-
-firebase.initializeApp(firebaseConfig);
+  };
 
 
-const auth =
-  firebase.auth();
-
-
-const db =
-  firebase.firestore();
-
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const loginSection =
-  document.getElementById(
-    "loginSection"
+  firebase.initializeApp(
+    firebaseConfig
   );
 
 
-const dashboardSection =
-  document.getElementById(
-    "dashboardSection"
+  const auth =
+    firebase.auth();
+
+
+  const db =
+    firebase.firestore();
+
+
+
+  /* =====================================================
+     LOGIN
+  ===================================================== */
+
+  const loginForm =
+    document.getElementById(
+      "loginForm"
+    );
+
+
+  loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const email =
+        document
+          .getElementById("adminEmail")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("adminPassword")
+          .value;
+
+
+      const button =
+        document.getElementById(
+          "loginButton"
+        );
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "Signing in...";
+
+
+      showLoginMessage(
+        "Signing in...",
+        false
+      );
+
+
+      try {
+
+        await auth.signInWithEmailAndPassword(
+          email,
+          password
+        );
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "ADMIN LOGIN ERROR:",
+          error
+        );
+
+
+        let message =
+          "Unable to sign in.";
+
+
+        if (
+          error.code ===
+          "auth/invalid-credential"
+        ) {
+
+          message =
+            "Incorrect email or password.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/user-not-found"
+        ) {
+
+          message =
+            "No account was found with this email.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/wrong-password"
+        ) {
+
+          message =
+            "Incorrect password.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/invalid-email"
+        ) {
+
+          message =
+            "Please enter a valid email address.";
+
+        }
+
+        else {
+
+          message =
+            error.message ||
+            "Unable to sign in.";
+
+        }
+
+
+        showLoginMessage(
+          message,
+          true
+        );
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          "🔐 Sign In";
+
+      }
+
+    }
   );
 
 
-const adminLoginForm =
-  document.getElementById(
-    "adminLoginForm"
+
+  /* =====================================================
+     AUTH STATE
+  ===================================================== */
+
+  auth.onAuthStateChanged(
+    async function(user) {
+
+      if (!user) {
+
+        showLogin();
+
+        return;
+
+      }
+
+
+      try {
+
+        const adminDoc =
+          await db
+            .collection("admins")
+            .doc(user.uid)
+            .get();
+
+
+        if (
+          !adminDoc.exists
+        ) {
+
+          await auth.signOut();
+
+
+          showLoginMessage(
+            "This account does not have administrator access.",
+            true
+          );
+
+
+          return;
+
+        }
+
+
+        document
+          .getElementById(
+            "adminUserBadge"
+          )
+          .textContent =
+            user.email || "Administrator";
+
+
+        document
+          .getElementById(
+            "adminTopRight"
+          )
+          .style.display =
+            "flex";
+
+
+        document
+          .getElementById(
+            "loginSection"
+          )
+          .style.display =
+            "none";
+
+
+        document
+          .getElementById(
+            "adminPanel"
+          )
+          .style.display =
+            "block";
+
+
+        await loadDashboard();
+
+        await loadBuddies();
+
+        await loadBookings();
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "ADMIN AUTH ERROR:",
+          error
+        );
+
+        await auth.signOut();
+
+        showLoginMessage(
+          "Unable to verify administrator access.",
+          true
+        );
+
+      }
+
+    }
   );
 
 
-const loginError =
-  document.getElementById(
-    "loginError"
-  );
+
+  /* =====================================================
+     SHOW LOGIN
+  ===================================================== */
+
+  function showLogin() {
+
+    document
+      .getElementById(
+        "loginSection"
+      )
+      .style.display =
+        "flex";
 
 
-const requestList =
-  document.getElementById(
-    "requestList"
-  );
+    document
+      .getElementById(
+        "adminPanel"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "adminTopRight"
+      )
+      .style.display =
+        "none";
+
+  }
 
 
 
-/* =====================================================
-   AUTH STATE
-===================================================== */
+  /* =====================================================
+     LOGIN MESSAGE
+  ===================================================== */
 
-auth.onAuthStateChanged(
-  function(user) {
+  function showLoginMessage(
+    message,
+    isError
+  ) {
 
-    if (user) {
+    const box =
+      document.getElementById(
+        "loginMessage"
+      );
 
-      showDashboard();
 
-    } else {
+    box.textContent =
+      message;
 
-      showLogin();
+
+    box.style.display =
+      "block";
+
+
+    if (isError) {
+
+      box.style.background =
+        "#fff1f2";
+
+      box.style.color =
+        "#9f1d27";
+
+    }
+
+    else {
+
+      box.style.background =
+        "#effaf2";
+
+      box.style.color =
+        "#176b32";
 
     }
 
   }
-);
 
 
 
-/* =====================================================
-   SHOW LOGIN
-===================================================== */
+  /* =====================================================
+     LOGOUT
+  ===================================================== */
 
-function showLogin() {
-
-  loginSection.style.display =
-    "block";
-
-  dashboardSection.style.display =
-    "none";
-
-}
-
-
-
-/* =====================================================
-   SHOW DASHBOARD
-===================================================== */
-
-function showDashboard() {
-
-  loginSection.style.display =
-    "none";
-
-  dashboardSection.style.display =
-    "block";
-
-  loadBuddyRegistrations();
-
-}
-
-
-
-/* =====================================================
-   ADMIN LOGIN
-===================================================== */
-
-adminLoginForm.addEventListener(
-  "submit",
-  async function(event) {
-
-    event.preventDefault();
-
-
-    loginError.style.display =
-      "none";
-
-
-    const email =
-      document.getElementById(
-        "adminEmail"
-      ).value.trim();
-
-
-    const password =
-      document.getElementById(
-        "adminPassword"
-      ).value;
-
-
-    const button =
-      adminLoginForm.querySelector(
-        'button[type="submit"]'
-      );
-
-
-    button.disabled =
-      true;
-
-
-    button.textContent =
-      "Logging in...";
-
+  async function logoutAdmin() {
 
     try {
 
-      await auth.signInWithEmailAndPassword(
-        email,
-        password
-      );
+      await auth.signOut();
 
     }
 
     catch(error) {
 
       console.error(
-        "ADMIN LOGIN ERROR:",
+        "LOGOUT ERROR:",
         error
       );
-
-
-      let message =
-        "Login failed.";
-
-
-      if (
-        error.code ===
-        "auth/invalid-credential"
-      ) {
-
-        message =
-          "Invalid email or password.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/user-not-found"
-      ) {
-
-        message =
-          "No account was found with this email.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/wrong-password"
-      ) {
-
-        message =
-          "Incorrect password.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/invalid-email"
-      ) {
-
-        message =
-          "Please enter a valid email address.";
-
-      }
-
-      else {
-
-        message =
-          error.message;
-
-      }
-
-
-      loginError.textContent =
-        message;
-
-
-      loginError.style.display =
-        "block";
-
-
-      button.disabled =
-        false;
-
-
-      button.textContent =
-        "🔐 Login";
 
     }
 
   }
-);
 
 
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+  /* =====================================================
+     TABS
+  ===================================================== */
 
-document
-  .getElementById("logoutButton")
-  .addEventListener(
-    "click",
-    async function() {
+  function showAdminTab(
+    tab,
+    button
+  ) {
 
-      await auth.signOut();
+    document
+      .querySelectorAll(
+        ".adminTabContent"
+      )
+      .forEach(
+        function(section) {
+
+          section.style.display =
+            "none";
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        ".adminTab"
+      )
+      .forEach(
+        function(tabButton) {
+
+          tabButton.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+
+    const target =
+      document.getElementById(
+        tab + "Tab"
+      );
+
+
+    if (target) {
+
+      target.style.display =
+        "block";
 
     }
-  );
+
+
+    if (button) {
+
+      button.classList.add(
+        "active"
+      );
+
+    }
+
+  }
 
 
 
-/* =====================================================
-   LOAD BUDDY REGISTRATIONS
-===================================================== */
+  /* =====================================================
+     DASHBOARD
+  ===================================================== */
 
-async function loadBuddyRegistrations() {
+  async function loadDashboard() {
 
-  requestList.innerHTML = `
+    try {
 
-    <div class="loading">
-      Loading Buddy registrations...
-    </div>
+      const buddySnapshot =
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .get();
 
-  `;
+
+      const bookingSnapshot =
+        await db
+          .collection(
+            "bookings"
+          )
+          .get();
 
 
-  try {
+      let available =
+        0;
+
+      let pending =
+        0;
+
+      let confirmed =
+        0;
+
+      let completed =
+        0;
+
+
+      buddySnapshot.forEach(
+        function(doc) {
+
+          const data =
+            doc.data();
+
+
+          if (
+            data.status ===
+            "available"
+          ) {
+
+            available++;
+
+          }
+
+        }
+      );
+
+
+      bookingSnapshot.forEach(
+        function(doc) {
+
+          const data =
+            doc.data();
+
+
+          if (
+            data.status ===
+            "pending"
+          ) {
+
+            pending++;
+
+          }
+
+
+          if (
+            data.status ===
+            "confirmed"
+          ) {
+
+            confirmed++;
+
+          }
+
+
+          if (
+            data.status ===
+            "completed"
+          ) {
+
+            completed++;
+
+          }
+
+        }
+      );
+
+
+      document
+        .getElementById(
+          "availableCount"
+        )
+        .textContent =
+          available;
+
+
+      document
+        .getElementById(
+          "pendingCount"
+        )
+        .textContent =
+          pending;
+
+
+      document
+        .getElementById(
+          "confirmedCount"
+        )
+        .textContent =
+          confirmed;
+
+
+      document
+        .getElementById(
+          "completedCount"
+        )
+        .textContent =
+          completed;
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "DASHBOARD ERROR:",
+        error
+      );
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     LOAD BUDDIES
+  ===================================================== */
+
+  async function loadBuddies() {
+
+    const table =
+      document.getElementById(
+        "buddyTable"
+      );
+
+
+    table.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="6"
+          class="loadingBox"
+        >
+          Loading Hospital Buddies...
+        </td>
+
+      </tr>
+
+    `;
+
+
+    try {
+
+      const snapshot =
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .get();
+
+
+      if (
+        snapshot.empty
+      ) {
+
+        table.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="emptyBox"
+            >
+
+              <div class="emptyIcon">
+                🤝
+              </div>
+
+              No Hospital Buddies found.
+
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      let html =
+        "";
+
+
+      snapshot.forEach(
+        function(doc) {
+
+          const buddy =
+            doc.data();
+
+
+          const status =
+            buddy.status ||
+            "unavailable";
+
+
+          const statusClass =
+            getBuddyStatusClass(
+              status
+            );
+
+
+          const languages =
+            Array.isArray(
+              buddy.languages
+            )
+              ? buddy.languages.join(
+                  ", "
+                )
+              : "";
+
+
+          const approved =
+            buddy.approved === true ||
+            status === "approved";
+
+
+          html += `
+
+            <tr>
+
+              <td>
+
+                <strong>
+                  ${escapeHTML(
+                    buddy.name ||
+                    "Hospital Buddy"
+                  )}
+                </strong>
+
+                <br>
+
+                <small>
+                  ${escapeHTML(
+                    buddy.email ||
+                    ""
+                  )}
+                </small>
+
+              </td>
+
+
+              <td>
+                ${escapeHTML(
+                  buddy.phone ||
+                  "Not provided"
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHTML(
+                  buddy.qualification ||
+                  "Not specified"
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHTML(
+                  languages ||
+                  "Not specified"
+                )}
+              </td>
+
+
+              <td>
+
+                ${
+                  approved
+                    ? `
+                      <span class="statusBadge statusApproved">
+                        APPROVED
+                      </span>
+                    `
+                    : `
+                      <span class="statusBadge ${statusClass}">
+                        ${escapeHTML(
+                          status
+                        )}
+                      </span>
+                    `
+                }
+
+              </td>
+
+
+              <td>
+
+                <div class="actionGroup">
+
+                  <button
+                    type="button"
+                    class="smallBtn btnBlue"
+                    onclick='viewBuddyDetails(${JSON.stringify(buddy)})'
+                  >
+                    View
+                  </button>
+
+
+                  ${
+                    status === "pending"
+                      ? `
+
+                        <button
+                          type="button"
+                          class="smallBtn btnGreen"
+                          onclick="approveBuddy('${doc.id}')"
+                        >
+                          Approve
+                        </button>
+
+                        <button
+                          type="button"
+                          class="smallBtn btnDanger"
+                          onclick="rejectBuddy('${doc.id}')"
+                        >
+                          Reject
+                        </button>
+
+                      `
+                      : ""
+                  }
+
+
+                  ${
+                    status === "available"
+                      ? `
+
+                        <button
+                          type="button"
+                          class="smallBtn btnOrange"
+                          onclick="toggleBuddyStatus('${doc.id}','available')"
+                        >
+                          Set Unavailable
+                        </button>
+
+                      `
+                      : status === "unavailable"
+                        ? `
+
+                          <button
+                            type="button"
+                            class="smallBtn btnGreen"
+                            onclick="toggleBuddyStatus('${doc.id}','unavailable')"
+                          >
+                            Set Available
+                          </button>
+
+                        `
+                        : ""
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      );
+
+
+      table.innerHTML =
+        html;
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "LOAD BUDDIES ERROR:",
+        error
+      );
+
+
+      table.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="6"
+            class="errorBox"
+          >
+
+            Unable to load Hospital Buddies.
+
+            <br><br>
+
+            ${escapeHTML(
+              error.message
+            )}
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     BUDDY STATUS
+  ===================================================== */
+
+  function getBuddyStatusClass(
+    status
+  ) {
+
+    if (
+      status ===
+      "available"
+    ) {
+
+      return "statusAvailable";
+
+    }
+
+
+    if (
+      status ===
+      "approved"
+    ) {
+
+      return "statusApproved";
+
+    }
+
+
+    if (
+      status ===
+      "pending"
+    ) {
+
+      return "statusPending";
+
+    }
+
+
+    if (
+      status ===
+      "rejected"
+    ) {
+
+      return "statusRejected";
+
+    }
+
+
+    return "statusUnavailable";
+
+  }
+
+
+
+  /* =====================================================
+     APPROVE BUDDY
+  ===================================================== */
+
+  async function approveBuddy(
+    uid
+  ) {
+
+    if (
+      !confirm(
+        "Approve this Hospital Buddy?"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(uid)
+        .update({
+
+          status:
+            "available",
+
+          approved:
+            true,
+
+          approvedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp(),
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+
+      alert(
+        "Buddy approved successfully."
+      );
+
+
+      await loadBuddies();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "APPROVE ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to approve Buddy.\n\n" +
+        error.message
+      );
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     REJECT BUDDY
+  ===================================================== */
+
+  async function rejectBuddy(
+    uid
+  ) {
+
+    if (
+      !confirm(
+        "Reject this Buddy registration?"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(uid)
+        .update({
+
+          status:
+            "rejected",
+
+          approved:
+            false,
+
+          rejectedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp(),
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+
+      alert(
+        "Buddy registration rejected."
+      );
+
+
+      await loadBuddies();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "REJECT ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to reject Buddy.\n\n" +
+        error.message
+      );
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     TOGGLE BUDDY STATUS
+  ===================================================== */
+
+  async function toggleBuddyStatus(
+    uid,
+    currentStatus
+  ) {
+
+    const newStatus =
+      currentStatus ===
+      "available"
+        ? "unavailable"
+        : "available";
+
+
+    try {
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(uid)
+        .update({
+
+          status:
+            newStatus,
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+
+      await loadBuddies();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "STATUS ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to change Buddy status.\n\n" +
+        error.message
+      );
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     VIEW BUDDY DETAILS
+  ===================================================== */
+
+  function viewBuddyDetails(
+    buddy
+  ) {
+
+    const content =
+      document.getElementById(
+        "detailsContent"
+      );
+
+
+    content.innerHTML = `
+
+      <h2>
+        Hospital Buddy Details
+      </h2>
+
+
+      <div class="detailGrid">
+
+
+        <div class="detailItem">
+
+          <small>
+            Full Name
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.name
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Status
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.status ||
+              "Not specified"
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Email
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.email
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Phone
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.phone
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Gender
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.gender
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Date of Birth
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.dob
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Location
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              (buddy.district || "") +
+              ", " +
+              (buddy.state || "")
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Preferred Hospital
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.hospital
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Qualification
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.qualification
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem">
+
+          <small>
+            Qualification Details
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.qualificationDetails
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem detailFull">
+
+          <small>
+            Languages
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              Array.isArray(
+                buddy.languages
+              )
+                ? buddy.languages.join(
+                    ", "
+                  )
+                : ""
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem detailFull">
+
+          <small>
+            Services
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              Array.isArray(
+                buddy.services
+              )
+                ? buddy.services.join(
+                    ", "
+                  )
+                : ""
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem detailFull">
+
+          <small>
+            Previous Experience
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.experience
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem detailFull">
+
+          <small>
+            Availability
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.availability
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="detailItem detailFull">
+
+          <small>
+            About
+          </small>
+
+          <strong>
+            ${escapeHTML(
+              buddy.about
+            )}
+          </strong>
+
+        </div>
+
+
+      </div>
+
+    `;
+
+
+    document
+      .getElementById(
+        "detailsModal"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+  }
+
+
+
+  /* =====================================================
+     CLOSE DETAILS
+  ===================================================== */
+
+  function closeDetailsModal() {
+
+    document
+      .getElementById(
+        "detailsModal"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+  }
+
+
+
+  /* =====================================================
+     LOAD BOOKINGS
+  ===================================================== */
+
+  async function loadBookings() {
+
+    const table =
+      document.getElementById(
+        "bookingTable"
+      );
+
+
+    table.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="8"
+          class="loadingBox"
+        >
+          Loading booking requests...
+        </td>
+
+      </tr>
+
+    `;
+
+
+    try {
+
+      const snapshot =
+        await db
+          .collection(
+            "bookings"
+          )
+          .get();
+
+
+      if (
+        snapshot.empty
+      ) {
+
+        table.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="emptyBox"
+            >
+
+              <div class="emptyIcon">
+                📅
+              </div>
+
+              No booking requests found.
+
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      const buddies =
+        await getBuddyList();
+
+
+      const docs =
+        snapshot.docs.slice();
+
+
+      docs.sort(
+        function(a,b) {
+
+          return (
+            getTimestampMillis(
+              b.data().createdAt
+            ) -
+            getTimestampMillis(
+              a.data().createdAt
+            )
+          );
+
+        }
+      );
+
+
+      let html =
+        "";
+
+
+      docs.forEach(
+        function(doc) {
+
+          html +=
+            renderBookingRow(
+              doc.id,
+              doc.data(),
+              buddies
+            );
+
+        }
+      );
+
+
+      table.innerHTML =
+        html;
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "LOAD BOOKINGS ERROR:",
+        error
+      );
+
+
+      table.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="8"
+            class="errorBox"
+          >
+
+            Unable to load booking requests.
+
+            <br><br>
+
+            ${escapeHTML(
+              error.message
+            )}
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     RENDER BOOKING
+  ===================================================== */
+
+  function renderBookingRow(
+    bookingId,
+    booking,
+    buddies
+  ) {
+
+    const status =
+      booking.status ||
+      "pending";
+
+
+    const displayId =
+      booking.bookingId ||
+      (
+        "HB-" +
+        bookingId
+          .substring(
+            0,
+            7
+          )
+          .toUpperCase()
+      );
+
+
+    const assignedBuddy =
+      booking.buddyName ||
+      "Not assigned";
+
+
+    const dateTime =
+      [
+        booking.date || "",
+        booking.time || ""
+      ]
+        .filter(Boolean)
+        .join(" • ");
+
+
+    let actions =
+      "";
+
+
+    if (
+      status ===
+      "pending"
+    ) {
+
+      actions += `
+
+        <button
+          type="button"
+          class="smallBtn btnGreen"
+          onclick="confirmBooking('${bookingId}')"
+        >
+          Confirm
+        </button>
+
+
+        <button
+          type="button"
+          class="smallBtn btnDanger"
+          onclick="rejectBooking('${bookingId}')"
+        >
+          Reject
+        </button>
+
+      `;
+
+    }
+
+
+    if (
+      status ===
+      "confirmed"
+    ) {
+
+      actions += `
+
+        <button
+          type="button"
+          class="smallBtn btnBlue"
+          onclick="completeBooking('${bookingId}')"
+        >
+          Complete
+        </button>
+
+
+        <button
+          type="button"
+          class="smallBtn btnDanger"
+          onclick="cancelBooking('${bookingId}')"
+        >
+          Cancel
+        </button>
+
+      `;
+
+    }
+
+
+    if (
+      status === "pending" ||
+      status === "confirmed"
+    ) {
+
+      const options =
+        buddies
+          .filter(
+            function(buddy) {
+
+              return (
+                buddy.status ===
+                  "available" ||
+                buddy.id ===
+                  booking.buddyId
+              );
+
+            }
+          )
+          .map(
+            function(buddy) {
+
+              return `
+
+                <option
+                  value="${escapeHTML(
+                    buddy.id
+                  )}"
+                  ${
+                    booking.buddyId ===
+                    buddy.id
+                      ? "selected"
+                      : ""
+                  }
+                >
+                  ${escapeHTML(
+                    buddy.name ||
+                    "Hospital Buddy"
+                  )}
+                </option>
+
+              `;
+
+            }
+          )
+          .join("");
+
+
+      actions += `
+
+        <select
+          class="assignSelect"
+          onchange="reassignBooking('${bookingId}', this.value)"
+        >
+
+          <option value="">
+            Assign / Reassign Buddy
+          </option>
+
+          ${options}
+
+        </select>
+
+      `;
+
+    }
+
+
+    const statusClass =
+      getBookingStatusClass(
+        status
+      );
+
+
+    return `
+
+      <tr>
+
+
+        <td>
+
+          <strong>
+            ${escapeHTML(
+              displayId
+            )}
+          </strong>
+
+        </td>
+
+
+        <td>
+
+          <strong>
+            ${escapeHTML(
+              booking.name ||
+              "Not provided"
+            )}
+          </strong>
+
+          ${
+            booking.email
+              ? `
+                <br>
+                <small>
+                  ${escapeHTML(
+                    booking.email
+                  )}
+                </small>
+              `
+              : ""
+          }
+
+        </td>
+
+
+        <td>
+
+          ${
+            status === "confirmed" ||
+            status === "completed"
+              ? escapeHTML(
+                  booking.phone ||
+                  "Not provided"
+                )
+              : `
+                <span
+                  style="color:#89979c;"
+                >
+                  Hidden until confirmation
+                </span>
+              `
+          }
+
+        </td>
+
+
+        <td>
+
+          ${escapeHTML(
+            booking.service ||
+            "Not specified"
+          )}
+
+          ${
+            booking.language
+              ? `
+                <br>
+                <small>
+                  Language:
+                  ${escapeHTML(
+                    booking.language
+                  )}
+                </small>
+              `
+              : ""
+          }
+
+        </td>
+
+
+        <td>
+
+          ${escapeHTML(
+            dateTime ||
+            "Not specified"
+          )}
+
+          ${
+            booking.requirement
+              ? `
+                <br><br>
+                <small>
+                  <strong>
+                    Requirement:
+                  </strong>
+                  ${escapeHTML(
+                    booking.requirement
+                  )}
+                </small>
+              `
+              : ""
+          }
+
+        </td>
+
+
+        <td>
+
+          <strong>
+            ${escapeHTML(
+              assignedBuddy
+            )}
+          </strong>
+
+          ${
+            booking.buddyPhone &&
+            (
+              status === "confirmed" ||
+              status === "completed"
+            )
+              ? `
+                <br>
+                <small>
+                  📞
+                  ${escapeHTML(
+                    booking.buddyPhone
+                  )}
+                </small>
+              `
+              : ""
+          }
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="statusBadge ${statusClass}"
+          >
+            ${escapeHTML(
+              status
+            )}
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <div class="actionGroup">
+
+            ${actions}
+
+          </div>
+
+        </td>
+
+
+      </tr>
+
+    `;
+
+  }
+
+
+
+  /* =====================================================
+     BOOKING STATUS CLASS
+  ===================================================== */
+
+  function getBookingStatusClass(
+    status
+  ) {
+
+    switch(status) {
+
+      case "pending":
+        return "statusPending";
+
+      case "confirmed":
+        return "statusConfirmed";
+
+      case "completed":
+        return "statusCompleted";
+
+      case "rejected":
+        return "statusRejected";
+
+      case "cancelled":
+        return "statusCancelled";
+
+      default:
+        return "statusUnavailable";
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     GET BUDDY LIST
+  ===================================================== */
+
+  async function getBuddyList() {
 
     const snapshot =
       await db
         .collection(
           "hospital_buddies"
         )
-        .orderBy(
-          "createdAt",
-          "desc"
-        )
         .get();
 
 
-    const buddies = [];
-
-
-    snapshot.forEach(
+    return snapshot.docs.map(
       function(doc) {
 
-        buddies.push({
+        return {
 
           id:
             doc.id,
 
           ...doc.data()
 
-        });
+        };
 
       }
     );
 
-
-    updateStatistics(
-      buddies
-    );
-
-
-    renderBuddyRequests(
-      buddies
-    );
-
   }
 
-  catch(error) {
-
-    console.error(
-      "LOAD BUDDIES ERROR:",
-      error
-    );
 
 
-    requestList.innerHTML = `
+  /* =====================================================
+     ASSIGN / REASSIGN
+  ===================================================== */
 
-      <div class="errorBox">
-
-        Unable to load Buddy registrations.
-
-        <br><br>
-
-        Firebase error:
-        ${escapeHTML(error.message)}
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-
-/* =====================================================
-   STATISTICS
-===================================================== */
-
-function updateStatistics(
-  buddies
-) {
-
-  const pending =
-    buddies.filter(
-      buddy =>
-        buddy.status === "pending"
-    ).length;
-
-
-  const approved =
-    buddies.filter(
-      buddy =>
-        buddy.status === "approved" ||
-        buddy.approved === true
-    ).length;
-
-
-  document.getElementById(
-    "pendingCount"
-  ).textContent =
-    pending;
-
-
-  document.getElementById(
-    "approvedCount"
-  ).textContent =
-    approved;
-
-
-  document.getElementById(
-    "totalCount"
-  ).textContent =
-    buddies.length;
-
-}
-
-
-
-/* =====================================================
-   RENDER REQUESTS
-===================================================== */
-
-function renderBuddyRequests(
-  buddies
-) {
-
-  if (
-    buddies.length === 0
+  async function reassignBooking(
+    bookingId,
+    buddyId
   ) {
 
-    requestList.innerHTML = `
-
-      <div class="emptyBox">
-
-        <div class="icon">
-          📋
-        </div>
-
-        <h3>
-          No Buddy Registrations
-        </h3>
-
-        <p>
-          No Buddy registration has been submitted yet.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
+    if (!buddyId) {
+      return;
+    }
 
 
-  requestList.innerHTML = "";
+    try {
 
-
-  buddies.forEach(
-    function(buddy) {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "requestCard";
-
-
-      const status =
-        buddy.status || "pending";
-
-
-      let badge = "";
+      const buddySnapshot =
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .doc(buddyId)
+          .get();
 
 
       if (
-        status === "approved"
+        !buddySnapshot.exists
       ) {
 
-        badge = `
-          <span class="approvedBadge">
-            APPROVED
-          </span>
-        `;
+        alert(
+          "Hospital Buddy not found."
+        );
 
-      }
-
-      else if (
-        status === "rejected"
-      ) {
-
-        badge = `
-          <span class="rejectedBadge">
-            REJECTED
-          </span>
-        `;
-
-      }
-
-      else {
-
-        badge = `
-          <span class="pendingBadge">
-            PENDING
-          </span>
-        `;
+        return;
 
       }
 
 
-      card.innerHTML = `
-
-        <div class="requestTop">
-
-          <div>
-
-            <h3>
-              ${escapeHTML(buddy.name)}
-            </h3>
-
-            <div>
-              ${escapeHTML(buddy.email)}
-            </div>
-
-          </div>
-
-          <div>
-            ${badge}
-          </div>
-
-        </div>
+      const buddy =
+        buddySnapshot.data();
 
 
-        <div class="requestInfo">
+      await db
+        .collection(
+          "bookings"
+        )
+        .doc(bookingId)
+        .update({
 
-          <div class="infoItem">
+          buddyId:
+            buddySnapshot.id,
 
-            <small>
-              Phone
-            </small>
+          buddyName:
+            buddy.name ||
+            "",
 
-            <strong>
-              ${escapeHTML(buddy.phone)}
-            </strong>
+          buddyPhone:
+            buddy.phone ||
+            "",
 
-          </div>
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
 
-
-          <div class="infoItem">
-
-            <small>
-              Location
-            </small>
-
-            <strong>
-              ${escapeHTML(
-                (buddy.district || "") +
-                ", " +
-                (buddy.state || "")
-              )}
-            </strong>
-
-          </div>
+        });
 
 
-          <div class="infoItem">
+      await loadBookings();
 
-            <small>
-              Preferred Hospital
-            </small>
+    }
 
-            <strong>
-              ${escapeHTML(buddy.hospital)}
-            </strong>
+    catch(error) {
 
-          </div>
-
-
-          <div class="infoItem">
-
-            <small>
-              Qualification
-            </small>
-
-            <strong>
-              ${escapeHTML(
-                buddy.qualification
-              )}
-            </strong>
-
-          </div>
+      console.error(
+        "REASSIGN ERROR:",
+        error
+      );
 
 
-          <div class="infoItem">
-
-            <small>
-              Languages
-            </small>
-
-            <strong>
-              ${escapeHTML(
-                (buddy.languages || []).join(", ")
-              )}
-            </strong>
-
-          </div>
-
-
-          <div class="infoItem">
-
-            <small>
-              Services
-            </small>
-
-            <strong>
-              ${escapeHTML(
-                (buddy.services || []).join(", ")
-              )}
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <div class="requestActions">
-
-          <button
-            type="button"
-            class="btn secondaryBtn"
-            onclick='viewBuddyDetails(${JSON.stringify(buddy)})'
-          >
-            View Details
-          </button>
-
-
-          ${
-            status === "pending"
-            ? `
-
-              <button
-                type="button"
-                class="btn approveBtn"
-                onclick="approveBuddy('${buddy.id}')"
-              >
-                ✓ Approve
-              </button>
-
-
-              <button
-                type="button"
-                class="btn rejectBtn"
-                onclick="rejectBuddy('${buddy.id}')"
-              >
-                ✕ Reject
-              </button>
-
-            `
-            : ""
-          }
-
-        </div>
-
-      `;
-
-
-      requestList.appendChild(
-        card
+      alert(
+        "Unable to assign Hospital Buddy.\n\n" +
+        error.message
       );
 
     }
-  );
-
-}
-
-
-
-/* =====================================================
-   APPROVE BUDDY
-===================================================== */
-
-async function approveBuddy(
-  uid
-) {
-
-  const confirmed =
-    confirm(
-      "Are you sure you want to approve this Buddy?"
-    );
-
-
-  if (!confirmed) {
-
-    return;
 
   }
 
 
-  try {
 
-    await db
-      .collection(
-        "hospital_buddies"
-      )
-      .doc(uid)
-      .update({
+  /* =====================================================
+     CONFIRM BOOKING
+  ===================================================== */
+
+  async function confirmBooking(
+    bookingId
+  ) {
+
+    try {
+
+      const bookingRef =
+        db
+          .collection(
+            "bookings"
+          )
+          .doc(bookingId);
+
+
+      const bookingSnapshot =
+        await bookingRef.get();
+
+
+      if (
+        !bookingSnapshot.exists
+      ) {
+
+        alert(
+          "Booking no longer exists."
+        );
+
+        return;
+
+      }
+
+
+      const booking =
+        bookingSnapshot.data();
+
+
+      let buddy =
+        null;
+
+
+      if (
+        booking.buddyId
+      ) {
+
+        const buddySnapshot =
+          await db
+            .collection(
+              "hospital_buddies"
+            )
+            .doc(
+              booking.buddyId
+            )
+            .get();
+
+
+        if (
+          buddySnapshot.exists
+        ) {
+
+          buddy = {
+
+            id:
+              buddySnapshot.id,
+
+            ...buddySnapshot.data()
+
+          };
+
+        }
+
+      }
+
+
+      if (!buddy) {
+
+        const buddies =
+          await getBuddyList();
+
+
+        buddy =
+          buddies.find(
+            function(item) {
+
+              return (
+                item.id ===
+                booking.buddyId
+              );
+
+            }
+          );
+
+      }
+
+
+      if (!buddy) {
+
+        alert(
+          "Please assign a Hospital Buddy before confirming."
+        );
+
+        return;
+
+      }
+
+
+      await bookingRef.update({
 
         status:
-          "approved",
+          "confirmed",
 
-        approved:
-          true,
+        buddyName:
+          buddy.name ||
+          "",
 
-        approvedAt:
+        buddyPhone:
+          buddy.phone ||
+          "",
+
+        confirmedAt:
           firebase.firestore
             .FieldValue
             .serverTimestamp(),
@@ -1304,71 +3767,165 @@ async function approveBuddy(
       });
 
 
-    alert(
-      "Buddy approved successfully."
-    );
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(
+          buddy.id
+        )
+        .update({
+
+          status:
+            "unavailable",
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
 
 
-    loadBuddyRegistrations();
+      await loadBookings();
 
-  }
+      await loadBuddies();
 
-  catch(error) {
+      await loadDashboard();
 
-    console.error(
-      "APPROVE ERROR:",
-      error
-    );
+    }
 
+    catch(error) {
 
-    alert(
-      "Could not approve Buddy.\n\n" +
-      error.message
-    );
-
-  }
-
-}
+      console.error(
+        "CONFIRM BOOKING ERROR:",
+        error
+      );
 
 
+      alert(
+        "Unable to confirm booking.\n\n" +
+        error.message
+      );
 
-/* =====================================================
-   REJECT BUDDY
-===================================================== */
-
-async function rejectBuddy(
-  uid
-) {
-
-  const confirmed =
-    confirm(
-      "Are you sure you want to reject this Buddy registration?"
-    );
-
-
-  if (!confirmed) {
-
-    return;
+    }
 
   }
 
 
-  try {
 
-    await db
-      .collection(
-        "hospital_buddies"
+  /* =====================================================
+     REJECT BOOKING
+  ===================================================== */
+
+  async function rejectBooking(
+    bookingId
+  ) {
+
+    if (
+      !confirm(
+        "Reject this booking request?"
       )
-      .doc(uid)
-      .update({
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      await db
+        .collection(
+          "bookings"
+        )
+        .doc(bookingId)
+        .update({
+
+          status:
+            "rejected",
+
+          rejectedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp(),
+
+          updatedAt:
+            firebase.firestore
+              .FieldValue
+              .serverTimestamp()
+
+        });
+
+
+      await loadBookings();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "REJECT BOOKING ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to reject booking.\n\n" +
+        error.message
+      );
+
+    }
+
+  }
+
+
+
+  /* =====================================================
+     COMPLETE BOOKING
+  ===================================================== */
+
+  async function completeBooking(
+    bookingId
+  ) {
+
+    if (
+      !confirm(
+        "Mark this booking as completed?"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const bookingRef =
+        db
+          .collection(
+            "bookings"
+          )
+          .doc(bookingId);
+
+
+      const bookingSnapshot =
+        await bookingRef.get();
+
+
+      const booking =
+        bookingSnapshot.data();
+
+
+      await bookingRef.update({
 
         status:
-          "rejected",
+          "completed",
 
-        approved:
-          false,
-
-        rejectedAt:
+        completedAt:
           firebase.firestore
             .FieldValue
             .serverTimestamp(),
@@ -1381,347 +3938,418 @@ async function rejectBuddy(
       });
 
 
-    alert(
-      "Buddy registration rejected."
-    );
+      if (
+        booking &&
+        booking.buddyId
+      ) {
+
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .doc(
+            booking.buddyId
+          )
+          .update({
+
+            status:
+              "available",
+
+            updatedAt:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+      }
 
 
-    loadBuddyRegistrations();
+      await loadBookings();
+
+      await loadBuddies();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "COMPLETE BOOKING ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to complete booking.\n\n" +
+        error.message
+      );
+
+    }
 
   }
 
-  catch(error) {
-
-    console.error(
-      "REJECT ERROR:",
-      error
-    );
 
 
-    alert(
-      "Could not reject Buddy.\n\n" +
-      error.message
-    );
+  /* =====================================================
+     CANCEL BOOKING
+  ===================================================== */
+
+  async function cancelBooking(
+    bookingId
+  ) {
+
+    if (
+      !confirm(
+        "Cancel this confirmed booking?"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const bookingRef =
+        db
+          .collection(
+            "bookings"
+          )
+          .doc(bookingId);
+
+
+      const bookingSnapshot =
+        await bookingRef.get();
+
+
+      const booking =
+        bookingSnapshot.data();
+
+
+      await bookingRef.update({
+
+        status:
+          "cancelled",
+
+        cancelledAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+      if (
+        booking &&
+        booking.buddyId
+      ) {
+
+        await db
+          .collection(
+            "hospital_buddies"
+          )
+          .doc(
+            booking.buddyId
+          )
+          .update({
+
+            status:
+              "available",
+
+            updatedAt:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+      }
+
+
+      await loadBookings();
+
+      await loadBuddies();
+
+      await loadDashboard();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "CANCEL BOOKING ERROR:",
+        error
+      );
+
+
+      alert(
+        "Unable to cancel booking.\n\n" +
+        error.message
+      );
+
+    }
 
   }
 
-}
 
 
-
-/* =====================================================
-   VIEW DETAILS
-===================================================== */
-
-function viewBuddyDetails(
-  buddy
-) {
-
-  const details =
-    document.getElementById(
-      "detailsContent"
-    );
-
-
-  details.innerHTML = `
-
-    <h2>
-      Buddy Details
-    </h2>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Full Name
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.name)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Email
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.email)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Phone
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.phone)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Gender
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.gender)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Date of Birth
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.dob)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Location
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          (buddy.district || "") +
-          ", " +
-          (buddy.state || "")
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Preferred Hospital
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.hospital)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Languages
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          (buddy.languages || []).join(", ")
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Qualification
-      </strong>
-
-      <span>
-        ${escapeHTML(buddy.qualification)}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Qualification Details
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          buddy.qualificationDetails
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Previous Experience
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          buddy.experience
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Services
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          (buddy.services || []).join(", ")
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Availability
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          buddy.availability
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        Availability Details
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          buddy.availabilityDetails
-        )}
-      </span>
-
-    </div>
-
-
-    <div class="detailRow">
-
-      <strong>
-        About
-      </strong>
-
-      <span>
-        ${escapeHTML(
-          buddy.about
-        )}
-      </span>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="btn secondaryBtn"
-      onclick="closeDetailsModal()"
-    >
-      Close
-    </button>
-
-  `;
-
+  /* =====================================================
+     ADD BUDDY
+  ===================================================== */
 
   document
     .getElementById(
-      "detailsModal"
+      "buddyForm"
     )
-    .classList.remove(
-      "hidden"
+    .addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+          document
+            .getElementById(
+              "buddyName"
+            )
+            .value
+            .trim();
+
+
+        const phone =
+          document
+            .getElementById(
+              "buddyPhone"
+            )
+            .value
+            .trim();
+
+
+        const qualification =
+          document
+            .getElementById(
+              "buddyQualification"
+            )
+            .value
+            .trim();
+
+
+        const languagesText =
+          document
+            .getElementById(
+              "buddyLanguages"
+            )
+            .value
+            .trim();
+
+
+        const languages =
+          languagesText
+            .split(",")
+            .map(
+              function(language) {
+
+                return language.trim();
+
+              }
+            )
+            .filter(
+              function(language) {
+
+                return language.length > 0;
+
+              }
+            );
+
+
+        const message =
+          document.getElementById(
+            "buddyMessage"
+          );
+
+
+        try {
+
+          await db
+            .collection(
+              "hospital_buddies"
+            )
+            .add({
+
+              name:
+                name,
+
+              phone:
+                phone,
+
+              qualification:
+                qualification,
+
+              languages:
+                languages,
+
+              status:
+                "available",
+
+              approved:
+                true,
+
+              createdAt:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp(),
+
+              updatedAt:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp()
+
+            });
+
+
+          message.textContent =
+            "Hospital Buddy added successfully.";
+
+          message.style.color =
+            "#176b32";
+
+
+          event.target.reset();
+
+
+          await loadBuddies();
+
+          await loadDashboard();
+
+        }
+
+        catch(error) {
+
+          console.error(
+            "ADD BUDDY ERROR:",
+            error
+          );
+
+
+          message.textContent =
+            "Unable to add Hospital Buddy: " +
+            error.message;
+
+          message.style.color =
+            "#b00020";
+
+        }
+
+      }
     );
 
-}
+
+
+  /* =====================================================
+     REFRESH
+  ===================================================== */
+
+  async function refreshAdminData() {
+
+    await loadDashboard();
+
+    await loadBuddies();
+
+    await loadBookings();
+
+  }
 
 
 
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
+  /* =====================================================
+     TIMESTAMP
+  ===================================================== */
 
-function closeDetailsModal() {
+  function getTimestampMillis(
+    timestamp
+  ) {
 
-  document
-    .getElementById(
-      "detailsModal"
+    if (!timestamp) {
+      return 0;
+    }
+
+
+    if (
+      typeof timestamp.toMillis ===
+      "function"
+    ) {
+
+      return timestamp.toMillis();
+
+    }
+
+
+    if (
+      timestamp.seconds
+    ) {
+
+      return (
+        timestamp.seconds *
+        1000
+      );
+
+    }
+
+
+    return 0;
+
+  }
+
+
+
+  /* =====================================================
+     HTML SECURITY
+  ===================================================== */
+
+  function escapeHTML(
+    value
+  ) {
+
+    return String(
+      value ?? ""
     )
-    .classList.add(
-      "hidden"
-    );
 
-}
+      .replace(
+        /&/g,
+        "&amp;"
+      )
 
+      .replace(
+        /</g,
+        "&lt;"
+      )
 
+      .replace(
+        />/g,
+        "&gt;"
+      )
 
-/* =====================================================
-   HTML SECURITY
-===================================================== */
+      .replace(
+        /"/g,
+        "&quot;"
+      )
 
-function escapeHTML(
-  value
-) {
+      .replace(
+        /'/g,
+        "&#039;"
+      );
 
-  return String(
-    value ?? ""
-  )
+  }
 
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
 
 </script>
 
