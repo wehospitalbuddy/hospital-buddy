@@ -8,641 +8,516 @@ html {
 
 body {
   margin: 0;
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family: Arial, Helvetica, sans-serif;
   color: #17323d;
-
   background: #f3f8f8;
-
   line-height: 1.6;
 }
 
+/* ================= HEADER ================= */
 
-/* ---------------------------------------
-   HEADER
---------------------------------------- */
-
-header {
-  background: white;
-
-  border-bottom:
-    1px solid #e3ebed;
-
+.siteHeader {
+  background: #ffffff;
+  border-bottom: 1px solid #e3ebed;
   position: sticky;
-
   top: 0;
-
   z-index: 100;
 }
 
-
 .nav {
   max-width: 1150px;
-
   margin: auto;
-
   padding: 12px 20px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 20px;
 }
-
 
 .brand {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   text-decoration: none;
-
   color: #17323d;
-
-  font-size: 22px;
 }
-
 
 .brand img {
   width: 52px;
-
   height: 52px;
-
   object-fit: contain;
 }
 
-
-nav {
+.brandText {
   display: flex;
-
-  gap: 20px;
+  flex-direction: column;
 }
 
-
-nav a {
-  text-decoration: none;
-
-  color: #17323d;
-
-  font-weight: 600;
-}
-
-
-nav a:hover {
-  color: #c51e25;
-}
-
-
-/* ---------------------------------------
-   GENERAL SECTIONS
---------------------------------------- */
-
-section {
-  max-width: 1150px;
-
-  margin: auto;
-
-  padding: 70px 20px;
-}
-
-
-section h2 {
-  font-size: 34px;
-
-  margin-top: 0;
-
-  margin-bottom: 30px;
-}
-
-
-.sectionIntro {
-  margin-top: -15px;
-
-  margin-bottom: 25px;
-}
-
-
-/* ---------------------------------------
-   HERO
---------------------------------------- */
-
-.hero {
-  max-width: 1150px;
-
-  min-height: 620px;
-
-  display: grid;
-
-  grid-template-columns:
-    1.25fr
-    .75fr;
-
-  align-items: center;
-
-  gap: 50px;
-}
-
-
-.eyebrow {
-  font-size: 13px;
-
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  color: #b71d24;
-}
-
-
-.hero h1 {
-  font-size: 55px;
-
-  line-height: 1.1;
-
-  margin: 18px 0;
-}
-
-
-.hero p {
-  font-size: 18px;
-
-  max-width: 650px;
-}
-
-
-.heroCard {
-  background: white;
-
-  padding: 40px;
-
-  border-radius: 25px;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0, 0, 0, .08);
-}
-
-
-.heroCard h2 {
-  font-size: 28px;
-
-  margin-bottom: 15px;
-}
-
-
-.heroIcon {
-  font-size: 55px;
-}
-
-
-.note {
-  font-size: 14px !important;
-
-  color: #596b72;
-
-  margin-top: 25px;
-}
-
-
-/* ---------------------------------------
-   BUTTON
---------------------------------------- */
-
-.btn {
-  display: inline-block;
-
-  background: #c51e25;
-
-  color: white;
-
-  border: none;
-
-  border-radius: 10px;
-
-  padding: 13px 22px;
-
-  font-size: 16px;
-
-  font-weight: 700;
-
-  text-decoration: none;
-
-  cursor: pointer;
-
-  transition: .2s;
-}
-
-
-.btn:hover {
-  background: #a9171d;
-
-  transform: translateY(-1px);
-}
-
-
-.btn:disabled {
-  opacity: .6;
-
-  cursor: not-allowed;
-}
-
-
-/* ---------------------------------------
-   BACKGROUND
---------------------------------------- */
-
-.tint {
-  max-width: none;
-
-  padding-left:
-    max(20px, calc((100% - 1110px) / 2));
-
-  padding-right:
-    max(20px, calc((100% - 1110px) / 2));
-
-  background: #eaf4f4;
-}
-
-
-/* ---------------------------------------
-   GRID
---------------------------------------- */
-
-.grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 22px;
-}
-
-
-.grid article {
-  background: white;
-
-  border-radius: 18px;
-
-  padding: 28px;
-
-  box-shadow:
-    0 7px 25px
-    rgba(0, 0, 0, .05);
-}
-
-
-.grid article h3 {
-  margin-top: 10px;
-
+.brandText strong {
   font-size: 21px;
 }
 
-
-.serviceIcon {
-  font-size: 40px;
-}
-
-
-.buddy {
-  border-top:
-    4px solid #c51e25;
-}
-
-
-.privateText {
+.brandText small {
   color: #68777d;
+  font-size: 12px;
+}
 
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.desktopNav a {
+  text-decoration: none;
+  color: #17323d;
+  font-weight: 600;
+}
+
+.desktopNav a:hover {
+  color: #c51e25;
+}
+
+.desktopNav .navLogin {
+  background: #c51e25;
+  color: white;
+  padding: 9px 17px;
+  border-radius: 9px;
+}
+
+.desktopNav .navLogin:hover {
+  color: white;
+  background: #a9171d;
+}
+
+/* ================= SECTION ================= */
+
+.buddyRegistrationSection {
+  max-width: 1000px;
+  margin: auto;
+  padding: 65px 20px 80px;
+}
+
+.sectionHeading {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 40px;
+}
+
+.sectionLabel {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #b71d24;
+  margin-bottom: 8px;
+}
+
+.sectionHeading h1 {
+  margin: 0 0 15px;
+  font-size: 42px;
+  line-height: 1.15;
+}
+
+.sectionHeading p {
+  margin: 0;
+  color: #596b72;
+  font-size: 17px;
+}
+
+/* ================= FORM CARD ================= */
+
+.buddyRegistrationBox {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .07);
+}
+
+.buddyRegistrationBox form {
+  max-width: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* ================= FORM SECTION ================= */
+
+.formSectionTitle {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin: 35px 0 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e3ebed;
+}
+
+.formSectionTitle:first-child {
+  margin-top: 0;
+}
+
+.formSectionTitle > span {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #c51e25;
+  color: white;
+  font-weight: 800;
   font-size: 14px;
 }
 
-
-/* ---------------------------------------
-   STEPS
---------------------------------------- */
-
-.steps {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 20px;
+.formSectionTitle h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
 }
 
-
-.steps > div {
-  background: white;
-
-  padding: 25px;
-
-  border-radius: 16px;
+.formSectionTitle p {
+  margin: 4px 0 0;
+  color: #68777d;
+  font-size: 14px;
 }
 
+/* ================= LABELS ================= */
 
-.steps b {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  width: 42px;
-
-  height: 42px;
-
-  border-radius: 50%;
-
-  background: #c51e25;
-
-  color: white;
-
-  margin-bottom: 15px;
-}
-
-
-/* ---------------------------------------
-   FORM
---------------------------------------- */
-
-form {
-  max-width: 750px;
-
-  background: white;
-
-  padding: 35px;
-
-  border-radius: 22px;
-
-  box-shadow:
-    0 10px 30px
-    rgba(0, 0, 0, .06);
-}
-
-
-label {
+.buddyRegistrationBox label {
   display: block;
-
   font-weight: 700;
-
   margin-bottom: 20px;
 }
 
+.buddyRegistrationBox label > span:first-child {
+  display: block;
+}
 
 input,
 select,
 textarea {
   width: 100%;
-
   margin-top: 8px;
-
-  padding: 14px;
-
+  padding: 13px 14px;
   border: 1px solid #ccd7da;
-
   border-radius: 10px;
-
   font: inherit;
-
   color: #17323d;
-
   background: white;
 }
-
 
 input:focus,
 select:focus,
 textarea:focus {
   outline: 2px solid #c51e25;
-
   border-color: transparent;
 }
 
-
 textarea {
   min-height: 120px;
-
   resize: vertical;
 }
 
-
-.two {
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap: 18px;
-}
-
-
-.check {
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 10px;
-
-  font-weight: 600;
-
-  margin-top: 10px;
-}
-
-
-.check input {
-  width: 20px;
-
-  height: 20px;
-
-  margin: 3px 0 0;
-}
-
-
-/* ---------------------------------------
-   FOOTER
---------------------------------------- */
-
-footer {
-  background: #102b34;
-
-  color: white;
-
-  padding: 50px 20px;
-
-  text-align: center;
-}
-
-
-footer b {
-  font-size: 22px;
-}
-
-
-.footerSmall {
-  opacity: .65;
-
+.fieldHelp {
+  display: block;
+  margin-top: 6px;
+  color: #68777d;
   font-size: 13px;
+  font-weight: 400;
 }
 
+/* ================= CHECKBOXES ================= */
 
-/* ---------------------------------------
-   MODAL
---------------------------------------- */
+.languageCheckboxGrid,
+.serviceCheckboxGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.languageOption {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 15px;
+  margin: 0 !important;
+  border: 1px solid #dce5e7;
+  border-radius: 10px;
+  background: #f8fbfb;
+  cursor: pointer;
+  font-weight: 600 !important;
+}
+
+.languageOption:hover {
+  border-color: #c51e25;
+}
+
+.languageOption input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.languageOption span {
+  display: inline !important;
+}
+
+/* ================= AGREEMENT ================= */
+
+.agreement {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 30px 0 !important;
+  font-weight: 500 !important;
+  color: #465a61;
+}
+
+.agreement input {
+  width: 19px;
+  height: 19px;
+  margin: 3px 0 0;
+  flex-shrink: 0;
+}
+
+.agreement span {
+  display: block !important;
+}
+
+/* ================= BUTTON ================= */
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 22px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.primaryBtn {
+  background: #c51e25;
+  color: white;
+}
+
+.primaryBtn:hover {
+  background: #a9171d;
+  transform: translateY(-1px);
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: 5px;
+  padding: 15px;
+  font-size: 17px;
+}
+
+.formPrivacy {
+  text-align: center;
+  color: #68777d;
+  font-size: 13px;
+  margin: 15px 0 0;
+}
+
+/* ================= MODAL ================= */
 
 .modal {
   position: fixed;
-
   inset: 0;
-
-  background:
-    rgba(0, 0, 0, .65);
-
+  background: rgba(0, 0, 0, .65);
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   padding: 20px;
-
   z-index: 999;
 }
 
-
 .modalbox {
   width: 100%;
-
   max-width: 550px;
-
   max-height: 90vh;
-
   overflow-y: auto;
-
   background: white;
-
   border-radius: 20px;
-
   padding: 35px;
-
   position: relative;
 }
 
-
 .close {
   position: absolute;
-
   right: 18px;
-
   top: 10px;
-
   border: none;
-
   background: none;
-
   font-size: 30px;
-
   cursor: pointer;
 }
-
 
 .hidden {
   display: none;
 }
 
-
 .resultIcon {
   font-size: 50px;
-
   margin-bottom: 10px;
 }
 
-
-.bookingId {
-  background: #eaf4f4;
-
-  padding: 12px;
-
-  border-radius: 10px;
-
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  margin: 20px 0;
-}
-
-
 .contact {
   background: #f3f7f7;
-
   padding: 18px;
-
   border-radius: 12px;
-
   margin: 20px 0;
 }
 
+.privateText {
+  color: #68777d;
+  font-size: 14px;
+}
 
-/* ---------------------------------------
-   MOBILE
---------------------------------------- */
+/* ================= FOOTER ================= */
+
+footer {
+  background: #102b34;
+  color: white;
+  padding: 50px 20px 25px;
+}
+
+.footerMain {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 50px;
+}
+
+.footerLogo {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+
+footer h3,
+footer h4 {
+  margin-top: 10px;
+}
+
+footer p {
+  color: #c8d3d6;
+}
+
+footer a {
+  display: block;
+  color: #dce5e7;
+  text-decoration: none;
+  margin: 7px 0;
+}
+
+footer a:hover {
+  color: white;
+}
+
+.footerBottom {
+  max-width: 1100px;
+  margin: 35px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.15);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.footerBottom p {
+  margin: 0;
+}
+
+/* ================= MOBILE ================= */
 
 @media (max-width: 800px) {
 
   .nav {
     flex-direction: column;
-
     align-items: flex-start;
   }
 
-
-  nav {
+  .desktopNav {
     width: 100%;
-
     overflow-x: auto;
-
-    padding-bottom: 5px;
+    padding-bottom: 4px;
+    gap: 18px;
   }
 
+  .desktopNav a {
+    white-space: nowrap;
+  }
 
-  .hero {
+  .buddyRegistrationSection {
+    padding: 45px 15px 60px;
+  }
+
+  .sectionHeading h1 {
+    font-size: 32px;
+  }
+
+  .sectionHeading p {
+    font-size: 15px;
+  }
+
+  .buddyRegistrationBox {
+    padding: 25px 18px;
+    border-radius: 18px;
+  }
+
+  .formSectionTitle {
+    margin-top: 30px;
+  }
+
+  .languageCheckboxGrid,
+  .serviceCheckboxGrid {
     grid-template-columns: 1fr;
-
-    padding-top: 45px;
   }
 
-
-  .hero h1 {
-    font-size: 40px;
-  }
-
-
-  .grid {
+  .footerMain {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
 
+  .footerBottom {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
 
-  .steps {
-    grid-template-columns: 1fr;
+@media (max-width: 480px) {
+
+  .brand img {
+    width: 45px;
+    height: 45px;
   }
 
-
-  .two {
-    grid-template-columns: 1fr;
+  .brandText strong {
+    font-size: 19px;
   }
 
-
-  section {
-    padding-top: 50px;
-
-    padding-bottom: 50px;
+  .sectionHeading h1 {
+    font-size: 28px;
   }
 
+  .buddyRegistrationBox {
+    padding: 22px 15px;
+  }
+
+  .formSectionTitle h2 {
+    font-size: 19px;
+  }
+
+  .formSectionTitle p {
+    font-size: 13px;
+  }
 }
