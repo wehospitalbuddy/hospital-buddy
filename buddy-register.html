@@ -14,9 +14,10 @@
     content="Register as a Hospital Buddy"
   >
 
-  <title>Register as a Hospital Buddy</title>
+  <title>Register as a Hospital Buddy | Hospital Buddy</title>
 
   <link rel="stylesheet" href="styles.css">
+
 </head>
 
 
@@ -96,25 +97,15 @@
 
     <div class="bookingBenefits">
 
-      <div>
-        ✓ Create your Buddy profile
-      </div>
+      <div>✓ Create your Buddy profile</div>
 
-      <div>
-        ✓ Choose your languages
-      </div>
+      <div>✓ Choose your languages</div>
 
-      <div>
-        ✓ Select hospitals you can support
-      </div>
+      <div>✓ Select hospitals you can support</div>
 
-      <div>
-        ✓ Manage your availability
-      </div>
+      <div>✓ Manage your availability</div>
 
-      <div>
-        ✓ Receive patient requests
-      </div>
+      <div>✓ Receive patient requests</div>
 
     </div>
 
@@ -131,16 +122,12 @@
     <form id="buddyRegisterForm">
 
 
-      <!-- =============================================
-           PERSONAL INFORMATION
-      ============================================== -->
+      <!-- PERSONAL INFORMATION -->
 
       <h2>
         Personal Information
       </h2>
 
-
-      <!-- PHOTO -->
 
       <label>
 
@@ -151,7 +138,7 @@
         <input
           id="photo"
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           required
         >
 
@@ -162,8 +149,6 @@
       </label>
 
 
-
-      <!-- NAME -->
 
       <label>
 
@@ -183,8 +168,6 @@
 
 
 
-      <!-- PHONE -->
-
       <label>
 
         <span>
@@ -202,8 +185,6 @@
       </label>
 
 
-
-      <!-- EMAIL -->
 
       <label>
 
@@ -223,18 +204,13 @@
 
 
 
-      <!-- GENDER -->
-
       <label>
 
         <span>
           Gender
         </span>
 
-        <select
-          id="gender"
-          required
-        >
+        <select id="gender" required>
 
           <option value="">
             Select Gender
@@ -262,8 +238,6 @@
 
 
 
-      <!-- DATE OF BIRTH -->
-
       <label>
 
         <span>
@@ -280,9 +254,7 @@
 
 
 
-      <!-- =============================================
-           LOCATION
-      ============================================== -->
+      <!-- LOCATION -->
 
       <h2 class="formSectionTitle">
         Location
@@ -290,18 +262,13 @@
 
 
 
-      <!-- STATE -->
-
       <label>
 
         <span>
           State
         </span>
 
-        <select
-          id="state"
-          required
-        >
+        <select id="state" required>
 
           <option value="">
             Select State
@@ -316,8 +283,6 @@
       </label>
 
 
-
-      <!-- DISTRICT -->
 
       <label>
 
@@ -341,8 +306,6 @@
 
 
 
-      <!-- ADDRESS -->
-
       <label>
 
         <span>
@@ -360,17 +323,13 @@
 
 
 
-      <!-- =============================================
-           PROFESSIONAL INFORMATION
-      ============================================== -->
+      <!-- BUDDY INFORMATION -->
 
       <h2 class="formSectionTitle">
         Buddy Information
       </h2>
 
 
-
-      <!-- QUALIFICATION -->
 
       <label>
 
@@ -389,8 +348,6 @@
 
 
 
-      <!-- EXPERIENCE -->
-
       <label>
 
         <span>
@@ -407,9 +364,7 @@
 
 
 
-      <!-- =============================================
-           LANGUAGES
-      ============================================== -->
+      <!-- LANGUAGES -->
 
       <label>
 
@@ -474,16 +429,13 @@
 
 
 
-      <!-- =============================================
-           SERVICES
-      ============================================== -->
+      <!-- SERVICES -->
 
       <label>
 
         <span>
           Services You Can Provide
         </span>
-
 
         <div class="checkboxGroup">
 
@@ -599,9 +551,7 @@
 
 
 
-      <!-- =============================================
-           HOSPITALS
-      ============================================== -->
+      <!-- HOSPITALS -->
 
       <h2 class="formSectionTitle">
         Hospitals You Can Support
@@ -614,9 +564,7 @@
           District
         </span>
 
-        <select
-          id="hospitalDistrict"
-        >
+        <select id="hospitalDistrict">
 
           <option value="">
             Select District
@@ -648,6 +596,7 @@
       </label>
 
 
+
       <button
         type="button"
         class="btn secondaryBtn"
@@ -657,6 +606,7 @@
       </button>
 
 
+
       <div
         id="selectedHospitals"
         class="selectedHospitalList"
@@ -664,9 +614,7 @@
 
 
 
-      <!-- =============================================
-           AVAILABILITY
-      ============================================== -->
+      <!-- AVAILABILITY -->
 
       <h2 class="formSectionTitle">
         Availability
@@ -714,9 +662,7 @@
 
 
 
-      <!-- =============================================
-           LOGIN
-      ============================================== -->
+      <!-- LOGIN -->
 
       <h2 class="formSectionTitle">
         Create Login
@@ -741,6 +687,7 @@
       </label>
 
 
+
       <label>
 
         <span>
@@ -760,9 +707,7 @@
 
 
 
-      <!-- =============================================
-           AGREEMENT
-      ============================================== -->
+      <!-- AGREEMENT -->
 
       <label class="agreement">
 
@@ -792,16 +737,16 @@
         class="btn primaryBtn submitBtn"
         type="submit"
       >
-
         🤝 Submit Buddy Registration
-
       </button>
+
 
 
       <p
         id="registerMessage"
         class="formPrivacy"
       ></p>
+
 
 
       <p class="formPrivacy">
@@ -885,10 +830,24 @@
 
 
 <!-- =====================================================
-     FIREBASE
+     FIREBASE SDK
 ===================================================== -->
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+
+
 <script>
+
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
@@ -916,77 +875,23 @@ const firebaseConfig = {
 };
 
 
-/* =============================================
-   LOAD FIREBASE
-============================================= */
 
-const firebaseAppScript =
-  document.createElement("script");
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
 
-firebaseAppScript.src =
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
-
-document.head.appendChild(
-  firebaseAppScript
+firebase.initializeApp(
+  firebaseConfig
 );
 
+const db =
+  firebase.firestore();
 
-firebaseAppScript.onload = function () {
+const auth =
+  firebase.auth();
 
-  const authScript =
-    document.createElement("script");
-
-  authScript.src =
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
-
-  document.head.appendChild(
-    authScript
-  );
-
-
-  authScript.onload = function () {
-
-    const firestoreScript =
-      document.createElement("script");
-
-    firestoreScript.src =
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
-
-    document.head.appendChild(
-      firestoreScript
-    );
-
-
-    firestoreScript.onload = function () {
-
-      const storageScript =
-        document.createElement("script");
-
-      storageScript.src =
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js";
-
-      document.head.appendChild(
-        storageScript
-      );
-
-
-      storageScript.onload = function () {
-
-        firebase.initializeApp(
-          firebaseConfig
-        );
-
-        window.firebaseReady = true;
-
-        initializeBuddyRegistration();
-
-      };
-
-    };
-
-  };
-
-};
+const storage =
+  firebase.storage();
 
 
 
@@ -997,6 +902,10 @@ firebaseAppScript.onload = function () {
 const hospitalData = {
 
   "Assam": {
+
+    "Baksa": [
+      "Mushalpur Civil Hospital"
+    ],
 
     "Barpeta": [
       "Fakhruddin Ali Ahmed Medical College & Hospital",
@@ -1012,9 +921,34 @@ const hospitalData = {
       "Silchar Civil Hospital"
     ],
 
+    "Darrang": [
+      "Mangaldai Civil Hospital"
+    ],
+
+    "Dhemaji": [
+      "Dhemaji Civil Hospital"
+    ],
+
+    "Dhubri": [
+      "Dhubri Medical College & Hospital",
+      "Dhubri Civil Hospital"
+    ],
+
     "Dibrugarh": [
       "Assam Medical College & Hospital",
       "Dibrugarh District Hospital"
+    ],
+
+    "Goalpara": [
+      "Goalpara Civil Hospital"
+    ],
+
+    "Golaghat": [
+      "Golaghat Civil Hospital"
+    ],
+
+    "Hailakandi": [
+      "Hailakandi Civil Hospital"
     ],
 
     "Jorhat": [
@@ -1023,8 +957,9 @@ const hospitalData = {
     ],
 
     "Kamrup": [
-      "North Guwahati Community Health Centre",
-      "Mirza Community Health Centre"
+      "Rajarshi Bhagyachandra District Hospital",
+      "Mirza Community Health Centre",
+      "North Guwahati Community Health Centre"
     ],
 
     "Kamrup Metropolitan": [
@@ -1040,13 +975,31 @@ const hospitalData = {
       "Pratiksha Hospital"
     ],
 
+    "Karbi Anglong": [
+      "Diphu Medical College & Hospital",
+      "Diphu Civil Hospital"
+    ],
+
     "Lakhimpur": [
       "North Lakhimpur Civil Hospital"
+    ],
+
+    "Majuli": [
+      "Garmur Civil Hospital"
+    ],
+
+    "Morigaon": [
+      "Morigaon Civil Hospital"
     ],
 
     "Nagaon": [
       "Nagaon Medical College & Hospital",
       "Nagaon Civil Hospital"
+    ],
+
+    "Nalbari": [
+      "Nalbari Medical College & Hospital",
+      "Nalbari Civil Hospital"
     ],
 
     "Sivasagar": [
@@ -1058,8 +1011,16 @@ const hospitalData = {
       "Tezpur Civil Hospital"
     ],
 
+    "South Salmara-Mankachar": [
+      "Hatsingimari Civil Hospital"
+    ],
+
     "Tinsukia": [
       "Tinsukia Civil Hospital"
+    ],
+
+    "Udalguri": [
+      "Udalguri Civil Hospital"
     ]
 
   }
@@ -1069,240 +1030,48 @@ const hospitalData = {
 
 
 /* =====================================================
-   REGISTRATION
+   ELEMENTS
 ===================================================== */
 
-function initializeBuddyRegistration() {
-
-  const form =
-    document.getElementById(
-      "buddyRegisterForm"
-    );
-
-  if (!form) {
-    return;
-  }
-
-
-  setupLocation();
-
-  setupHospitalSelection();
-
-
-  form.addEventListener(
-    "submit",
-    registerBuddy
+const form =
+  document.getElementById(
+    "buddyRegisterForm"
   );
 
-}
-
-
-
-/* =====================================================
-   STATE → DISTRICT
-===================================================== */
-
-function setupLocation() {
-
-  const state =
-    document.getElementById("state");
-
-  const district =
-    document.getElementById("district");
-
-  const hospitalDistrict =
-    document.getElementById(
-      "hospitalDistrict"
-    );
-
-
-  state.addEventListener(
-    "change",
-    function () {
-
-      district.innerHTML =
-        '<option value="">Select District</option>';
-
-      hospitalDistrict.innerHTML =
-        '<option value="">Select District</option>';
-
-
-      const selectedState =
-        state.value;
-
-
-      if (
-        !selectedState ||
-        !hospitalData[selectedState]
-      ) {
-
-        district.disabled = true;
-
-        return;
-
-      }
-
-
-      district.disabled = false;
-
-
-      Object.keys(
-        hospitalData[selectedState]
-      )
-      .sort()
-      .forEach(
-        function (districtName) {
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-          option.value =
-            districtName;
-
-          option.textContent =
-            districtName;
-
-          district.appendChild(
-            option
-          );
-
-
-          const hospitalOption =
-            document.createElement(
-              "option"
-            );
-
-          hospitalOption.value =
-            districtName;
-
-          hospitalOption.textContent =
-            districtName;
-
-          hospitalDistrict.appendChild(
-            hospitalOption
-          );
-
-        }
-      );
-
-    }
+const stateSelect =
+  document.getElementById(
+    "state"
   );
 
-}
-
-
-
-/* =====================================================
-   HOSPITAL SELECTION
-===================================================== */
-
-function setupHospitalSelection() {
-
-  const hospitalDistrict =
-    document.getElementById(
-      "hospitalDistrict"
-    );
-
-  const hospital =
-    document.getElementById(
-      "hospital"
-    );
-
-  const addButton =
-    document.getElementById(
-      "addHospitalBtn"
-    );
-
-
-  hospitalDistrict.addEventListener(
-    "change",
-    function () {
-
-      hospital.innerHTML =
-        '<option value="">Select Hospital</option>';
-
-      hospital.disabled = true;
-
-
-      const district =
-        hospitalDistrict.value;
-
-
-      if (
-        !district ||
-        !hospitalData.Assam[district]
-      ) {
-
-        return;
-
-      }
-
-
-      hospital.disabled = false;
-
-
-      hospitalData.Assam[district]
-        .forEach(
-          function (hospitalName) {
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-            option.value =
-              hospitalName;
-
-            option.textContent =
-              hospitalName;
-
-            hospital.appendChild(
-              option
-            );
-
-          }
-        );
-
-    }
+const districtSelect =
+  document.getElementById(
+    "district"
   );
 
-
-  addButton.addEventListener(
-    "click",
-    function () {
-
-      const district =
-        hospitalDistrict.value;
-
-      const hospitalName =
-        hospital.value;
-
-
-      if (
-        !district ||
-        !hospitalName
-      ) {
-
-        alert(
-          "Please select a district and hospital first."
-        );
-
-        return;
-
-      }
-
-
-      addSelectedHospital(
-        district,
-        hospitalName
-      );
-
-    }
+const hospitalDistrictSelect =
+  document.getElementById(
+    "hospitalDistrict"
   );
 
-}
+const hospitalSelect =
+  document.getElementById(
+    "hospital"
+  );
+
+const addHospitalButton =
+  document.getElementById(
+    "addHospitalBtn"
+  );
+
+const selectedHospitalsContainer =
+  document.getElementById(
+    "selectedHospitals"
+  );
+
+const registerMessage =
+  document.getElementById(
+    "registerMessage"
+  );
 
 
 
@@ -1313,62 +1082,216 @@ function setupHospitalSelection() {
 const selectedHospitals = [];
 
 
-function addSelectedHospital(
-  district,
-  hospital
-) {
 
-  const exists =
-    selectedHospitals.some(
-      function (item) {
+/* =====================================================
+   STATE → DISTRICT
+===================================================== */
 
-        return (
-          item.district === district &&
-          item.hospital === hospital
+stateSelect.addEventListener(
+  "change",
+  function () {
+
+    districtSelect.innerHTML =
+      '<option value="">Select District</option>';
+
+    hospitalDistrictSelect.innerHTML =
+      '<option value="">Select District</option>';
+
+    hospitalSelect.innerHTML =
+      '<option value="">Select Hospital</option>';
+
+    hospitalSelect.disabled = true;
+
+    const state =
+      stateSelect.value;
+
+    if (
+      !state ||
+      !hospitalData[state]
+    ) {
+
+      districtSelect.disabled = true;
+
+      return;
+
+    }
+
+    districtSelect.disabled = false;
+
+    Object.keys(
+      hospitalData[state]
+    )
+    .sort()
+    .forEach(
+      function (districtName) {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          districtName;
+
+        option.textContent =
+          districtName;
+
+        districtSelect.appendChild(
+          option
+        );
+
+
+        const hospitalDistrictOption =
+          document.createElement(
+            "option"
+          );
+
+        hospitalDistrictOption.value =
+          districtName;
+
+        hospitalDistrictOption.textContent =
+          districtName;
+
+        hospitalDistrictSelect.appendChild(
+          hospitalDistrictOption
         );
 
       }
     );
 
+  }
+);
 
-  if (exists) {
 
-    alert(
-      "This hospital has already been added."
-    );
 
-    return;
+/* =====================================================
+   HOSPITAL DISTRICT → HOSPITAL
+===================================================== */
+
+hospitalDistrictSelect.addEventListener(
+  "change",
+  function () {
+
+    hospitalSelect.innerHTML =
+      '<option value="">Select Hospital</option>';
+
+    hospitalSelect.disabled = true;
+
+    const district =
+      hospitalDistrictSelect.value;
+
+    if (
+      !district ||
+      !hospitalData.Assam[district]
+    ) {
+
+      return;
+
+    }
+
+    hospitalSelect.disabled = false;
+
+    hospitalData.Assam[district]
+      .forEach(
+        function (hospitalName) {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            hospitalName;
+
+          option.textContent =
+            hospitalName;
+
+          hospitalSelect.appendChild(
+            option
+          );
+
+        }
+      );
 
   }
+);
 
 
-  selectedHospitals.push({
 
-    district:
-      district,
+/* =====================================================
+   ADD HOSPITAL
+===================================================== */
 
-    hospital:
-      hospital
+addHospitalButton.addEventListener(
+  "click",
+  function () {
 
-  });
+    const district =
+      hospitalDistrictSelect.value;
+
+    const hospital =
+      hospitalSelect.value;
+
+    if (
+      !district ||
+      !hospital
+    ) {
+
+      alert(
+        "Please select a district and hospital first."
+      );
+
+      return;
+
+    }
+
+    const alreadyAdded =
+      selectedHospitals.some(
+        function (item) {
+
+          return (
+            item.district === district &&
+            item.hospital === hospital
+          );
+
+        }
+      );
+
+    if (alreadyAdded) {
+
+      alert(
+        "This hospital has already been added."
+      );
+
+      return;
+
+    }
+
+    selectedHospitals.push({
+
+      district:
+        district,
+
+      hospital:
+        hospital
+
+    });
+
+    renderSelectedHospitals();
+
+  }
+);
 
 
-  renderSelectedHospitals();
 
-}
-
-
+/* =====================================================
+   DISPLAY SELECTED HOSPITALS
+===================================================== */
 
 function renderSelectedHospitals() {
 
-  const container =
-    document.getElementById(
-      "selectedHospitals"
-    );
-
-
-  container.innerHTML = "";
-
+  selectedHospitalsContainer.innerHTML =
+    "";
 
   selectedHospitals.forEach(
     function (item, index) {
@@ -1378,34 +1301,77 @@ function renderSelectedHospitals() {
           "div"
         );
 
-
       div.className =
         "selectedHospitalItem";
 
+      const text =
+        document.createElement(
+          "span"
+        );
 
-      div.innerHTML = `
+      const strong =
+        document.createElement(
+          "strong"
+        );
 
-        <span>
-          <strong>
-            ${escapeHTML(item.hospital)}
-          </strong>
+      strong.textContent =
+        item.hospital;
 
-          <small>
-            ${escapeHTML(item.district)}
-          </small>
-        </span>
+      const small =
+        document.createElement(
+          "small"
+        );
 
-        <button
-          type="button"
-          onclick="removeHospital(${index})"
-        >
-          ×
-        </button>
+      small.textContent =
+        item.district;
 
-      `;
+      text.appendChild(
+        strong
+      );
+
+      text.appendChild(
+        document.createElement(
+          "br"
+        )
+      );
+
+      text.appendChild(
+        small
+      );
 
 
-      container.appendChild(div);
+      const removeButton =
+        document.createElement(
+          "button"
+        );
+
+      removeButton.type =
+        "button";
+
+      removeButton.textContent =
+        "×";
+
+      removeButton.addEventListener(
+        "click",
+        function () {
+
+          removeHospital(index);
+
+        }
+      );
+
+
+      div.appendChild(
+        text
+      );
+
+      div.appendChild(
+        removeButton
+      );
+
+      selectedHospitalsContainer.appendChild(
+        div
+      );
 
     }
   );
@@ -1413,6 +1379,10 @@ function renderSelectedHospitals() {
 }
 
 
+
+/* =====================================================
+   REMOVE HOSPITAL
+===================================================== */
 
 function removeHospital(index) {
 
@@ -1428,377 +1398,413 @@ function removeHospital(index) {
 
 
 /* =====================================================
-   REGISTER BUDDY
+   FORM SUBMIT
 ===================================================== */
 
-async function registerBuddy(event) {
+form.addEventListener(
+  "submit",
+  async function (event) {
 
-  event.preventDefault();
+    event.preventDefault();
 
+    registerMessage.textContent =
+      "";
 
-  const message =
-    document.getElementById(
-      "registerMessage"
-    );
-
-
-  const submitButton =
-    document.querySelector(
-      "#buddyRegisterForm button[type='submit']"
-    );
+    registerMessage.style.color =
+      "";
 
 
-  const password =
-    document.getElementById(
-      "password"
-    ).value;
 
+    /* PASSWORD */
 
-  const confirmPassword =
-    document.getElementById(
-      "confirmPassword"
-    ).value;
-
-
-  if (
-    password !==
-    confirmPassword
-  ) {
-
-    message.textContent =
-      "Passwords do not match.";
-
-    return;
-
-  }
-
-
-  const languages =
-    Array.from(
-      document.querySelectorAll(
-        'input[name="languages"]:checked'
-      )
-    )
-    .map(
-      checkbox =>
-        checkbox.value
-    );
-
-
-  const services =
-    Array.from(
-      document.querySelectorAll(
-        'input[name="services"]:checked'
-      )
-    )
-    .map(
-      checkbox =>
-        checkbox.value
-    );
-
-
-  if (
-    languages.length === 0
-  ) {
-
-    message.textContent =
-      "Please select at least one language.";
-
-    return;
-
-  }
-
-
-  if (
-    services.length === 0
-  ) {
-
-    message.textContent =
-      "Please select at least one service.";
-
-    return;
-
-  }
-
-
-  if (
-    selectedHospitals.length === 0
-  ) {
-
-    message.textContent =
-      "Please add at least one hospital.";
-
-    return;
-
-  }
-
-
-  const photo =
-    document.getElementById(
-      "photo"
-    ).files[0];
-
-
-  if (!photo) {
-
-    message.textContent =
-      "Please select a profile photo.";
-
-    return;
-
-  }
-
-
-  try {
-
-    submitButton.disabled =
-      true;
-
-    submitButton.textContent =
-      "Creating Registration...";
-
-
-    const email =
+    const password =
       document.getElementById(
-        "email"
-      ).value.trim();
+        "password"
+      ).value;
+
+    const confirmPassword =
+      document.getElementById(
+        "confirmPassword"
+      ).value;
 
 
-    const userCredential =
-      await firebase
-        .auth()
-        .createUserWithEmailAndPassword(
+    if (
+      password !==
+      confirmPassword
+    ) {
+
+      registerMessage.textContent =
+        "Passwords do not match.";
+
+      return;
+
+    }
+
+
+
+    /* LANGUAGES */
+
+    const languages =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="languages"]:checked'
+        )
+      )
+      .map(
+        function (checkbox) {
+
+          return checkbox.value;
+
+        }
+      );
+
+
+    if (
+      languages.length === 0
+    ) {
+
+      registerMessage.textContent =
+        "Please select at least one language.";
+
+      return;
+
+    }
+
+
+
+    /* SERVICES */
+
+    const services =
+      Array.from(
+        document.querySelectorAll(
+          'input[name="services"]:checked'
+        )
+      )
+      .map(
+        function (checkbox) {
+
+          return checkbox.value;
+
+        }
+      );
+
+
+    if (
+      services.length === 0
+    ) {
+
+      registerMessage.textContent =
+        "Please select at least one service.";
+
+      return;
+
+    }
+
+
+
+    /* HOSPITAL */
+
+    if (
+      selectedHospitals.length === 0
+    ) {
+
+      registerMessage.textContent =
+        "Please add at least one hospital.";
+
+      return;
+
+    }
+
+
+
+    /* PHOTO */
+
+    const photoInput =
+      document.getElementById(
+        "photo"
+      );
+
+    const photo =
+      photoInput.files[0];
+
+
+    if (!photo) {
+
+      registerMessage.textContent =
+        "Please select a profile photo.";
+
+      return;
+
+    }
+
+
+
+    /* SUBMIT BUTTON */
+
+    const submitButton =
+      form.querySelector(
+        'button[type="submit"]'
+      );
+
+
+    try {
+
+      submitButton.disabled =
+        true;
+
+      submitButton.textContent =
+        "Creating Registration...";
+
+
+
+      /* EMAIL */
+
+      const email =
+        document.getElementById(
+          "email"
+        )
+        .value
+        .trim();
+
+
+
+      /* CREATE FIREBASE ACCOUNT */
+
+      const userCredential =
+        await auth
+          .createUserWithEmailAndPassword(
+            email,
+            password
+          );
+
+
+      const user =
+        userCredential.user;
+
+
+
+      /* =========================================
+         UPLOAD PROFILE PHOTO
+      ========================================= */
+
+      const fileExtension =
+        photo.name
+          .split(".")
+          .pop();
+
+
+      const photoPath =
+        "buddy_photos/" +
+        user.uid +
+        "/profile." +
+        fileExtension;
+
+
+      const storageRef =
+        storage.ref(
+          photoPath
+        );
+
+
+      await storageRef.put(
+        photo
+      );
+
+
+      const photoURL =
+        await storageRef.getDownloadURL();
+
+
+
+      /* =========================================
+         CREATE PROFILE
+      ========================================= */
+
+      const profile = {
+
+        uid:
+          user.uid,
+
+        accountType:
+          "buddy",
+
+        name:
+          document.getElementById(
+            "name"
+          ).value.trim(),
+
+        phone:
+          document.getElementById(
+            "phone"
+          ).value.trim(),
+
+        email:
           email,
-          password
+
+        gender:
+          document.getElementById(
+            "gender"
+          ).value,
+
+        dob:
+          document.getElementById(
+            "dob"
+          ).value,
+
+        state:
+          stateSelect.value,
+
+        district:
+          districtSelect.value,
+
+        address:
+          document.getElementById(
+            "address"
+          ).value.trim(),
+
+        qualification:
+          document.getElementById(
+            "qualification"
+          ).value.trim(),
+
+        experience:
+          document.getElementById(
+            "experience"
+          ).value.trim(),
+
+        languages:
+          languages,
+
+        services:
+          services,
+
+        hospitals:
+          selectedHospitals.map(
+            function (item) {
+
+              return {
+
+                district:
+                  item.district,
+
+                hospital:
+                  item.hospital
+
+              };
+
+            }
+          ),
+
+        availability:
+          document.getElementById(
+            "availability"
+          ).value,
+
+        photoURL:
+          photoURL,
+
+        status:
+          "pending",
+
+        createdAt:
+          firebase.firestore.FieldValue.serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore.FieldValue.serverTimestamp()
+
+      };
+
+
+
+      /* =========================================
+         SAVE TO FIRESTORE
+      ========================================= */
+
+      await db
+        .collection(
+          "hospital_buddies"
+        )
+        .doc(
+          user.uid
+        )
+        .set(
+          profile
         );
 
 
-    const user =
-      userCredential.user;
+
+      /* =========================================
+         SUCCESS
+      ========================================= */
+
+      registerMessage.innerHTML =
+
+        "<strong>✓ Registration submitted successfully.</strong>" +
+
+        "<br><br>" +
+
+        "Your Buddy account has been created." +
+
+        "<br><br>" +
+
+        "Your profile is currently " +
+
+        "<strong>Pending Admin Approval</strong>." +
+
+        "<br><br>" +
+
+        "You can login after your account has been approved." +
+
+        "<br><br>" +
+
+        '<a href="buddy-login.html">Go to Buddy Login →</a>';
 
 
-    /* ==========================================
-       UPLOAD PHOTO
-    ========================================== */
-
-    const storageRef =
-      firebase
-        .storage()
-        .ref(
-          "buddy_photos/" +
-          user.uid +
-          "/" +
-          photo.name
-        );
+      registerMessage.style.color =
+        "#17323d";
 
 
-    await storageRef.put(
-      photo
-    );
+      form.reset();
+
+      selectedHospitals.length =
+        0;
+
+      renderSelectedHospitals();
 
 
-    const photoURL =
-      await storageRef.getDownloadURL();
+      districtSelect.disabled =
+        true;
+
+      hospitalSelect.disabled =
+        true;
 
 
+    } catch (error) {
 
-    /* ==========================================
-       SAVE PROFILE
-    ========================================== */
-
-    const profile = {
-
-      uid:
-        user.uid,
-
-      name:
-        document.getElementById(
-          "name"
-        ).value.trim(),
-
-      email:
-        email,
-
-      phone:
-        document.getElementById(
-          "phone"
-        ).value.trim(),
-
-      gender:
-        document.getElementById(
-          "gender"
-        ).value,
-
-      dob:
-        document.getElementById(
-          "dob"
-        ).value,
-
-      state:
-        document.getElementById(
-          "state"
-        ).value,
-
-      district:
-        document.getElementById(
-          "district"
-        ).value,
-
-      address:
-        document.getElementById(
-          "address"
-        ).value.trim(),
-
-      qualification:
-        document.getElementById(
-          "qualification"
-        ).value.trim(),
-
-      experience:
-        document.getElementById(
-          "experience"
-        ).value.trim(),
-
-      languages:
-        languages,
-
-      services:
-        services,
-
-      hospitals:
-        selectedHospitals,
-
-      availability:
-        document.getElementById(
-          "availability"
-        ).value,
-
-      photoURL:
-        photoURL,
-
-      status:
-        "pending",
-
-      accountType:
-        "buddy",
-
-      createdAt:
-        firebase.firestore
-          .FieldValue
-          .serverTimestamp(),
-
-      updatedAt:
-        firebase.firestore
-          .FieldValue
-          .serverTimestamp()
-
-    };
-
-
-    await firebase
-      .firestore()
-      .collection("hospital_buddies")
-      .doc(user.uid)
-      .set(profile);
-
-
-
-    /* ==========================================
-       SUCCESS
-    ========================================== */
-
-    message.innerHTML = `
-
-      <strong>
-        ✓ Registration submitted successfully.
-      </strong>
-
-      <br><br>
-
-      Your Buddy account has been created.
-
-      <br>
-
-      Your profile is currently
-      <strong>Pending Admin Approval</strong>.
-
-      <br><br>
-
-      You can login after your account
-      has been approved.
-
-      <br><br>
-
-      <a href="buddy-login.html">
-        Go to Buddy Login →
-      </a>
-
-    `;
-
-
-    formResetSafely();
-
-
-  } catch (error) {
-
-    console.error(
-      "Buddy registration error:",
-      error
-    );
-
-
-    message.textContent =
-      getFirebaseErrorMessage(
+      console.error(
+        "Buddy registration error:",
         error
       );
 
 
-  } finally {
+      registerMessage.textContent =
+        getFirebaseErrorMessage(
+          error
+        );
 
-    submitButton.disabled =
-      false;
 
-    submitButton.textContent =
-      "🤝 Submit Buddy Registration";
+    } finally {
+
+      submitButton.disabled =
+        false;
+
+      submitButton.textContent =
+        "🤝 Submit Buddy Registration";
+
+    }
 
   }
-
-}
-
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function formResetSafely() {
-
-  const form =
-    document.getElementById(
-      "buddyRegisterForm"
-    );
-
-
-  form.reset();
-
-
-  selectedHospitals.length =
-    0;
-
-
-  renderSelectedHospitals();
-
-
-  document.getElementById(
-    "district"
-  ).disabled = true;
-
-
-  document.getElementById(
-    "hospital"
-  ).disabled = true;
-
-}
+);
 
 
 
@@ -1809,6 +1815,11 @@ function formResetSafely() {
 function getFirebaseErrorMessage(
   error
 ) {
+
+  console.error(
+    error
+  );
+
 
   if (
     error.code ===
@@ -1847,46 +1858,46 @@ function getFirebaseErrorMessage(
   }
 
 
-  return (
-    "Registration failed. Please try again."
-  );
+  if (
+    error.code ===
+    "auth/network-request-failed"
+  ) {
 
-}
-
-
-
-/* =====================================================
-   HTML SECURITY
-===================================================== */
-
-function escapeHTML(value) {
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
+    return (
+      "Network error. Please check your internet connection and try again."
     );
+
+  }
+
+
+  if (
+    error.code ===
+    "storage/unauthorized"
+  ) {
+
+    return (
+      "Profile photo upload was blocked by Firebase Storage rules."
+    );
+
+  }
+
+
+  if (
+    error.code ===
+    "permission-denied"
+  ) {
+
+    return (
+      "Firebase permission denied. Please check your Firestore rules."
+    );
+
+  }
+
+
+  return (
+    "Registration failed: " +
+    (error.message || "Please try again.")
+  );
 
 }
 
