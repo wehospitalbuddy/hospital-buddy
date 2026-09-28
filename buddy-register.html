@@ -1,1909 +1,887 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   >
 
   <meta
     name="description"
-    content="Register as a Hospital Buddy"
+    content="Register to become a Hospital Buddy"
   >
 
-  <title>Register as a Hospital Buddy | Hospital Buddy</title>
+  <title>Hospital Buddy | Register</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <style>
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f8fb;
+      color: #17202a;
+    }
+
+    header {
+      background: white;
+      padding: 15px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .headerInner {
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .brandText {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .brandSub {
+      font-size: 12px;
+      color: #667085;
+      margin-top: 2px;
+    }
+
+    .backBtn {
+      text-decoration: none;
+      color: white;
+      background: #1769aa;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .intro {
+      color: #667085;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .notice {
+      background: #eef6ff;
+      border-left: 4px solid #1769aa;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .formGroup {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 7px;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #1769aa;
+      box-shadow: 0 0 0 3px rgba(23,105,170,0.10);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .languageHelp {
+      font-size: 12px;
+      color: #667085;
+      margin-top: 5px;
+    }
+
+    .checkboxGroup {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 18px;
+    }
+
+    .checkboxGroup input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .checkboxGroup label {
+      font-weight: normal;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .submitBtn {
+      width: 100%;
+      border: none;
+      background: #1769aa;
+      color: white;
+      padding: 14px;
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .submitBtn:hover {
+      background: #125589;
+    }
+
+    .submitBtn:disabled {
+      background: #9aa4b2;
+      cursor: not-allowed;
+    }
+
+    #formMessage {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      background: #e9f8ef;
+      color: #176b32;
+      border: 1px solid #b7e3c4;
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #b00020;
+      border: 1px solid #f0b8b8;
+    }
+
+    footer {
+      text-align: center;
+      color: #667085;
+      font-size: 12px;
+      padding: 25px 15px 40px;
+    }
+
+    @media (max-width: 600px) {
+
+      .headerInner {
+        align-items: flex-start;
+      }
+
+      .brandText {
+        font-size: 17px;
+      }
+
+      .brandSub {
+        font-size: 11px;
+      }
+
+      .backBtn {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+
+      main {
+        margin-top: 20px;
+      }
+
+      .card {
+        padding: 20px 16px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+
+  </style>
 </head>
-
 
 <body>
 
+  <header>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+    <div class="headerInner">
 
-<header class="siteHeader">
+      <div class="brand">
 
-  <div class="nav">
+        <img
+          src="logo.png"
+          alt="Hospital Buddy"
+        >
 
-    <a class="brand" href="index.html">
+        <div>
 
-      <img
-        src="logo.png"
-        alt="Hospital Buddy Logo"
-      >
+          <div class="brandText">
+            Hospital Buddy
+          </div>
 
-      <div class="brandText">
+          <div class="brandSub">
+            Register as a Hospital Buddy
+          </div>
 
-        <strong>Hospital Buddy</strong>
-
-        <small>
-          Assist • Guide • Support
-        </small>
+        </div>
 
       </div>
 
-    </a>
-
-
-    <nav class="desktopNav">
-
-      <a href="index.html">
-        Home
+      <a
+        href="index.html"
+        class="backBtn"
+      >
+        Back to Home
       </a>
-
-      <a href="buddy-login.html">
-        Buddy Login
-      </a>
-
-    </nav>
-
-  </div>
-
-</header>
-
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main>
-
-<section class="section bookingSection">
-
-
-  <div class="bookingIntro">
-
-    <span class="sectionLabel">
-      JOIN HOSPITAL BUDDY
-    </span>
-
-    <h1>
-      Register as a Hospital Buddy
-    </h1>
-
-    <p>
-      Create your Buddy profile and help patients
-      with practical, non-medical assistance during
-      hospital visits.
-    </p>
-
-    <div class="bookingBenefits">
-
-      <div>✓ Create your Buddy profile</div>
-
-      <div>✓ Choose your languages</div>
-
-      <div>✓ Select hospitals you can support</div>
-
-      <div>✓ Manage your availability</div>
-
-      <div>✓ Receive patient requests</div>
 
     </div>
 
-  </div>
+  </header>
 
 
+  <main>
 
-  <!-- =================================================
-       REGISTRATION FORM
-  ================================================= -->
+    <div class="card">
 
-  <div class="bookingBox">
+      <h1>
+        Become a Hospital Buddy
+      </h1>
 
-    <form id="buddyRegisterForm">
+      <p class="intro">
+        Help patients and their families with hospital
+        navigation, administrative assistance,
+        appointment procedures and language support.
+      </p>
 
 
-      <!-- PERSONAL INFORMATION -->
+      <div class="notice">
 
-      <h2>
-        Personal Information
-      </h2>
+        <strong>Important:</strong>
+        Registration does not automatically make you
+        an active Hospital Buddy. Your information will
+        be reviewed before approval.
 
+      </div>
 
-      <label>
 
-        <span>
-          Profile Photo
-        </span>
+      <form id="buddyRegisterForm">
 
-        <input
-          id="photo"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          required
-        >
+        <div class="row">
 
-        <small>
-          Please upload a clear photo of yourself.
-        </small>
+          <div class="formGroup">
 
-      </label>
+            <label for="name">
+              Full Name *
+            </label>
 
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter your full name"
+              required
+            >
 
+          </div>
 
-      <label>
 
-        <span>
-          Full Name
-        </span>
+          <div class="formGroup">
 
-        <input
-          id="name"
-          type="text"
-          placeholder="Enter your full name"
-          required
-          autocomplete="name"
-        >
+            <label for="phone">
+              Phone Number *
+            </label>
 
-      </label>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Enter phone number"
+              maxlength="10"
+              required
+            >
 
+          </div>
 
+        </div>
 
-      <label>
 
-        <span>
-          Phone Number
-        </span>
+        <div class="row">
 
-        <input
-          id="phone"
-          type="tel"
-          placeholder="Enter your phone number"
-          required
-          autocomplete="tel"
-        >
+          <div class="formGroup">
 
-      </label>
+            <label for="email">
+              Email Address
+            </label>
 
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter email address"
+            >
 
+          </div>
 
-      <label>
 
-        <span>
-          Email Address
-        </span>
+          <div class="formGroup">
 
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email address"
-          required
-          autocomplete="email"
-        >
+            <label for="qualification">
+              Qualification *
+            </label>
 
-      </label>
+            <input
+              type="text"
+              id="qualification"
+              placeholder="Example: HS, Graduate"
+              required
+            >
 
+          </div>
 
+        </div>
 
-      <label>
 
-        <span>
-          Gender
-        </span>
+        <div class="formGroup">
 
-        <select id="gender" required>
+          <label for="languages">
+            Languages You Can Speak *
+          </label>
 
-          <option value="">
-            Select Gender
-          </option>
+          <input
+            type="text"
+            id="languages"
+            placeholder="Example: Assamese, Hindi, English"
+            required
+          >
 
-          <option value="Male">
-            Male
-          </option>
+          <div class="languageHelp">
+            Separate multiple languages with commas.
+          </div>
 
-          <option value="Female">
-            Female
-          </option>
+        </div>
 
-          <option value="Other">
-            Other
-          </option>
 
-          <option value="Prefer not to say">
-            Prefer not to say
-          </option>
+        <div class="row">
 
-        </select>
+          <div class="formGroup">
 
-      </label>
+            <label for="district">
+              District *
+            </label>
 
+            <input
+              type="text"
+              id="district"
+              placeholder="Example: Kamrup"
+              required
+            >
 
+          </div>
 
-      <label>
 
-        <span>
-          Date of Birth
-        </span>
+          <div class="formGroup">
 
-        <input
-          id="dob"
-          type="date"
-          required
-        >
+            <label for="city">
+              City / Town *
+            </label>
 
-      </label>
+            <input
+              type="text"
+              id="city"
+              placeholder="Example: Guwahati"
+              required
+            >
 
+          </div>
 
+        </div>
 
-      <!-- LOCATION -->
 
-      <h2 class="formSectionTitle">
-        Location
-      </h2>
+        <div class="formGroup">
 
+          <label for="experience">
+            Previous Experience
+          </label>
 
+          <textarea
+            id="experience"
+            placeholder="Tell us about any relevant experience..."
+          ></textarea>
 
-      <label>
+        </div>
 
-        <span>
-          State
-        </span>
 
-        <select id="state" required>
+        <div class="formGroup">
 
-          <option value="">
-            Select State
-          </option>
+          <label for="availability">
+            Availability
+          </label>
 
-          <option value="Assam">
-            Assam
-          </option>
+          <select id="availability">
 
-        </select>
+            <option value="">
+              Select availability
+            </option>
 
-      </label>
+            <option value="full-time">
+              Full Time
+            </option>
 
+            <option value="part-time">
+              Part Time
+            </option>
 
+            <option value="weekends">
+              Weekends
+            </option>
 
-      <label>
+            <option value="flexible">
+              Flexible
+            </option>
 
-        <span>
-          District
-        </span>
+          </select>
 
-        <select
-          id="district"
-          required
-          disabled
-        >
+        </div>
 
-          <option value="">
-            Select District
-          </option>
 
-        </select>
+        <div class="formGroup">
 
-      </label>
+          <label for="message">
+            Additional Information
+          </label>
 
+          <textarea
+            id="message"
+            placeholder="Anything else you want us to know?"
+          ></textarea>
 
+        </div>
 
-      <label>
-
-        <span>
-          Address
-        </span>
-
-        <textarea
-          id="address"
-          placeholder="Enter your full address"
-          rows="3"
-          required
-        ></textarea>
-
-      </label>
-
-
-
-      <!-- BUDDY INFORMATION -->
-
-      <h2 class="formSectionTitle">
-        Buddy Information
-      </h2>
-
-
-
-      <label>
-
-        <span>
-          Qualification
-        </span>
-
-        <input
-          id="qualification"
-          type="text"
-          placeholder="Example: HS Passed / Graduate / Diploma"
-          required
-        >
-
-      </label>
-
-
-
-      <label>
-
-        <span>
-          Experience
-        </span>
-
-        <textarea
-          id="experience"
-          placeholder="Tell us about your relevant experience."
-          rows="3"
-        ></textarea>
-
-      </label>
-
-
-
-      <!-- LANGUAGES -->
-
-      <label>
-
-        <span>
-          Languages You Can Speak
-        </span>
 
         <div class="checkboxGroup">
 
-          <label class="agreement">
-            <input
-              type="checkbox"
-              name="languages"
-              value="Assamese"
-            >
-            <span>Assamese</span>
-          </label>
+          <input
+            type="checkbox"
+            id="agreement"
+            required
+          >
 
+          <label for="agreement">
 
-          <label class="agreement">
-            <input
-              type="checkbox"
-              name="languages"
-              value="English"
-            >
-            <span>English</span>
-          </label>
+            I confirm that the information provided by me
+            is accurate and I understand that registration
+            is subject to review and approval by Hospital Buddy.
 
-
-          <label class="agreement">
-            <input
-              type="checkbox"
-              name="languages"
-              value="Hindi"
-            >
-            <span>Hindi</span>
-          </label>
-
-
-          <label class="agreement">
-            <input
-              type="checkbox"
-              name="languages"
-              value="Bengali"
-            >
-            <span>Bengali</span>
-          </label>
-
-
-          <label class="agreement">
-            <input
-              type="checkbox"
-              name="languages"
-              value="Bodo"
-            >
-            <span>Bodo</span>
           </label>
 
         </div>
 
-      </label>
 
-
-
-      <!-- SERVICES -->
-
-      <label>
-
-        <span>
-          Services You Can Provide
-        </span>
-
-        <div class="checkboxGroup">
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Hospital Navigation"
-            >
-
-            <span>
-              Hospital Navigation
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Appointment Assistance"
-            >
-
-            <span>
-              Appointment Assistance
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Administrative Help"
-            >
-
-            <span>
-              Administrative Help
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Language Assistance"
-            >
-
-            <span>
-              Language Assistance
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Elderly Assistance"
-            >
-
-            <span>
-              Elderly Assistance
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Family Support"
-            >
-
-            <span>
-              Family Support
-            </span>
-
-          </label>
-
-
-          <label class="agreement">
-
-            <input
-              type="checkbox"
-              name="services"
-              value="Outstation Support"
-            >
-
-            <span>
-              Outstation Support
-            </span>
-
-          </label>
-
-
-        </div>
-
-      </label>
-
-
-
-      <!-- HOSPITALS -->
-
-      <h2 class="formSectionTitle">
-        Hospitals You Can Support
-      </h2>
-
-
-      <label>
-
-        <span>
-          District
-        </span>
-
-        <select id="hospitalDistrict">
-
-          <option value="">
-            Select District
-          </option>
-
-        </select>
-
-      </label>
-
-
-
-      <label>
-
-        <span>
-          Hospital
-        </span>
-
-        <select
-          id="hospital"
-          disabled
+        <button
+          type="submit"
+          class="submitBtn"
+          id="submitBtn"
         >
+          Submit Registration
+        </button>
 
-          <option value="">
-            Select Hospital
-          </option>
 
-        </select>
+        <div
+          id="formMessage"
+        ></div>
 
-      </label>
-
-
-
-      <button
-        type="button"
-        class="btn secondaryBtn"
-        id="addHospitalBtn"
-      >
-        + Add Hospital
-      </button>
-
-
-
-      <div
-        id="selectedHospitals"
-        class="selectedHospitalList"
-      ></div>
-
-
-
-      <!-- AVAILABILITY -->
-
-      <h2 class="formSectionTitle">
-        Availability
-      </h2>
-
-
-      <label>
-
-        <span>
-          Preferred Availability
-        </span>
-
-        <select
-          id="availability"
-          required
-        >
-
-          <option value="">
-            Select Availability
-          </option>
-
-          <option value="Full Time">
-            Full Time
-          </option>
-
-          <option value="Part Time">
-            Part Time
-          </option>
-
-          <option value="Weekends">
-            Weekends
-          </option>
-
-          <option value="Evenings">
-            Evenings
-          </option>
-
-          <option value="Flexible">
-            Flexible
-          </option>
-
-        </select>
-
-      </label>
-
-
-
-      <!-- LOGIN -->
-
-      <h2 class="formSectionTitle">
-        Create Login
-      </h2>
-
-
-      <label>
-
-        <span>
-          Password
-        </span>
-
-        <input
-          id="password"
-          type="password"
-          placeholder="Create a password"
-          minlength="6"
-          required
-          autocomplete="new-password"
-        >
-
-      </label>
-
-
-
-      <label>
-
-        <span>
-          Confirm Password
-        </span>
-
-        <input
-          id="confirmPassword"
-          type="password"
-          placeholder="Confirm your password"
-          minlength="6"
-          required
-          autocomplete="new-password"
-        >
-
-      </label>
-
-
-
-      <!-- AGREEMENT -->
-
-      <label class="agreement">
-
-        <input
-          id="terms"
-          type="checkbox"
-          required
-        >
-
-        <span>
-
-          I confirm that the information provided by me
-          is accurate. I understand that registration does
-          not automatically make me an approved Hospital
-          Buddy. My profile may require administrative
-          verification before I can accept patient requests.
-
-        </span>
-
-      </label>
-
-
-
-      <!-- SUBMIT -->
-
-      <button
-        class="btn primaryBtn submitBtn"
-        type="submit"
-      >
-        🤝 Submit Buddy Registration
-      </button>
-
-
-
-      <p
-        id="registerMessage"
-        class="formPrivacy"
-      ></p>
-
-
-
-      <p class="formPrivacy">
-
-        Already registered?
-
-        <a href="buddy-login.html">
-          Login as Buddy
-        </a>
-
-      </p>
-
-
-    </form>
-
-  </div>
-
-</section>
-
-</main>
-
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer>
-
-  <div class="footerMain">
-
-    <div>
-
-      <img
-        src="logo.png"
-        alt="Hospital Buddy"
-        class="footerLogo"
-      >
-
-      <h3>
-        Hospital Buddy
-      </h3>
-
-      <p>
-        Helping Patients • Supporting Families
-        • Creating Opportunities
-      </p>
+      </form>
 
     </div>
 
+  </main>
 
-    <div>
 
-      <h4>
-        Quick Links
-      </h4>
+  <footer>
 
-      <a href="index.html">
-        Home
-      </a>
+    Hospital Buddy is an independent patient assistance
+    service and is not affiliated with any hospital or
+    government institution.
 
-      <a href="buddy-login.html">
-        Buddy Login
-      </a>
+  </footer>
 
-    </div>
 
-  </div>
+  <!-- Firebase -->
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-  <div class="footerBottom">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-    <p>
-      © 2026 Hospital Buddy. All rights reserved.
-    </p>
 
-  </div>
+  <script>
 
-</footer>
+    const firebaseConfig = {
 
+      apiKey:
+        "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
 
+      authDomain:
+        "hospital-buddy-2224d.firebaseapp.com",
 
-<!-- =====================================================
-     FIREBASE SDK
-===================================================== -->
+      projectId:
+        "hospital-buddy-2224d",
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+      storageBucket:
+        "hospital-buddy-2224d.firebasestorage.app",
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+      messagingSenderId:
+        "190919672635",
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+      appId:
+        "1:190919672635:web:8fe14cc8036fd0cb542d1e",
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+      measurementId:
+        "G-7I3TZ2EFFR"
 
+    };
 
 
-<script>
+    firebase.initializeApp(
+      firebaseConfig
+    );
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
 
-const firebaseConfig = {
+    const db =
+      firebase.firestore();
 
-  apiKey:
-    "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
 
-  authDomain:
-    "hospital-buddy-2224d.firebaseapp.com",
+    const form =
+      document.getElementById(
+        "buddyRegisterForm"
+      );
 
-  projectId:
-    "hospital-buddy-2224d",
 
-  storageBucket:
-    "hospital-buddy-2224d.firebasestorage.app",
+    const submitBtn =
+      document.getElementById(
+        "submitBtn"
+      );
 
-  messagingSenderId:
-    "190919672635",
 
-  appId:
-    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+    const formMessage =
+      document.getElementById(
+        "formMessage"
+      );
 
-  measurementId:
-    "G-7I3TZ2EFFR"
 
-};
+    form.addEventListener(
+      "submit",
+      async function(event) {
 
+        event.preventDefault();
 
 
-/* =====================================================
-   INITIALIZE FIREBASE
-===================================================== */
+        const name =
+          document
+            .getElementById("name")
+            .value
+            .trim();
 
-firebase.initializeApp(
-  firebaseConfig
-);
 
-const db =
-  firebase.firestore();
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .trim();
 
-const auth =
-  firebase.auth();
 
-const storage =
-  firebase.storage();
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
 
 
+        const qualification =
+          document
+            .getElementById("qualification")
+            .value
+            .trim();
 
-/* =====================================================
-   HOSPITAL DATA
-===================================================== */
-
-const hospitalData = {
-
-  "Assam": {
-
-    "Baksa": [
-      "Mushalpur Civil Hospital"
-    ],
-
-    "Barpeta": [
-      "Fakhruddin Ali Ahmed Medical College & Hospital",
-      "Barpeta Civil Hospital"
-    ],
-
-    "Bongaigaon": [
-      "Bongaigaon Civil Hospital"
-    ],
-
-    "Cachar": [
-      "Silchar Medical College & Hospital",
-      "Silchar Civil Hospital"
-    ],
-
-    "Darrang": [
-      "Mangaldai Civil Hospital"
-    ],
-
-    "Dhemaji": [
-      "Dhemaji Civil Hospital"
-    ],
-
-    "Dhubri": [
-      "Dhubri Medical College & Hospital",
-      "Dhubri Civil Hospital"
-    ],
-
-    "Dibrugarh": [
-      "Assam Medical College & Hospital",
-      "Dibrugarh District Hospital"
-    ],
-
-    "Goalpara": [
-      "Goalpara Civil Hospital"
-    ],
-
-    "Golaghat": [
-      "Golaghat Civil Hospital"
-    ],
-
-    "Hailakandi": [
-      "Hailakandi Civil Hospital"
-    ],
-
-    "Jorhat": [
-      "Jorhat Medical College & Hospital",
-      "Jorhat Civil Hospital"
-    ],
-
-    "Kamrup": [
-      "Rajarshi Bhagyachandra District Hospital",
-      "Mirza Community Health Centre",
-      "North Guwahati Community Health Centre"
-    ],
-
-    "Kamrup Metropolitan": [
-      "AIIMS Guwahati",
-      "Gauhati Medical College & Hospital",
-      "Dr. B. Borooah Cancer Institute",
-      "GNRC Hospitals, Dispur",
-      "GNRC Hospitals, Six Mile",
-      "Nemcare Hospital",
-      "Down Town Hospital",
-      "Hayat Hospital",
-      "International Hospital",
-      "Pratiksha Hospital"
-    ],
-
-    "Karbi Anglong": [
-      "Diphu Medical College & Hospital",
-      "Diphu Civil Hospital"
-    ],
-
-    "Lakhimpur": [
-      "North Lakhimpur Civil Hospital"
-    ],
 
-    "Majuli": [
-      "Garmur Civil Hospital"
-    ],
+        const languagesText =
+          document
+            .getElementById("languages")
+            .value
+            .trim();
 
-    "Morigaon": [
-      "Morigaon Civil Hospital"
-    ],
 
-    "Nagaon": [
-      "Nagaon Medical College & Hospital",
-      "Nagaon Civil Hospital"
-    ],
+        const district =
+          document
+            .getElementById("district")
+            .value
+            .trim();
 
-    "Nalbari": [
-      "Nalbari Medical College & Hospital",
-      "Nalbari Civil Hospital"
-    ],
 
-    "Sivasagar": [
-      "Sivasagar Civil Hospital"
-    ],
+        const city =
+          document
+            .getElementById("city")
+            .value
+            .trim();
 
-    "Sonitpur": [
-      "Tezpur Medical College & Hospital",
-      "Tezpur Civil Hospital"
-    ],
 
-    "South Salmara-Mankachar": [
-      "Hatsingimari Civil Hospital"
-    ],
+        const experience =
+          document
+            .getElementById("experience")
+            .value
+            .trim();
 
-    "Tinsukia": [
-      "Tinsukia Civil Hospital"
-    ],
 
-    "Udalguri": [
-      "Udalguri Civil Hospital"
-    ]
+        const availability =
+          document
+            .getElementById("availability")
+            .value;
 
-  }
 
-};
+        const message =
+          document
+            .getElementById("message")
+            .value
+            .trim();
 
 
+        const languages =
+          languagesText
+            .split(",")
+            .map(
+              item => item.trim()
+            )
+            .filter(
+              item => item.length > 0
+            );
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
 
-const form =
-  document.getElementById(
-    "buddyRegisterForm"
-  );
+        if (
+          phone.length !== 10 ||
+          !/^[0-9]+$/.test(phone)
+        ) {
 
-const stateSelect =
-  document.getElementById(
-    "state"
-  );
-
-const districtSelect =
-  document.getElementById(
-    "district"
-  );
-
-const hospitalDistrictSelect =
-  document.getElementById(
-    "hospitalDistrict"
-  );
-
-const hospitalSelect =
-  document.getElementById(
-    "hospital"
-  );
-
-const addHospitalButton =
-  document.getElementById(
-    "addHospitalBtn"
-  );
-
-const selectedHospitalsContainer =
-  document.getElementById(
-    "selectedHospitals"
-  );
-
-const registerMessage =
-  document.getElementById(
-    "registerMessage"
-  );
-
-
-
-/* =====================================================
-   SELECTED HOSPITALS
-===================================================== */
-
-const selectedHospitals = [];
-
-
-
-/* =====================================================
-   STATE → DISTRICT
-===================================================== */
-
-stateSelect.addEventListener(
-  "change",
-  function () {
-
-    districtSelect.innerHTML =
-      '<option value="">Select District</option>';
-
-    hospitalDistrictSelect.innerHTML =
-      '<option value="">Select District</option>';
-
-    hospitalSelect.innerHTML =
-      '<option value="">Select Hospital</option>';
-
-    hospitalSelect.disabled = true;
-
-    const state =
-      stateSelect.value;
-
-    if (
-      !state ||
-      !hospitalData[state]
-    ) {
-
-      districtSelect.disabled = true;
-
-      return;
-
-    }
-
-    districtSelect.disabled = false;
-
-    Object.keys(
-      hospitalData[state]
-    )
-    .sort()
-    .forEach(
-      function (districtName) {
-
-        const option =
-          document.createElement(
-            "option"
+          showMessage(
+            "Please enter a valid 10-digit phone number.",
+            true
           );
 
-        option.value =
-          districtName;
+          return;
 
-        option.textContent =
-          districtName;
-
-        districtSelect.appendChild(
-          option
-        );
+        }
 
 
-        const hospitalDistrictOption =
-          document.createElement(
-            "option"
+        if (
+          languages.length === 0
+        ) {
+
+          showMessage(
+            "Please enter at least one language.",
+            true
           );
 
-        hospitalDistrictOption.value =
-          districtName;
+          return;
 
-        hospitalDistrictOption.textContent =
-          districtName;
+        }
 
-        hospitalDistrictSelect.appendChild(
-          hospitalDistrictOption
-        );
+
+        submitBtn.disabled =
+          true;
+
+        submitBtn.textContent =
+          "Submitting...";
+
+
+        hideMessage();
+
+
+        try {
+
+          await db
+            .collection(
+              "buddy_applications"
+            )
+            .add({
+
+              name:
+                name,
+
+              phone:
+                phone,
+
+              email:
+                email,
+
+              qualification:
+                qualification,
+
+              languages:
+                languages,
+
+              district:
+                district,
+
+              city:
+                city,
+
+              experience:
+                experience,
+
+              availability:
+                availability,
+
+              message:
+                message,
+
+              status:
+                "pending",
+
+              createdAt:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp(),
+
+              updatedAt:
+                firebase.firestore
+                  .FieldValue
+                  .serverTimestamp()
+
+            });
+
+
+          showMessage(
+            "Registration submitted successfully. Your application will be reviewed by Hospital Buddy.",
+            false
+          );
+
+
+          form.reset();
+
+
+        } catch (error) {
+
+          console.error(
+            "Registration error:",
+            error
+          );
+
+
+          showMessage(
+            "Unable to submit registration. Please try again.",
+            true
+          );
+
+        }
+
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.textContent =
+          "Submit Registration";
 
       }
     );
 
-  }
-);
 
-
-
-/* =====================================================
-   HOSPITAL DISTRICT → HOSPITAL
-===================================================== */
-
-hospitalDistrictSelect.addEventListener(
-  "change",
-  function () {
-
-    hospitalSelect.innerHTML =
-      '<option value="">Select Hospital</option>';
-
-    hospitalSelect.disabled = true;
-
-    const district =
-      hospitalDistrictSelect.value;
-
-    if (
-      !district ||
-      !hospitalData.Assam[district]
+    function showMessage(
+      message,
+      isError
     ) {
 
-      return;
+      formMessage.textContent =
+        message;
+
+
+      formMessage.style.display =
+        "block";
+
+
+      formMessage.className =
+        isError
+          ? "error"
+          : "success";
 
     }
 
-    hospitalSelect.disabled = false;
 
-    hospitalData.Assam[district]
-      .forEach(
-        function (hospitalName) {
+    function hideMessage() {
 
-          const option =
-            document.createElement(
-              "option"
-            );
+      formMessage.style.display =
+        "none";
 
-          option.value =
-            hospitalName;
-
-          option.textContent =
-            hospitalName;
-
-          hospitalSelect.appendChild(
-            option
-          );
-
-        }
-      );
-
-  }
-);
-
-
-
-/* =====================================================
-   ADD HOSPITAL
-===================================================== */
-
-addHospitalButton.addEventListener(
-  "click",
-  function () {
-
-    const district =
-      hospitalDistrictSelect.value;
-
-    const hospital =
-      hospitalSelect.value;
-
-    if (
-      !district ||
-      !hospital
-    ) {
-
-      alert(
-        "Please select a district and hospital first."
-      );
-
-      return;
+      formMessage.textContent =
+        "";
 
     }
 
-    const alreadyAdded =
-      selectedHospitals.some(
-        function (item) {
-
-          return (
-            item.district === district &&
-            item.hospital === hospital
-          );
-
-        }
-      );
-
-    if (alreadyAdded) {
-
-      alert(
-        "This hospital has already been added."
-      );
-
-      return;
-
-    }
-
-    selectedHospitals.push({
-
-      district:
-        district,
-
-      hospital:
-        hospital
-
-    });
-
-    renderSelectedHospitals();
-
-  }
-);
-
-
-
-/* =====================================================
-   DISPLAY SELECTED HOSPITALS
-===================================================== */
-
-function renderSelectedHospitals() {
-
-  selectedHospitalsContainer.innerHTML =
-    "";
-
-  selectedHospitals.forEach(
-    function (item, index) {
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-      div.className =
-        "selectedHospitalItem";
-
-      const text =
-        document.createElement(
-          "span"
-        );
-
-      const strong =
-        document.createElement(
-          "strong"
-        );
-
-      strong.textContent =
-        item.hospital;
-
-      const small =
-        document.createElement(
-          "small"
-        );
-
-      small.textContent =
-        item.district;
-
-      text.appendChild(
-        strong
-      );
-
-      text.appendChild(
-        document.createElement(
-          "br"
-        )
-      );
-
-      text.appendChild(
-        small
-      );
-
-
-      const removeButton =
-        document.createElement(
-          "button"
-        );
-
-      removeButton.type =
-        "button";
-
-      removeButton.textContent =
-        "×";
-
-      removeButton.addEventListener(
-        "click",
-        function () {
-
-          removeHospital(index);
-
-        }
-      );
-
-
-      div.appendChild(
-        text
-      );
-
-      div.appendChild(
-        removeButton
-      );
-
-      selectedHospitalsContainer.appendChild(
-        div
-      );
-
-    }
-  );
-
-}
-
-
-
-/* =====================================================
-   REMOVE HOSPITAL
-===================================================== */
-
-function removeHospital(index) {
-
-  selectedHospitals.splice(
-    index,
-    1
-  );
-
-  renderSelectedHospitals();
-
-}
-
-
-
-/* =====================================================
-   FORM SUBMIT
-===================================================== */
-
-form.addEventListener(
-  "submit",
-  async function (event) {
-
-    event.preventDefault();
-
-    registerMessage.textContent =
-      "";
-
-    registerMessage.style.color =
-      "";
-
-
-
-    /* PASSWORD */
-
-    const password =
-      document.getElementById(
-        "password"
-      ).value;
-
-    const confirmPassword =
-      document.getElementById(
-        "confirmPassword"
-      ).value;
-
-
-    if (
-      password !==
-      confirmPassword
-    ) {
-
-      registerMessage.textContent =
-        "Passwords do not match.";
-
-      return;
-
-    }
-
-
-
-    /* LANGUAGES */
-
-    const languages =
-      Array.from(
-        document.querySelectorAll(
-          'input[name="languages"]:checked'
-        )
-      )
-      .map(
-        function (checkbox) {
-
-          return checkbox.value;
-
-        }
-      );
-
-
-    if (
-      languages.length === 0
-    ) {
-
-      registerMessage.textContent =
-        "Please select at least one language.";
-
-      return;
-
-    }
-
-
-
-    /* SERVICES */
-
-    const services =
-      Array.from(
-        document.querySelectorAll(
-          'input[name="services"]:checked'
-        )
-      )
-      .map(
-        function (checkbox) {
-
-          return checkbox.value;
-
-        }
-      );
-
-
-    if (
-      services.length === 0
-    ) {
-
-      registerMessage.textContent =
-        "Please select at least one service.";
-
-      return;
-
-    }
-
-
-
-    /* HOSPITAL */
-
-    if (
-      selectedHospitals.length === 0
-    ) {
-
-      registerMessage.textContent =
-        "Please add at least one hospital.";
-
-      return;
-
-    }
-
-
-
-    /* PHOTO */
-
-    const photoInput =
-      document.getElementById(
-        "photo"
-      );
-
-    const photo =
-      photoInput.files[0];
-
-
-    if (!photo) {
-
-      registerMessage.textContent =
-        "Please select a profile photo.";
-
-      return;
-
-    }
-
-
-
-    /* SUBMIT BUTTON */
-
-    const submitButton =
-      form.querySelector(
-        'button[type="submit"]'
-      );
-
-
-    try {
-
-      submitButton.disabled =
-        true;
-
-      submitButton.textContent =
-        "Creating Registration...";
-
-
-
-      /* EMAIL */
-
-      const email =
-        document.getElementById(
-          "email"
-        )
-        .value
-        .trim();
-
-
-
-      /* CREATE FIREBASE ACCOUNT */
-
-      const userCredential =
-        await auth
-          .createUserWithEmailAndPassword(
-            email,
-            password
-          );
-
-
-      const user =
-        userCredential.user;
-
-
-
-      /* =========================================
-         UPLOAD PROFILE PHOTO
-      ========================================= */
-
-      const fileExtension =
-        photo.name
-          .split(".")
-          .pop();
-
-
-      const photoPath =
-        "buddy_photos/" +
-        user.uid +
-        "/profile." +
-        fileExtension;
-
-
-      const storageRef =
-        storage.ref(
-          photoPath
-        );
-
-
-      await storageRef.put(
-        photo
-      );
-
-
-      const photoURL =
-        await storageRef.getDownloadURL();
-
-
-
-      /* =========================================
-         CREATE PROFILE
-      ========================================= */
-
-      const profile = {
-
-        uid:
-          user.uid,
-
-        accountType:
-          "buddy",
-
-        name:
-          document.getElementById(
-            "name"
-          ).value.trim(),
-
-        phone:
-          document.getElementById(
-            "phone"
-          ).value.trim(),
-
-        email:
-          email,
-
-        gender:
-          document.getElementById(
-            "gender"
-          ).value,
-
-        dob:
-          document.getElementById(
-            "dob"
-          ).value,
-
-        state:
-          stateSelect.value,
-
-        district:
-          districtSelect.value,
-
-        address:
-          document.getElementById(
-            "address"
-          ).value.trim(),
-
-        qualification:
-          document.getElementById(
-            "qualification"
-          ).value.trim(),
-
-        experience:
-          document.getElementById(
-            "experience"
-          ).value.trim(),
-
-        languages:
-          languages,
-
-        services:
-          services,
-
-        hospitals:
-          selectedHospitals.map(
-            function (item) {
-
-              return {
-
-                district:
-                  item.district,
-
-                hospital:
-                  item.hospital
-
-              };
-
-            }
-          ),
-
-        availability:
-          document.getElementById(
-            "availability"
-          ).value,
-
-        photoURL:
-          photoURL,
-
-        status:
-          "pending",
-
-        createdAt:
-          firebase.firestore.FieldValue.serverTimestamp(),
-
-        updatedAt:
-          firebase.firestore.FieldValue.serverTimestamp()
-
-      };
-
-
-
-      /* =========================================
-         SAVE TO FIRESTORE
-      ========================================= */
-
-      await db
-        .collection(
-          "hospital_buddies"
-        )
-        .doc(
-          user.uid
-        )
-        .set(
-          profile
-        );
-
-
-
-      /* =========================================
-         SUCCESS
-      ========================================= */
-
-      registerMessage.innerHTML =
-
-        "<strong>✓ Registration submitted successfully.</strong>" +
-
-        "<br><br>" +
-
-        "Your Buddy account has been created." +
-
-        "<br><br>" +
-
-        "Your profile is currently " +
-
-        "<strong>Pending Admin Approval</strong>." +
-
-        "<br><br>" +
-
-        "You can login after your account has been approved." +
-
-        "<br><br>" +
-
-        '<a href="buddy-login.html">Go to Buddy Login →</a>';
-
-
-      registerMessage.style.color =
-        "#17323d";
-
-
-      form.reset();
-
-      selectedHospitals.length =
-        0;
-
-      renderSelectedHospitals();
-
-
-      districtSelect.disabled =
-        true;
-
-      hospitalSelect.disabled =
-        true;
-
-
-    } catch (error) {
-
-      console.error(
-        "Buddy registration error:",
-        error
-      );
-
-
-      registerMessage.textContent =
-        getFirebaseErrorMessage(
-          error
-        );
-
-
-    } finally {
-
-      submitButton.disabled =
-        false;
-
-      submitButton.textContent =
-        "🤝 Submit Buddy Registration";
-
-    }
-
-  }
-);
-
-
-
-/* =====================================================
-   FIREBASE ERROR MESSAGE
-===================================================== */
-
-function getFirebaseErrorMessage(
-  error
-) {
-
-  console.error(
-    error
-  );
-
-
-  if (
-    error.code ===
-    "auth/email-already-in-use"
-  ) {
-
-    return (
-      "This email is already registered. " +
-      "Please use Buddy Login."
-    );
-
-  }
-
-
-  if (
-    error.code ===
-    "auth/invalid-email"
-  ) {
-
-    return (
-      "Please enter a valid email address."
-    );
-
-  }
-
-
-  if (
-    error.code ===
-    "auth/weak-password"
-  ) {
-
-    return (
-      "Password must contain at least 6 characters."
-    );
-
-  }
-
-
-  if (
-    error.code ===
-    "auth/network-request-failed"
-  ) {
-
-    return (
-      "Network error. Please check your internet connection and try again."
-    );
-
-  }
-
-
-  if (
-    error.code ===
-    "storage/unauthorized"
-  ) {
-
-    return (
-      "Profile photo upload was blocked by Firebase Storage rules."
-    );
-
-  }
-
-
-  if (
-    error.code ===
-    "permission-denied"
-  ) {
-
-    return (
-      "Firebase permission denied. Please check your Firestore rules."
-    );
-
-  }
-
-
-  return (
-    "Registration failed: " +
-    (error.message || "Please try again.")
-  );
-
-}
-
-</script>
-
+  </script>
 
 </body>
-
 </html>
