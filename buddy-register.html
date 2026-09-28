@@ -1,0 +1,1898 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Register as a Hospital Buddy"
+  >
+
+  <title>Register as a Hospital Buddy</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="siteHeader">
+
+  <div class="nav">
+
+    <a class="brand" href="index.html">
+
+      <img
+        src="logo.png"
+        alt="Hospital Buddy Logo"
+      >
+
+      <div class="brandText">
+
+        <strong>Hospital Buddy</strong>
+
+        <small>
+          Assist • Guide • Support
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <nav class="desktopNav">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="buddy-login.html">
+        Buddy Login
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+<section class="section bookingSection">
+
+
+  <div class="bookingIntro">
+
+    <span class="sectionLabel">
+      JOIN HOSPITAL BUDDY
+    </span>
+
+    <h1>
+      Register as a Hospital Buddy
+    </h1>
+
+    <p>
+      Create your Buddy profile and help patients
+      with practical, non-medical assistance during
+      hospital visits.
+    </p>
+
+    <div class="bookingBenefits">
+
+      <div>
+        ✓ Create your Buddy profile
+      </div>
+
+      <div>
+        ✓ Choose your languages
+      </div>
+
+      <div>
+        ✓ Select hospitals you can support
+      </div>
+
+      <div>
+        ✓ Manage your availability
+      </div>
+
+      <div>
+        ✓ Receive patient requests
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =================================================
+       REGISTRATION FORM
+  ================================================= -->
+
+  <div class="bookingBox">
+
+    <form id="buddyRegisterForm">
+
+
+      <!-- =============================================
+           PERSONAL INFORMATION
+      ============================================== -->
+
+      <h2>
+        Personal Information
+      </h2>
+
+
+      <!-- PHOTO -->
+
+      <label>
+
+        <span>
+          Profile Photo
+        </span>
+
+        <input
+          id="photo"
+          type="file"
+          accept="image/*"
+          required
+        >
+
+        <small>
+          Please upload a clear photo of yourself.
+        </small>
+
+      </label>
+
+
+
+      <!-- NAME -->
+
+      <label>
+
+        <span>
+          Full Name
+        </span>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Enter your full name"
+          required
+          autocomplete="name"
+        >
+
+      </label>
+
+
+
+      <!-- PHONE -->
+
+      <label>
+
+        <span>
+          Phone Number
+        </span>
+
+        <input
+          id="phone"
+          type="tel"
+          placeholder="Enter your phone number"
+          required
+          autocomplete="tel"
+        >
+
+      </label>
+
+
+
+      <!-- EMAIL -->
+
+      <label>
+
+        <span>
+          Email Address
+        </span>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email address"
+          required
+          autocomplete="email"
+        >
+
+      </label>
+
+
+
+      <!-- GENDER -->
+
+      <label>
+
+        <span>
+          Gender
+        </span>
+
+        <select
+          id="gender"
+          required
+        >
+
+          <option value="">
+            Select Gender
+          </option>
+
+          <option value="Male">
+            Male
+          </option>
+
+          <option value="Female">
+            Female
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+          <option value="Prefer not to say">
+            Prefer not to say
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- DATE OF BIRTH -->
+
+      <label>
+
+        <span>
+          Date of Birth
+        </span>
+
+        <input
+          id="dob"
+          type="date"
+          required
+        >
+
+      </label>
+
+
+
+      <!-- =============================================
+           LOCATION
+      ============================================== -->
+
+      <h2 class="formSectionTitle">
+        Location
+      </h2>
+
+
+
+      <!-- STATE -->
+
+      <label>
+
+        <span>
+          State
+        </span>
+
+        <select
+          id="state"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+          <option value="Assam">
+            Assam
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- DISTRICT -->
+
+      <label>
+
+        <span>
+          District
+        </span>
+
+        <select
+          id="district"
+          required
+          disabled
+        >
+
+          <option value="">
+            Select District
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- ADDRESS -->
+
+      <label>
+
+        <span>
+          Address
+        </span>
+
+        <textarea
+          id="address"
+          placeholder="Enter your full address"
+          rows="3"
+          required
+        ></textarea>
+
+      </label>
+
+
+
+      <!-- =============================================
+           PROFESSIONAL INFORMATION
+      ============================================== -->
+
+      <h2 class="formSectionTitle">
+        Buddy Information
+      </h2>
+
+
+
+      <!-- QUALIFICATION -->
+
+      <label>
+
+        <span>
+          Qualification
+        </span>
+
+        <input
+          id="qualification"
+          type="text"
+          placeholder="Example: HS Passed / Graduate / Diploma"
+          required
+        >
+
+      </label>
+
+
+
+      <!-- EXPERIENCE -->
+
+      <label>
+
+        <span>
+          Experience
+        </span>
+
+        <textarea
+          id="experience"
+          placeholder="Tell us about your relevant experience."
+          rows="3"
+        ></textarea>
+
+      </label>
+
+
+
+      <!-- =============================================
+           LANGUAGES
+      ============================================== -->
+
+      <label>
+
+        <span>
+          Languages You Can Speak
+        </span>
+
+        <div class="checkboxGroup">
+
+          <label class="agreement">
+            <input
+              type="checkbox"
+              name="languages"
+              value="Assamese"
+            >
+            <span>Assamese</span>
+          </label>
+
+
+          <label class="agreement">
+            <input
+              type="checkbox"
+              name="languages"
+              value="English"
+            >
+            <span>English</span>
+          </label>
+
+
+          <label class="agreement">
+            <input
+              type="checkbox"
+              name="languages"
+              value="Hindi"
+            >
+            <span>Hindi</span>
+          </label>
+
+
+          <label class="agreement">
+            <input
+              type="checkbox"
+              name="languages"
+              value="Bengali"
+            >
+            <span>Bengali</span>
+          </label>
+
+
+          <label class="agreement">
+            <input
+              type="checkbox"
+              name="languages"
+              value="Bodo"
+            >
+            <span>Bodo</span>
+          </label>
+
+        </div>
+
+      </label>
+
+
+
+      <!-- =============================================
+           SERVICES
+      ============================================== -->
+
+      <label>
+
+        <span>
+          Services You Can Provide
+        </span>
+
+
+        <div class="checkboxGroup">
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Hospital Navigation"
+            >
+
+            <span>
+              Hospital Navigation
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Appointment Assistance"
+            >
+
+            <span>
+              Appointment Assistance
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Administrative Help"
+            >
+
+            <span>
+              Administrative Help
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Language Assistance"
+            >
+
+            <span>
+              Language Assistance
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Elderly Assistance"
+            >
+
+            <span>
+              Elderly Assistance
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Family Support"
+            >
+
+            <span>
+              Family Support
+            </span>
+
+          </label>
+
+
+          <label class="agreement">
+
+            <input
+              type="checkbox"
+              name="services"
+              value="Outstation Support"
+            >
+
+            <span>
+              Outstation Support
+            </span>
+
+          </label>
+
+
+        </div>
+
+      </label>
+
+
+
+      <!-- =============================================
+           HOSPITALS
+      ============================================== -->
+
+      <h2 class="formSectionTitle">
+        Hospitals You Can Support
+      </h2>
+
+
+      <label>
+
+        <span>
+          District
+        </span>
+
+        <select
+          id="hospitalDistrict"
+        >
+
+          <option value="">
+            Select District
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <label>
+
+        <span>
+          Hospital
+        </span>
+
+        <select
+          id="hospital"
+          disabled
+        >
+
+          <option value="">
+            Select Hospital
+          </option>
+
+        </select>
+
+      </label>
+
+
+      <button
+        type="button"
+        class="btn secondaryBtn"
+        id="addHospitalBtn"
+      >
+        + Add Hospital
+      </button>
+
+
+      <div
+        id="selectedHospitals"
+        class="selectedHospitalList"
+      ></div>
+
+
+
+      <!-- =============================================
+           AVAILABILITY
+      ============================================== -->
+
+      <h2 class="formSectionTitle">
+        Availability
+      </h2>
+
+
+      <label>
+
+        <span>
+          Preferred Availability
+        </span>
+
+        <select
+          id="availability"
+          required
+        >
+
+          <option value="">
+            Select Availability
+          </option>
+
+          <option value="Full Time">
+            Full Time
+          </option>
+
+          <option value="Part Time">
+            Part Time
+          </option>
+
+          <option value="Weekends">
+            Weekends
+          </option>
+
+          <option value="Evenings">
+            Evenings
+          </option>
+
+          <option value="Flexible">
+            Flexible
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- =============================================
+           LOGIN
+      ============================================== -->
+
+      <h2 class="formSectionTitle">
+        Create Login
+      </h2>
+
+
+      <label>
+
+        <span>
+          Password
+        </span>
+
+        <input
+          id="password"
+          type="password"
+          placeholder="Create a password"
+          minlength="6"
+          required
+          autocomplete="new-password"
+        >
+
+      </label>
+
+
+      <label>
+
+        <span>
+          Confirm Password
+        </span>
+
+        <input
+          id="confirmPassword"
+          type="password"
+          placeholder="Confirm your password"
+          minlength="6"
+          required
+          autocomplete="new-password"
+        >
+
+      </label>
+
+
+
+      <!-- =============================================
+           AGREEMENT
+      ============================================== -->
+
+      <label class="agreement">
+
+        <input
+          id="terms"
+          type="checkbox"
+          required
+        >
+
+        <span>
+
+          I confirm that the information provided by me
+          is accurate. I understand that registration does
+          not automatically make me an approved Hospital
+          Buddy. My profile may require administrative
+          verification before I can accept patient requests.
+
+        </span>
+
+      </label>
+
+
+
+      <!-- SUBMIT -->
+
+      <button
+        class="btn primaryBtn submitBtn"
+        type="submit"
+      >
+
+        🤝 Submit Buddy Registration
+
+      </button>
+
+
+      <p
+        id="registerMessage"
+        class="formPrivacy"
+      ></p>
+
+
+      <p class="formPrivacy">
+
+        Already registered?
+
+        <a href="buddy-login.html">
+          Login as Buddy
+        </a>
+
+      </p>
+
+
+    </form>
+
+  </div>
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+  <div class="footerMain">
+
+    <div>
+
+      <img
+        src="logo.png"
+        alt="Hospital Buddy"
+        class="footerLogo"
+      >
+
+      <h3>
+        Hospital Buddy
+      </h3>
+
+      <p>
+        Helping Patients • Supporting Families
+        • Creating Opportunities
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Quick Links
+      </h4>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="buddy-login.html">
+        Buddy Login
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="footerBottom">
+
+    <p>
+      © 2026 Hospital Buddy. All rights reserved.
+    </p>
+
+  </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script>
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+
+  authDomain:
+    "hospital-buddy-2224d.firebaseapp.com",
+
+  projectId:
+    "hospital-buddy-2224d",
+
+  storageBucket:
+    "hospital-buddy-2224d.firebasestorage.app",
+
+  messagingSenderId:
+    "190919672635",
+
+  appId:
+    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+
+  measurementId:
+    "G-7I3TZ2EFFR"
+
+};
+
+
+/* =============================================
+   LOAD FIREBASE
+============================================= */
+
+const firebaseAppScript =
+  document.createElement("script");
+
+firebaseAppScript.src =
+  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
+
+document.head.appendChild(
+  firebaseAppScript
+);
+
+
+firebaseAppScript.onload = function () {
+
+  const authScript =
+    document.createElement("script");
+
+  authScript.src =
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+
+  document.head.appendChild(
+    authScript
+  );
+
+
+  authScript.onload = function () {
+
+    const firestoreScript =
+      document.createElement("script");
+
+    firestoreScript.src =
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+
+    document.head.appendChild(
+      firestoreScript
+    );
+
+
+    firestoreScript.onload = function () {
+
+      const storageScript =
+        document.createElement("script");
+
+      storageScript.src =
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js";
+
+      document.head.appendChild(
+        storageScript
+      );
+
+
+      storageScript.onload = function () {
+
+        firebase.initializeApp(
+          firebaseConfig
+        );
+
+        window.firebaseReady = true;
+
+        initializeBuddyRegistration();
+
+      };
+
+    };
+
+  };
+
+};
+
+
+
+/* =====================================================
+   HOSPITAL DATA
+===================================================== */
+
+const hospitalData = {
+
+  "Assam": {
+
+    "Barpeta": [
+      "Fakhruddin Ali Ahmed Medical College & Hospital",
+      "Barpeta Civil Hospital"
+    ],
+
+    "Bongaigaon": [
+      "Bongaigaon Civil Hospital"
+    ],
+
+    "Cachar": [
+      "Silchar Medical College & Hospital",
+      "Silchar Civil Hospital"
+    ],
+
+    "Dibrugarh": [
+      "Assam Medical College & Hospital",
+      "Dibrugarh District Hospital"
+    ],
+
+    "Jorhat": [
+      "Jorhat Medical College & Hospital",
+      "Jorhat Civil Hospital"
+    ],
+
+    "Kamrup": [
+      "North Guwahati Community Health Centre",
+      "Mirza Community Health Centre"
+    ],
+
+    "Kamrup Metropolitan": [
+      "AIIMS Guwahati",
+      "Gauhati Medical College & Hospital",
+      "Dr. B. Borooah Cancer Institute",
+      "GNRC Hospitals, Dispur",
+      "GNRC Hospitals, Six Mile",
+      "Nemcare Hospital",
+      "Down Town Hospital",
+      "Hayat Hospital",
+      "International Hospital",
+      "Pratiksha Hospital"
+    ],
+
+    "Lakhimpur": [
+      "North Lakhimpur Civil Hospital"
+    ],
+
+    "Nagaon": [
+      "Nagaon Medical College & Hospital",
+      "Nagaon Civil Hospital"
+    ],
+
+    "Sivasagar": [
+      "Sivasagar Civil Hospital"
+    ],
+
+    "Sonitpur": [
+      "Tezpur Medical College & Hospital",
+      "Tezpur Civil Hospital"
+    ],
+
+    "Tinsukia": [
+      "Tinsukia Civil Hospital"
+    ]
+
+  }
+
+};
+
+
+
+/* =====================================================
+   REGISTRATION
+===================================================== */
+
+function initializeBuddyRegistration() {
+
+  const form =
+    document.getElementById(
+      "buddyRegisterForm"
+    );
+
+  if (!form) {
+    return;
+  }
+
+
+  setupLocation();
+
+  setupHospitalSelection();
+
+
+  form.addEventListener(
+    "submit",
+    registerBuddy
+  );
+
+}
+
+
+
+/* =====================================================
+   STATE → DISTRICT
+===================================================== */
+
+function setupLocation() {
+
+  const state =
+    document.getElementById("state");
+
+  const district =
+    document.getElementById("district");
+
+  const hospitalDistrict =
+    document.getElementById(
+      "hospitalDistrict"
+    );
+
+
+  state.addEventListener(
+    "change",
+    function () {
+
+      district.innerHTML =
+        '<option value="">Select District</option>';
+
+      hospitalDistrict.innerHTML =
+        '<option value="">Select District</option>';
+
+
+      const selectedState =
+        state.value;
+
+
+      if (
+        !selectedState ||
+        !hospitalData[selectedState]
+      ) {
+
+        district.disabled = true;
+
+        return;
+
+      }
+
+
+      district.disabled = false;
+
+
+      Object.keys(
+        hospitalData[selectedState]
+      )
+      .sort()
+      .forEach(
+        function (districtName) {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            districtName;
+
+          option.textContent =
+            districtName;
+
+          district.appendChild(
+            option
+          );
+
+
+          const hospitalOption =
+            document.createElement(
+              "option"
+            );
+
+          hospitalOption.value =
+            districtName;
+
+          hospitalOption.textContent =
+            districtName;
+
+          hospitalDistrict.appendChild(
+            hospitalOption
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   HOSPITAL SELECTION
+===================================================== */
+
+function setupHospitalSelection() {
+
+  const hospitalDistrict =
+    document.getElementById(
+      "hospitalDistrict"
+    );
+
+  const hospital =
+    document.getElementById(
+      "hospital"
+    );
+
+  const addButton =
+    document.getElementById(
+      "addHospitalBtn"
+    );
+
+
+  hospitalDistrict.addEventListener(
+    "change",
+    function () {
+
+      hospital.innerHTML =
+        '<option value="">Select Hospital</option>';
+
+      hospital.disabled = true;
+
+
+      const district =
+        hospitalDistrict.value;
+
+
+      if (
+        !district ||
+        !hospitalData.Assam[district]
+      ) {
+
+        return;
+
+      }
+
+
+      hospital.disabled = false;
+
+
+      hospitalData.Assam[district]
+        .forEach(
+          function (hospitalName) {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+            option.value =
+              hospitalName;
+
+            option.textContent =
+              hospitalName;
+
+            hospital.appendChild(
+              option
+            );
+
+          }
+        );
+
+    }
+  );
+
+
+  addButton.addEventListener(
+    "click",
+    function () {
+
+      const district =
+        hospitalDistrict.value;
+
+      const hospitalName =
+        hospital.value;
+
+
+      if (
+        !district ||
+        !hospitalName
+      ) {
+
+        alert(
+          "Please select a district and hospital first."
+        );
+
+        return;
+
+      }
+
+
+      addSelectedHospital(
+        district,
+        hospitalName
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   SELECTED HOSPITALS
+===================================================== */
+
+const selectedHospitals = [];
+
+
+function addSelectedHospital(
+  district,
+  hospital
+) {
+
+  const exists =
+    selectedHospitals.some(
+      function (item) {
+
+        return (
+          item.district === district &&
+          item.hospital === hospital
+        );
+
+      }
+    );
+
+
+  if (exists) {
+
+    alert(
+      "This hospital has already been added."
+    );
+
+    return;
+
+  }
+
+
+  selectedHospitals.push({
+
+    district:
+      district,
+
+    hospital:
+      hospital
+
+  });
+
+
+  renderSelectedHospitals();
+
+}
+
+
+
+function renderSelectedHospitals() {
+
+  const container =
+    document.getElementById(
+      "selectedHospitals"
+    );
+
+
+  container.innerHTML = "";
+
+
+  selectedHospitals.forEach(
+    function (item, index) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "selectedHospitalItem";
+
+
+      div.innerHTML = `
+
+        <span>
+          <strong>
+            ${escapeHTML(item.hospital)}
+          </strong>
+
+          <small>
+            ${escapeHTML(item.district)}
+          </small>
+        </span>
+
+        <button
+          type="button"
+          onclick="removeHospital(${index})"
+        >
+          ×
+        </button>
+
+      `;
+
+
+      container.appendChild(div);
+
+    }
+  );
+
+}
+
+
+
+function removeHospital(index) {
+
+  selectedHospitals.splice(
+    index,
+    1
+  );
+
+  renderSelectedHospitals();
+
+}
+
+
+
+/* =====================================================
+   REGISTER BUDDY
+===================================================== */
+
+async function registerBuddy(event) {
+
+  event.preventDefault();
+
+
+  const message =
+    document.getElementById(
+      "registerMessage"
+    );
+
+
+  const submitButton =
+    document.querySelector(
+      "#buddyRegisterForm button[type='submit']"
+    );
+
+
+  const password =
+    document.getElementById(
+      "password"
+    ).value;
+
+
+  const confirmPassword =
+    document.getElementById(
+      "confirmPassword"
+    ).value;
+
+
+  if (
+    password !==
+    confirmPassword
+  ) {
+
+    message.textContent =
+      "Passwords do not match.";
+
+    return;
+
+  }
+
+
+  const languages =
+    Array.from(
+      document.querySelectorAll(
+        'input[name="languages"]:checked'
+      )
+    )
+    .map(
+      checkbox =>
+        checkbox.value
+    );
+
+
+  const services =
+    Array.from(
+      document.querySelectorAll(
+        'input[name="services"]:checked'
+      )
+    )
+    .map(
+      checkbox =>
+        checkbox.value
+    );
+
+
+  if (
+    languages.length === 0
+  ) {
+
+    message.textContent =
+      "Please select at least one language.";
+
+    return;
+
+  }
+
+
+  if (
+    services.length === 0
+  ) {
+
+    message.textContent =
+      "Please select at least one service.";
+
+    return;
+
+  }
+
+
+  if (
+    selectedHospitals.length === 0
+  ) {
+
+    message.textContent =
+      "Please add at least one hospital.";
+
+    return;
+
+  }
+
+
+  const photo =
+    document.getElementById(
+      "photo"
+    ).files[0];
+
+
+  if (!photo) {
+
+    message.textContent =
+      "Please select a profile photo.";
+
+    return;
+
+  }
+
+
+  try {
+
+    submitButton.disabled =
+      true;
+
+    submitButton.textContent =
+      "Creating Registration...";
+
+
+    const email =
+      document.getElementById(
+        "email"
+      ).value.trim();
+
+
+    const userCredential =
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          email,
+          password
+        );
+
+
+    const user =
+      userCredential.user;
+
+
+    /* ==========================================
+       UPLOAD PHOTO
+    ========================================== */
+
+    const storageRef =
+      firebase
+        .storage()
+        .ref(
+          "buddy_photos/" +
+          user.uid +
+          "/" +
+          photo.name
+        );
+
+
+    await storageRef.put(
+      photo
+    );
+
+
+    const photoURL =
+      await storageRef.getDownloadURL();
+
+
+
+    /* ==========================================
+       SAVE PROFILE
+    ========================================== */
+
+    const profile = {
+
+      uid:
+        user.uid,
+
+      name:
+        document.getElementById(
+          "name"
+        ).value.trim(),
+
+      email:
+        email,
+
+      phone:
+        document.getElementById(
+          "phone"
+        ).value.trim(),
+
+      gender:
+        document.getElementById(
+          "gender"
+        ).value,
+
+      dob:
+        document.getElementById(
+          "dob"
+        ).value,
+
+      state:
+        document.getElementById(
+          "state"
+        ).value,
+
+      district:
+        document.getElementById(
+          "district"
+        ).value,
+
+      address:
+        document.getElementById(
+          "address"
+        ).value.trim(),
+
+      qualification:
+        document.getElementById(
+          "qualification"
+        ).value.trim(),
+
+      experience:
+        document.getElementById(
+          "experience"
+        ).value.trim(),
+
+      languages:
+        languages,
+
+      services:
+        services,
+
+      hospitals:
+        selectedHospitals,
+
+      availability:
+        document.getElementById(
+          "availability"
+        ).value,
+
+      photoURL:
+        photoURL,
+
+      status:
+        "pending",
+
+      accountType:
+        "buddy",
+
+      createdAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp(),
+
+      updatedAt:
+        firebase.firestore
+          .FieldValue
+          .serverTimestamp()
+
+    };
+
+
+    await firebase
+      .firestore()
+      .collection("hospital_buddies")
+      .doc(user.uid)
+      .set(profile);
+
+
+
+    /* ==========================================
+       SUCCESS
+    ========================================== */
+
+    message.innerHTML = `
+
+      <strong>
+        ✓ Registration submitted successfully.
+      </strong>
+
+      <br><br>
+
+      Your Buddy account has been created.
+
+      <br>
+
+      Your profile is currently
+      <strong>Pending Admin Approval</strong>.
+
+      <br><br>
+
+      You can login after your account
+      has been approved.
+
+      <br><br>
+
+      <a href="buddy-login.html">
+        Go to Buddy Login →
+      </a>
+
+    `;
+
+
+    formResetSafely();
+
+
+  } catch (error) {
+
+    console.error(
+      "Buddy registration error:",
+      error
+    );
+
+
+    message.textContent =
+      getFirebaseErrorMessage(
+        error
+      );
+
+
+  } finally {
+
+    submitButton.disabled =
+      false;
+
+    submitButton.textContent =
+      "🤝 Submit Buddy Registration";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function formResetSafely() {
+
+  const form =
+    document.getElementById(
+      "buddyRegisterForm"
+    );
+
+
+  form.reset();
+
+
+  selectedHospitals.length =
+    0;
+
+
+  renderSelectedHospitals();
+
+
+  document.getElementById(
+    "district"
+  ).disabled = true;
+
+
+  document.getElementById(
+    "hospital"
+  ).disabled = true;
+
+}
+
+
+
+/* =====================================================
+   FIREBASE ERROR MESSAGE
+===================================================== */
+
+function getFirebaseErrorMessage(
+  error
+) {
+
+  if (
+    error.code ===
+    "auth/email-already-in-use"
+  ) {
+
+    return (
+      "This email is already registered. " +
+      "Please use Buddy Login."
+    );
+
+  }
+
+
+  if (
+    error.code ===
+    "auth/invalid-email"
+  ) {
+
+    return (
+      "Please enter a valid email address."
+    );
+
+  }
+
+
+  if (
+    error.code ===
+    "auth/weak-password"
+  ) {
+
+    return (
+      "Password must contain at least 6 characters."
+    );
+
+  }
+
+
+  return (
+    "Registration failed. Please try again."
+  );
+
+}
+
+
+
+/* =====================================================
+   HTML SECURITY
+===================================================== */
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
