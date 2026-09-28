@@ -1,907 +1,6 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta
-    name="description"
-    content="Register as a Hospital Buddy"
-  >
-
-  <title>Register as a Hospital Buddy | Hospital Buddy</title>
-
-  <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="siteHeader">
-
-  <div class="nav">
-
-    <a class="brand" href="index.html">
-
-      <img
-        src="logo.png"
-        alt="Hospital Buddy Logo"
-      >
-
-      <div class="brandText">
-
-        <strong>Hospital Buddy</strong>
-
-        <small>
-          Assist • Guide • Support
-        </small>
-
-      </div>
-
-    </a>
-
-
-    <nav class="desktopNav">
-
-      <a href="index.html">Home</a>
-
-      <a href="index.html#services">Services</a>
-
-      <a href="index.html#buddies">Buddies</a>
-
-      <a href="index.html#book">Book</a>
-
-      <a href="buddy-login.html" class="navLogin">
-        Buddy Login
-      </a>
-
-    </nav>
-
-  </div>
-
-</header>
-
-
-<!-- =====================================================
-     PAGE
-===================================================== -->
-
-<main>
-
-<section class="section buddyRegistrationSection">
-
-  <div class="sectionHeading">
-
-    <span class="sectionLabel">
-      BECOME A HOSPITAL BUDDY
-    </span>
-
-    <h1>
-      Register as a Hospital Buddy
-    </h1>
-
-    <p>
-      Create your Buddy profile and tell us about
-      yourself, the languages you speak and the
-      hospitals where you can provide practical,
-      non-medical assistance.
-    </p>
-
-  </div>
-
-
-  <!-- =================================================
-       REGISTRATION CARD
-  ================================================= -->
-
-  <div class="buddyRegistrationBox">
-
-    <form id="buddyRegistrationForm">
-
-
-      <!-- PERSONAL INFORMATION -->
-
-      <div class="formSectionTitle">
-
-        <span>01</span>
-
-        <div>
-
-          <h2>Personal Information</h2>
-
-          <p>
-            Basic information for your Buddy profile.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>Profile Photo</span>
-
-        <input
-          id="buddyPhoto"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-        >
-
-        <small class="fieldHelp">
-          Upload a clear photo. JPG, PNG or WebP.
-        </small>
-
-      </label>
-
-
-      <label>
-
-        <span>Full Name *</span>
-
-        <input
-          id="buddyName"
-          type="text"
-          placeholder="Enter your full name"
-          required
-          autocomplete="name"
-        >
-
-      </label>
-
-
-      <label>
-
-        <span>Phone Number *</span>
-
-        <input
-          id="buddyPhone"
-          type="tel"
-          placeholder="Enter your phone number"
-          required
-          autocomplete="tel"
-        >
-
-      </label>
-
-
-      <label>
-
-        <span>Email Address *</span>
-
-        <input
-          id="buddyEmail"
-          type="email"
-          placeholder="Enter your email address"
-          required
-          autocomplete="email"
-        >
-
-      </label>
-
-
-      <label>
-
-        <span>Gender *</span>
-
-        <select id="buddyGender" required>
-
-          <option value="">
-            Select Gender
-          </option>
-
-          <option value="Male">
-            Male
-          </option>
-
-          <option value="Female">
-            Female
-          </option>
-
-          <option value="Other">
-            Other
-          </option>
-
-          <option value="Prefer not to say">
-            Prefer not to say
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        <span>Date of Birth</span>
-
-        <input
-          id="buddyDob"
-          type="date"
-        >
-
-      </label>
-
-
-      <!-- LOCATION -->
-
-      <div class="formSectionTitle">
-
-        <span>02</span>
-
-        <div>
-
-          <h2>Location</h2>
-
-          <p>
-            Tell us where you are available to work.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>State *</span>
-
-        <select id="buddyState" required>
-
-          <option value="">
-            Select State
-          </option>
-
-          <option value="Assam">
-            Assam
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        <span>District *</span>
-
-        <select
-          id="buddyDistrict"
-          required
-          disabled
-        >
-
-          <option value="">
-            Select District
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        <span>Preferred Hospital *</span>
-
-        <select
-          id="buddyHospital"
-          required
-          disabled
-        >
-
-          <option value="">
-            Select Hospital
-          </option>
-
-        </select>
-
-        <small class="fieldHelp">
-          Select the hospital where you can provide assistance.
-        </small>
-
-      </label>
-
-
-      <!-- LANGUAGES -->
-
-      <div class="formSectionTitle">
-
-        <span>03</span>
-
-        <div>
-
-          <h2>Languages</h2>
-
-          <p>
-            Select the languages you can communicate in.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="languageCheckboxGrid">
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyLanguage"
-            value="Assamese"
-          >
-          <span>Assamese</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyLanguage"
-            value="English"
-          >
-          <span>English</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyLanguage"
-            value="Hindi"
-          >
-          <span>Hindi</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyLanguage"
-            value="Bengali"
-          >
-          <span>Bengali</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyLanguage"
-            value="Bodo"
-          >
-          <span>Bodo</span>
-        </label>
-
-      </div>
-
-
-      <!-- EDUCATION -->
-
-      <div class="formSectionTitle">
-
-        <span>04</span>
-
-        <div>
-
-          <h2>Education & Experience</h2>
-
-          <p>
-            Help us understand your background.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>Highest Qualification *</span>
-
-        <select
-          id="buddyQualification"
-          required
-        >
-
-          <option value="">
-            Select Qualification
-          </option>
-
-          <option value="Class 10">
-            Class 10
-          </option>
-
-          <option value="Class 12">
-            Class 12
-          </option>
-
-          <option value="Graduate">
-            Graduate
-          </option>
-
-          <option value="Post Graduate">
-            Post Graduate
-          </option>
-
-          <option value="Diploma">
-            Diploma
-          </option>
-
-          <option value="Other">
-            Other
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        <span>Qualification Details</span>
-
-        <input
-          id="buddyQualificationDetails"
-          type="text"
-          placeholder="Example: B.A., B.Com., Diploma etc."
-        >
-
-      </label>
-
-
-      <label>
-
-        <span>Previous Experience</span>
-
-        <textarea
-          id="buddyExperience"
-          rows="4"
-          placeholder="Tell us about any relevant work or volunteer experience."
-        ></textarea>
-
-      </label>
-
-
-      <!-- SERVICES -->
-
-      <div class="formSectionTitle">
-
-        <span>05</span>
-
-        <div>
-
-          <h2>Services You Can Provide</h2>
-
-          <p>
-            Select the practical assistance you can provide.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="serviceCheckboxGrid">
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Hospital Navigation"
-          >
-          <span>Hospital Navigation</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Appointment Assistance"
-          >
-          <span>Appointment Assistance</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Administrative Help"
-          >
-          <span>Administrative Help</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Language Assistance"
-          >
-          <span>Language Assistance</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Elderly Assistance"
-          >
-          <span>Elderly Assistance</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Family Support"
-          >
-          <span>Family Support</span>
-        </label>
-
-
-        <label class="languageOption">
-          <input
-            type="checkbox"
-            name="buddyService"
-            value="Outstation Support"
-          >
-          <span>Outstation Support</span>
-        </label>
-
-      </div>
-
-
-      <!-- AVAILABILITY -->
-
-      <div class="formSectionTitle">
-
-        <span>06</span>
-
-        <div>
-
-          <h2>Availability</h2>
-
-          <p>
-            Tell us when you are generally available.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>Availability *</span>
-
-        <select
-          id="buddyAvailability"
-          required
-        >
-
-          <option value="">
-            Select Availability
-          </option>
-
-          <option value="Full Day">
-            Full Day
-          </option>
-
-          <option value="Morning">
-            Morning
-          </option>
-
-          <option value="Afternoon">
-            Afternoon
-          </option>
-
-          <option value="Evening">
-            Evening
-          </option>
-
-          <option value="Weekends">
-            Weekends Only
-          </option>
-
-          <option value="Flexible">
-            Flexible
-          </option>
-
-        </select>
-
-      </label>
-
-
-      <label>
-
-        <span>Availability Details</span>
-
-        <textarea
-          id="buddyAvailabilityDetails"
-          rows="3"
-          placeholder="Example: Available Monday to Saturday, 9 AM to 5 PM."
-        ></textarea>
-
-      </label>
-
-
-      <!-- ABOUT -->
-
-      <div class="formSectionTitle">
-
-        <span>07</span>
-
-        <div>
-
-          <h2>About You</h2>
-
-          <p>
-            Tell patients a little about yourself.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>About Me</span>
-
-        <textarea
-          id="buddyAbout"
-          rows="5"
-          placeholder="Write a short introduction about yourself."
-        ></textarea>
-
-      </label>
-
-
-      <!-- ACCOUNT -->
-
-      <div class="formSectionTitle">
-
-        <span>08</span>
-
-        <div>
-
-          <h2>Account Security</h2>
-
-          <p>
-            Create the password you will use to log in.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <label>
-
-        <span>Password *</span>
-
-        <input
-          id="buddyPassword"
-          type="password"
-          placeholder="Create a password"
-          minlength="6"
-          required
-          autocomplete="new-password"
-        >
-
-        <small class="fieldHelp">
-          Minimum 6 characters.
-        </small>
-
-      </label>
-
-
-      <label>
-
-        <span>Confirm Password *</span>
-
-        <input
-          id="buddyPasswordConfirm"
-          type="password"
-          placeholder="Confirm your password"
-          minlength="6"
-          required
-          autocomplete="new-password"
-        >
-
-      </label>
-
-
-      <!-- AGREEMENT -->
-
-      <label class="agreement">
-
-        <input
-          id="buddyAgreement"
-          type="checkbox"
-          required
-        >
-
-        <span>
-          I understand that Hospital Buddy provides
-          independent, non-medical assistance only.
-          I agree that my profile may be reviewed by
-          the Hospital Buddy administrator before approval.
-        </span>
-
-      </label>
-
-
-      <!-- SUBMIT -->
-
-      <button
-        type="submit"
-        class="btn primaryBtn submitBtn"
-      >
-        🤝 Submit Buddy Registration
-      </button>
-
-
-      <p class="formPrivacy">
-        🔒 Your registration information will be used
-        to create and review your Hospital Buddy profile.
-      </p>
-
-
-      <!-- LOGIN LINK -->
-
-      <div class="buddyExistingAccount">
-
-        <p>
-          Already registered as a Hospital Buddy?
-        </p>
-
-        <a
-          href="buddy-login.html"
-          class="btn"
-        >
-          Buddy Login
-        </a>
-
-      </div>
-
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     RESULT MODAL
-===================================================== -->
-
-<div
-  id="buddyModal"
-  class="modal hidden"
->
-
-  <div class="modalbox">
-
-    <button
-      type="button"
-      class="close"
-      onclick="closeBuddyModal()"
-    >
-      ×
-    </button>
-
-    <div id="buddyResult"></div>
-
-  </div>
-
-</div>
-
-</main>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer>
-
-  <div class="footerMain">
-
-    <div>
-
-      <img
-        src="logo.png"
-        alt="Hospital Buddy"
-        class="footerLogo"
-      >
-
-      <h3>
-        Hospital Buddy
-      </h3>
-
-      <p>
-        Helping Patients • Supporting Families
-        • Creating Opportunities
-      </p>
-
-    </div>
-
-
-    <div>
-
-      <h4>Quick Links</h4>
-
-      <a href="index.html">Home</a>
-
-      <a href="index.html#services">
-        Services
-      </a>
-
-      <a href="index.html#buddies">
-        Buddies
-      </a>
-
-      <a href="index.html#book">
-        Book
-      </a>
-
-    </div>
-
-
-    <div>
-
-      <h4>Buddy</h4>
-
-      <a href="buddy.html">
-        Register as a Buddy
-      </a>
-
-      <a href="buddy-login.html">
-        Buddy Login
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="footerBottom">
-
-    <p>
-      © 2026 Hospital Buddy.
-      All rights reserved.
-    </p>
-
-    <p>
-      Independent non-medical assistance service.
-    </p>
-
-  </div>
-
-</footer>
-
-
-<!-- =====================================================
-     FIREBASE
-===================================================== -->
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
 
 <script>
 
@@ -910,35 +9,18 @@
 ===================================================== */
 
 const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyDxfFRc03zY0Lo_q5ynZhEjYR41PzGdiw",
-
-  authDomain:
-    "hospital-buddy-2224d.firebaseapp.com",
-
-  projectId:
-    "hospital-buddy-2224d",
-
-  storageBucket:
-    "hospital-buddy-2224d.firebasestorage.app",
-
-  messagingSenderId:
-    "190919672635",
-
-  appId:
-    "1:190919672635:web:8fe14cc8036fd0cb542d1e",
-
-  measurementId:
-    "G-7I3TZ2EFFR"
-
+  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+  authDomain: "hospital-buddy-2224d.firebaseapp.com",
+  projectId: "hospital-buddy-2224d",
+  storageBucket: "hospital-buddy-2224d.firebasestorage.app",
+  messagingSenderId: "190919672635",
+  appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
+  measurementId: "G-7I3TZ2EFFR"
 };
-
 
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-
 const db = firebase.firestore();
 
 
@@ -1076,7 +158,7 @@ const hospitalData = {
 
 
 /* =====================================================
-   STATE → DISTRICT
+   ELEMENTS
 ===================================================== */
 
 const buddyState =
@@ -1088,10 +170,419 @@ const buddyDistrict =
 const buddyHospital =
   document.getElementById("buddyHospital");
 
+const buddyForm =
+  document.getElementById("buddyRegistrationForm");
 
-buddyState.addEventListener(
-  "change",
-  function () {
+
+/* =====================================================
+   STATE → DISTRICT
+===================================================== */
+
+buddyState.addEventListener("change", function () {
+
+  buddyDistrict.innerHTML =
+    '<option value="">Select District</option>';
+
+  buddyHospital.innerHTML =
+    '<option value="">Select Hospital</option>';
+
+  buddyDistrict.disabled = true;
+  buddyHospital.disabled = true;
+
+  const state = buddyState.value;
+
+  if (!state || !hospitalData[state]) {
+    return;
+  }
+
+  buddyDistrict.disabled = false;
+
+  Object.keys(hospitalData[state])
+    .sort()
+    .forEach(function (district) {
+
+      const option =
+        document.createElement("option");
+
+      option.value = district;
+      option.textContent = district;
+
+      buddyDistrict.appendChild(option);
+
+    });
+
+});
+
+
+/* =====================================================
+   DISTRICT → HOSPITAL
+===================================================== */
+
+buddyDistrict.addEventListener("change", function () {
+
+  buddyHospital.innerHTML =
+    '<option value="">Select Hospital</option>';
+
+  buddyHospital.disabled = true;
+
+  const state =
+    buddyState.value;
+
+  const district =
+    buddyDistrict.value;
+
+  if (
+    !state ||
+    !district ||
+    !hospitalData[state] ||
+    !hospitalData[state][district]
+  ) {
+    return;
+  }
+
+  buddyHospital.disabled = false;
+
+  hospitalData[state][district]
+    .forEach(function (hospital) {
+
+      const option =
+        document.createElement("option");
+
+      option.value = hospital;
+      option.textContent = hospital;
+
+      buddyHospital.appendChild(option);
+
+    });
+
+});
+
+
+/* =====================================================
+   REGISTRATION
+===================================================== */
+
+buddyForm.addEventListener("submit", async function (event) {
+
+  event.preventDefault();
+
+  const submitButton =
+    buddyForm.querySelector(
+      'button[type="submit"]'
+    );
+
+  const password =
+    document.getElementById(
+      "buddyPassword"
+    ).value;
+
+  const confirmPassword =
+    document.getElementById(
+      "buddyPasswordConfirm"
+    ).value;
+
+
+  /* PASSWORD */
+
+  if (password !== confirmPassword) {
+
+    alert("Passwords do not match.");
+
+    return;
+
+  }
+
+
+  /* LANGUAGES */
+
+  const languages =
+    Array.from(
+      document.querySelectorAll(
+        'input[name="buddyLanguage"]:checked'
+      )
+    ).map(function (checkbox) {
+
+      return checkbox.value;
+
+    });
+
+
+  if (languages.length === 0) {
+
+    alert(
+      "Please select at least one language."
+    );
+
+    return;
+
+  }
+
+
+  /* SERVICES */
+
+  const services =
+    Array.from(
+      document.querySelectorAll(
+        'input[name="buddyService"]:checked'
+      )
+    ).map(function (checkbox) {
+
+      return checkbox.value;
+
+    });
+
+
+  if (services.length === 0) {
+
+    alert(
+      "Please select at least one service."
+    );
+
+    return;
+
+  }
+
+
+  /* COLLECT DATA */
+
+  const name =
+    document.getElementById(
+      "buddyName"
+    ).value.trim();
+
+  const phone =
+    document.getElementById(
+      "buddyPhone"
+    ).value.trim();
+
+  const email =
+    document.getElementById(
+      "buddyEmail"
+    ).value.trim();
+
+  const gender =
+    document.getElementById(
+      "buddyGender"
+    ).value;
+
+  const dob =
+    document.getElementById(
+      "buddyDob"
+    ).value;
+
+  const state =
+    buddyState.value;
+
+  const district =
+    buddyDistrict.value;
+
+  const hospital =
+    buddyHospital.value;
+
+  const qualification =
+    document.getElementById(
+      "buddyQualification"
+    ).value;
+
+  const qualificationDetails =
+    document.getElementById(
+      "buddyQualificationDetails"
+    ).value.trim();
+
+  const experience =
+    document.getElementById(
+      "buddyExperience"
+    ).value.trim();
+
+  const availability =
+    document.getElementById(
+      "buddyAvailability"
+    ).value;
+
+  const availabilityDetails =
+    document.getElementById(
+      "buddyAvailabilityDetails"
+    ).value.trim();
+
+  const about =
+    document.getElementById(
+      "buddyAbout"
+    ).value.trim();
+
+
+  /* BUTTON */
+
+  submitButton.disabled = true;
+
+  submitButton.textContent =
+    "Submitting...";
+
+
+  try {
+
+    /* =============================================
+       1. CREATE AUTH ACCOUNT
+    ============================================= */
+
+    const userCredential =
+      await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+    const user =
+      userCredential.user;
+
+
+    /* =============================================
+       2. CREATE FIRESTORE PROFILE
+    ============================================= */
+
+    await db
+      .collection("hospital_buddies")
+      .doc(user.uid)
+      .set({
+
+        uid:
+          user.uid,
+
+        name:
+          name,
+
+        phone:
+          phone,
+
+        email:
+          email,
+
+        gender:
+          gender,
+
+        dob:
+          dob,
+
+        state:
+          state,
+
+        district:
+          district,
+
+        hospital:
+          hospital,
+
+        languages:
+          languages,
+
+        qualification:
+          qualification,
+
+        qualificationDetails:
+          qualificationDetails,
+
+        experience:
+          experience,
+
+        services:
+          services,
+
+        availability:
+          availability,
+
+        availabilityDetails:
+          availabilityDetails,
+
+        about:
+          about,
+
+        photoURL:
+          "",
+
+        status:
+          "pending",
+
+        approved:
+          false,
+
+        createdAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp(),
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    /* =============================================
+       3. SIGN OUT
+    ============================================= */
+
+    await auth.signOut();
+
+
+    /* =============================================
+       4. SUCCESS
+    ============================================= */
+
+    showBuddyResult(`
+
+      <div class="resultIcon">
+        ✅
+      </div>
+
+      <h2>
+        Registration Submitted
+      </h2>
+
+      <p>
+        Your Hospital Buddy registration has
+        been submitted successfully.
+      </p>
+
+      <div class="contact">
+
+        <b>Name:</b>
+        ${escapeBuddyHTML(name)}
+
+        <br><br>
+
+        <b>District:</b>
+        ${escapeBuddyHTML(district)}
+
+        <br><br>
+
+        <b>Hospital:</b>
+        ${escapeBuddyHTML(hospital)}
+
+        <br><br>
+
+        <b>Status:</b>
+        Pending Administrator Review
+
+      </div>
+
+      <p class="privateText">
+
+        Your profile will be reviewed by the
+        Hospital Buddy administrator before approval.
+
+      </p>
+
+      <button
+        class="btn primaryBtn"
+        type="button"
+        onclick="closeBuddyModal()"
+      >
+        Done
+      </button>
+
+    `);
+
+
+    buddyForm.reset();
 
     buddyDistrict.innerHTML =
       '<option value="">Select District</option>';
@@ -1100,418 +591,96 @@ buddyState.addEventListener(
       '<option value="">Select Hospital</option>';
 
     buddyDistrict.disabled = true;
-
     buddyHospital.disabled = true;
 
 
-    const state =
-      buddyState.value;
+  } catch (error) {
+
+    console.error(
+      "REGISTRATION ERROR:",
+      error
+    );
 
 
-    if (!state || !hospitalData[state]) {
-      return;
-    }
+    /* SHOW ACTUAL FIREBASE ERROR */
 
-
-    buddyDistrict.disabled = false;
-
-
-    Object.keys(hospitalData[state])
-      .sort()
-      .forEach(
-        function (district) {
-
-          const option =
-            document.createElement("option");
-
-          option.value = district;
-
-          option.textContent = district;
-
-          buddyDistrict.appendChild(option);
-
-        }
-      );
-
-  }
-);
-
-
-/* =====================================================
-   DISTRICT → HOSPITAL
-===================================================== */
-
-buddyDistrict.addEventListener(
-  "change",
-  function () {
-
-    buddyHospital.innerHTML =
-      '<option value="">Select Hospital</option>';
-
-    buddyHospital.disabled = true;
-
-
-    const state =
-      buddyState.value;
-
-    const district =
-      buddyDistrict.value;
+    let message =
+      "Registration failed.";
 
 
     if (
-      !state ||
-      !district ||
-      !hospitalData[state] ||
-      !hospitalData[state][district]
+      error.code ===
+      "auth/email-already-in-use"
     ) {
-      return;
+
+      message =
+        "This email address is already registered.";
+
     }
 
+    else if (
+      error.code ===
+      "auth/invalid-email"
+    ) {
 
-    buddyHospital.disabled = false;
+      message =
+        "Please enter a valid email address.";
 
+    }
 
-    hospitalData[state][district]
-      .forEach(
-        function (hospital) {
+    else if (
+      error.code ===
+      "auth/weak-password"
+    ) {
 
-          const option =
-            document.createElement("option");
+      message =
+        "Password must be at least 6 characters.";
 
-          option.value = hospital;
+    }
 
-          option.textContent = hospital;
+    else if (
+      error.code ===
+      "auth/operation-not-allowed"
+    ) {
 
-          buddyHospital.appendChild(option);
+      message =
+        "Email/Password login is not enabled in Firebase Authentication.";
 
-        }
-      );
+    }
 
-  }
-);
+    else if (
+      error.code ===
+      "permission-denied"
+    ) {
 
+      message =
+        "Firestore permission denied. Firebase Firestore rules need to allow registration.";
 
-/* =====================================================
-   REGISTRATION
-===================================================== */
+    }
 
-const buddyForm =
-  document.getElementById(
-    "buddyRegistrationForm"
-  );
+    else if (error.message) {
 
-
-buddyForm.addEventListener(
-  "submit",
-  async function (event) {
-
-    event.preventDefault();
-
-
-    const password =
-      document.getElementById(
-        "buddyPassword"
-      ).value;
-
-    const confirmPassword =
-      document.getElementById(
-        "buddyPasswordConfirm"
-      ).value;
-
-
-    if (password !== confirmPassword) {
-
-      alert("Passwords do not match.");
-
-      return;
+      message =
+        error.message;
 
     }
 
 
-    const languages =
-      Array.from(
-        document.querySelectorAll(
-          'input[name="buddyLanguage"]:checked'
-        )
-      ).map(
-        checkbox => checkbox.value
-      );
+    alert(
+      message +
+      "\n\nError code: " +
+      (error.code || "unknown")
+    );
 
 
-    const services =
-      Array.from(
-        document.querySelectorAll(
-          'input[name="buddyService"]:checked'
-        )
-      ).map(
-        checkbox => checkbox.value
-      );
-
-
-    if (languages.length === 0) {
-
-      alert(
-        "Please select at least one language."
-      );
-
-      return;
-
-    }
-
-
-    if (services.length === 0) {
-
-      alert(
-        "Please select at least one service."
-      );
-
-      return;
-
-    }
-
-
-    const submitButton =
-      buddyForm.querySelector(
-        'button[type="submit"]'
-      );
-
-
-    submitButton.disabled = true;
+    submitButton.disabled = false;
 
     submitButton.textContent =
-      "Creating Buddy Account...";
-
-
-    try {
-
-      const name =
-        document.getElementById(
-          "buddyName"
-        ).value.trim();
-
-      const email =
-        document.getElementById(
-          "buddyEmail"
-        ).value.trim();
-
-      const phone =
-        document.getElementById(
-          "buddyPhone"
-        ).value.trim();
-
-
-      /* CREATE FIREBASE ACCOUNT */
-
-      const credential =
-        await auth.createUserWithEmailAndPassword(
-          email,
-          password
-        );
-
-
-      const uid =
-        credential.user.uid;
-
-
-      /* SAVE PROFILE */
-
-      await db
-        .collection("hospital_buddies")
-        .doc(uid)
-        .set({
-
-          uid: uid,
-
-          name: name,
-
-          phone: phone,
-
-          email: email,
-
-          gender:
-            document.getElementById(
-              "buddyGender"
-            ).value,
-
-          dob:
-            document.getElementById(
-              "buddyDob"
-            ).value,
-
-          state:
-            buddyState.value,
-
-          district:
-            buddyDistrict.value,
-
-          hospital:
-            buddyHospital.value,
-
-          languages: languages,
-
-          qualification:
-            document.getElementById(
-              "buddyQualification"
-            ).value,
-
-          qualificationDetails:
-            document.getElementById(
-              "buddyQualificationDetails"
-            ).value.trim(),
-
-          experience:
-            document.getElementById(
-              "buddyExperience"
-            ).value.trim(),
-
-          services: services,
-
-          availability:
-            document.getElementById(
-              "buddyAvailability"
-            ).value,
-
-          availabilityDetails:
-            document.getElementById(
-              "buddyAvailabilityDetails"
-            ).value.trim(),
-
-          about:
-            document.getElementById(
-              "buddyAbout"
-            ).value.trim(),
-
-          status: "pending",
-
-          createdAt:
-            firebase.firestore
-              .FieldValue
-              .serverTimestamp(),
-
-          updatedAt:
-            firebase.firestore
-              .FieldValue
-              .serverTimestamp()
-
-        });
-
-
-      showBuddyResult(`
-
-        <div class="resultIcon">
-          ✅
-        </div>
-
-        <h2>
-          Registration Submitted
-        </h2>
-
-        <p>
-          Your Hospital Buddy registration has
-          been submitted successfully.
-        </p>
-
-        <div class="contact">
-
-          <b>Name:</b>
-          ${escapeBuddyHTML(name)}
-
-          <br><br>
-
-          <b>Email:</b>
-          ${escapeBuddyHTML(email)}
-
-          <br><br>
-
-          <b>District:</b>
-          ${escapeBuddyHTML(
-            buddyDistrict.value
-          )}
-
-          <br><br>
-
-          <b>Hospital:</b>
-          ${escapeBuddyHTML(
-            buddyHospital.value
-          )}
-
-        </div>
-
-        <p class="privateText">
-          Your profile is now pending administrator
-          review.
-        </p>
-
-        <button
-          class="btn primaryBtn"
-          type="button"
-          onclick="window.location.href='buddy-login.html'"
-        >
-          Go to Buddy Login
-        </button>
-
-      `);
-
-
-    } catch (error) {
-
-      console.error(
-        "Buddy registration error:",
-        error
-      );
-
-
-      let message =
-        "Unable to complete registration.";
-
-
-      if (
-        error.code ===
-        "auth/email-already-in-use"
-      ) {
-
-        message =
-          "This email is already registered. Please use Buddy Login.";
-
-      }
-
-
-      if (
-        error.code ===
-        "auth/invalid-email"
-      ) {
-
-        message =
-          "Please enter a valid email address.";
-
-      }
-
-
-      if (
-        error.code ===
-        "auth/weak-password"
-      ) {
-
-        message =
-          "Password must be at least 6 characters.";
-
-      }
-
-
-      alert(message);
-
-
-    } finally {
-
-      submitButton.disabled = false;
-
-      submitButton.textContent =
-        "🤝 Submit Buddy Registration";
-
-    }
+      "🤝 Submit Buddy Registration";
 
   }
-);
+
+});
 
 
 /* =====================================================
@@ -1530,10 +699,12 @@ function showBuddyResult(html) {
       "buddyResult"
     );
 
+  result.innerHTML =
+    html;
 
-  result.innerHTML = html;
-
-  modal.classList.remove("hidden");
+  modal.classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -1541,8 +712,12 @@ function showBuddyResult(html) {
 function closeBuddyModal() {
 
   document
-    .getElementById("buddyModal")
-    .classList.add("hidden");
+    .getElementById(
+      "buddyModal"
+    )
+    .classList.add(
+      "hidden"
+    );
 
 }
 
@@ -1555,19 +730,31 @@ function escapeBuddyHTML(value) {
 
   return String(value ?? "")
 
-    .replace(/&/g, "&amp;")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    .replace(/</g, "&lt;")
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-    .replace(/>/g, "&gt;")
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-    .replace(/"/g, "&quot;")
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-    .replace(/'/g, "&#039;");
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
 </script>
-
-</body>
-</html>
