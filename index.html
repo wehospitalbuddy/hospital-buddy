@@ -3,37 +3,88 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Hospital Buddy</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Hospital Buddy - Practical, non-medical assistance for patients and families during hospital visits."
+  >
+
+  <title>Hospital Buddy | A Helping Hand</title>
 
   <link rel="stylesheet" href="styles.css">
 </head>
 
+
 <body>
 
-<header>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="siteHeader">
 
   <div class="nav">
 
-    <a class="brand" href="#">
-      <img src="logo.png" alt="Hospital Buddy Logo">
-      <b>Hospital Buddy</b>
+    <a class="brand" href="#top">
+
+      <img
+        src="logo.png"
+        alt="Hospital Buddy Logo"
+      >
+
+      <div class="brandText">
+
+        <strong>Hospital Buddy</strong>
+
+        <small>
+          Assist • Guide • Support
+        </small>
+
+      </div>
+
     </a>
 
-    <nav>
-      <a href="#services">Services</a>
-      <a href="#buddies">Buddies</a>
-      <a href="#how">How It Works</a>
-      <a href="#book">Book</a>
 
-      <!-- ADMIN LOGIN -->
-      <a href="admin.html">Admin Login</a>
+    <nav class="desktopNav">
+
+      <a href="#services">
+        Services
+      </a>
+
+      <a href="#buddies">
+        Buddies
+      </a>
+
+      <a href="#how">
+        How It Works
+      </a>
+
+      <a href="#book">
+        Book
+      </a>
+
+      <a
+        href="admin.html"
+        class="navLogin"
+      >
+        Buddy / Admin Login
+      </a>
+
     </nav>
 
   </div>
 
 </header>
+
+
+
+<main id="top">
 
 
 <!-- =====================================================
@@ -42,77 +93,195 @@
 
 <section class="hero">
 
-  <div>
+  <div class="heroContent">
 
     <span class="eyebrow">
-      INDEPENDENT • NON-MEDICAL • PATIENT-FOCUSED
+      NON-MEDICAL • PATIENT SUPPORT • INDEPENDENT SERVICE
     </span>
 
+
     <h1>
-      Book a Hospital Buddy for your hospital visit.
+      You don't have to
+      <span>figure out the hospital alone.</span>
     </h1>
 
-    <p>
-      Practical help with hospital navigation, administrative tasks,
-      appointment procedures and language assistance.
-    </p>
 
-    <a class="btn" href="#book">
-      Book a Hospital Buddy
-    </a>
+    <p class="heroText">
 
-    <p class="note">
-
-      <b>Important:</b>
-
-      Hospital Buddy is an independent service and is not affiliated with
-      or endorsed by AIIMS Guwahati or any hospital.
+      Hospital Buddy connects patients and families
+      with people who can provide practical,
+      non-medical assistance during hospital visits.
 
     </p>
+
+
+    <div class="heroButtons">
+
+      <a
+        href="#book"
+        class="btn primaryBtn"
+      >
+        🤝 Book a Hospital Buddy
+      </a>
+
+
+      <a
+        href="#how"
+        class="btn secondaryBtn"
+      >
+        How It Works
+      </a>
+
+    </div>
+
+
+    <div class="heroTrust">
+
+      <div>
+        <strong>✓</strong>
+        Hospital Navigation
+      </div>
+
+      <div>
+        <strong>✓</strong>
+        Administrative Help
+      </div>
+
+      <div>
+        <strong>✓</strong>
+        Language Assistance
+      </div>
+
+    </div>
 
   </div>
 
 
+  <!-- HERO CARD -->
+
   <div class="heroCard">
 
-    <div class="heroIcon">
-      🤝
+    <div class="heroCardTop">
+
+      <div class="heroRoundIcon">
+        🤝
+      </div>
+
+      <span class="availableBadge">
+        ● Available
+      </span>
+
     </div>
 
+
     <h2>
-      Your visit. Your choice. Your Buddy.
+      Your visit.
+      <br>
+      Your choice.
+      <br>
+      Your Buddy.
     </h2>
 
+
     <p>
-      Choose your service, language, date and time.
-      After confirmation, the assigned Hospital Buddy's details
-      and contact number can be shared privately.
+
+      Select your service, language,
+      date and time. We help connect
+      you with an available Hospital Buddy.
+
     </p>
+
+
+    <div class="heroMiniSteps">
+
+      <div>
+        <span>1</span>
+        Request
+      </div>
+
+      <div>
+        <span>2</span>
+        Match
+      </div>
+
+      <div>
+        <span>3</span>
+        Confirm
+      </div>
+
+    </div>
 
   </div>
 
 </section>
 
 
+
+<!-- =====================================================
+     QUICK HELP
+===================================================== -->
+
+<section class="quickHelp">
+
+  <div class="quickHelpInner">
+
+    <div>
+
+      <span class="smallLabel">
+        NEED HELP AT A HOSPITAL?
+      </span>
+
+      <h2>
+        Tell us what you need.
+      </h2>
+
+    </div>
+
+
+    <a
+      href="#book"
+      class="btn primaryBtn"
+    >
+      Find a Buddy →
+    </a>
+
+  </div>
+
+</section>
+
+
+
 <!-- =====================================================
      SERVICES
 ===================================================== -->
 
-<section id="services">
+<section
+  id="services"
+  class="section"
+>
 
-  <h2>
-    Our Services
-  </h2>
+  <div class="sectionHeading">
 
-  <p class="sectionIntro">
-    Practical, non-medical assistance for patients and accompanying
-    family members during hospital visits.
-  </p>
+    <span class="sectionLabel">
+      WHAT WE CAN HELP WITH
+    </span>
+
+    <h2>
+      Practical help when you need it most.
+    </h2>
+
+    <p>
+      Hospital Buddy provides non-medical assistance
+      for patients and accompanying family members.
+    </p>
+
+  </div>
 
 
-  <div class="grid">
+  <div class="serviceGrid">
 
-    <article>
+
+    <article class="serviceCard">
 
       <div class="serviceIcon">
         🧭
@@ -123,14 +292,34 @@
       </h3>
 
       <p>
-        Directions to permitted departments, counters and hospital
-        facilities.
+        Help finding permitted departments,
+        counters, registration areas and
+        hospital facilities.
       </p>
 
     </article>
 
 
-    <article>
+    <article class="serviceCard">
+
+      <div class="serviceIcon">
+        📄
+      </div>
+
+      <h3>
+        Registration & Paperwork
+      </h3>
+
+      <p>
+        Practical assistance with forms,
+        copies and routine administrative
+        procedures.
+      </p>
+
+    </article>
+
+
+    <article class="serviceCard">
 
       <div class="serviceIcon">
         📅
@@ -141,30 +330,15 @@
       </h3>
 
       <p>
-        Help with official registration and appointment procedures.
+        Help understanding and following
+        official registration and appointment
+        procedures.
       </p>
 
     </article>
 
 
-    <article>
-
-      <div class="serviceIcon">
-        🧾
-      </div>
-
-      <h3>
-        Administrative Help
-      </h3>
-
-      <p>
-        Assistance with forms, copies and routine administrative tasks.
-      </p>
-
-    </article>
-
-
-    <article>
+    <article class="serviceCard">
 
       <div class="serviceIcon">
         🗣️
@@ -175,13 +349,14 @@
       </h3>
 
       <p>
-        Basic non-medical support in available regional languages.
+        Basic non-medical support in
+        available regional languages.
       </p>
 
     </article>
 
 
-    <article>
+    <article class="serviceCard">
 
       <div class="serviceIcon">
         👴
@@ -192,52 +367,95 @@
       </h3>
 
       <p>
-        Practical assistance where hospital rules permit.
+        Practical support for elderly patients
+        where hospital rules permit.
       </p>
 
     </article>
 
 
-    <article>
+    <article class="serviceCard">
 
       <div class="serviceIcon">
-        🧳
+        👨‍👩‍👧
       </div>
 
       <h3>
-        Outstation Support
+        Family Support
       </h3>
 
       <p>
-        Practical help for patients travelling from other districts
-        and the North-East.
+        Assistance for family members
+        accompanying patients during
+        hospital visits.
       </p>
 
     </article>
+
+
+  </div>
+
+
+  <div class="medicalWarning">
+
+    <strong>
+      ⚠️ Important
+    </strong>
+
+    <p>
+
+      Hospital Buddy does not provide medical advice,
+      diagnosis, treatment or emergency medical care.
+
+      If you are experiencing a medical emergency,
+      contact the hospital emergency department
+      or emergency services immediately.
+
+    </p>
 
   </div>
 
 </section>
 
 
+
 <!-- =====================================================
-     HOSPITAL BUDDIES
+     AVAILABLE BUDDIES
 ===================================================== -->
 
-<section id="buddies" class="tint">
+<section
+  id="buddies"
+  class="section sectionTint"
+>
 
-  <h2>
-    Our Hospital Buddies
-  </h2>
+  <div class="sectionHeading">
 
-  <p class="sectionIntro">
-    Available Hospital Buddies will appear here automatically.
-  </p>
+    <span class="sectionLabel">
+      MEET OUR BUDDIES
+    </span>
+
+    <h2>
+      Hospital Buddies available now
+    </h2>
+
+    <p>
+      Available Buddies will appear automatically
+      based on current availability.
+    </p>
+
+  </div>
 
 
-  <div id="buddyList" class="grid">
+  <div
+    id="buddyList"
+    class="buddyGrid"
+  >
 
-    <article class="buddy">
+    <article class="buddy loadingBuddy">
+
+      <div class="resultIcon">
+        🤝
+      </div>
 
       <h3>
         Loading Hospital Buddies...
@@ -254,268 +472,551 @@
 </section>
 
 
+
 <!-- =====================================================
      HOW IT WORKS
 ===================================================== -->
 
-<section id="how">
+<section
+  id="how"
+  class="section"
+>
 
-  <h2>
-    How It Works
-  </h2>
+  <div class="sectionHeading">
+
+    <span class="sectionLabel">
+      SIMPLE PROCESS
+    </span>
+
+    <h2>
+      How Hospital Buddy works
+    </h2>
+
+    <p>
+      Getting practical help should be simple.
+    </p>
+
+  </div>
 
 
-  <div class="steps">
+  <div class="processGrid">
 
-    <div>
 
-      <b>1</b>
+    <div class="processCard">
+
+      <div class="processNumber">
+        01
+      </div>
+
+      <div class="processIcon">
+        📝
+      </div>
 
       <h3>
         Request
       </h3>
 
       <p>
-        Tell us what practical help you need.
+        Tell us what assistance you need,
+        where and when you need it.
       </p>
 
     </div>
 
 
-    <div>
+    <div class="processCard">
 
-      <b>2</b>
+      <div class="processNumber">
+        02
+      </div>
+
+      <div class="processIcon">
+        🤝
+      </div>
 
       <h3>
         Match
       </h3>
 
       <p>
-        We find an available Hospital Buddy.
+        We identify an available Hospital
+        Buddy according to your request.
       </p>
 
     </div>
 
 
-    <div>
+    <div class="processCard">
 
-      <b>3</b>
+      <div class="processNumber">
+        03
+      </div>
+
+      <div class="processIcon">
+        ✅
+      </div>
 
       <h3>
         Confirm
       </h3>
 
       <p>
-        Review the service and applicable fee.
+        Review the request and applicable
+        service details before confirmation.
       </p>
 
     </div>
 
 
-    <div>
+    <div class="processCard">
 
-      <b>4</b>
+      <div class="processNumber">
+        04
+      </div>
+
+      <div class="processIcon">
+        📱
+      </div>
 
       <h3>
-        Contact
+        Connect
       </h3>
 
       <p>
-        After confirmation, receive the assigned Hospital Buddy's
-        details and contact number.
+        After confirmation, appropriate
+        Buddy contact details can be shared.
       </p>
 
     </div>
+
 
   </div>
 
 </section>
 
 
+
 <!-- =====================================================
      BOOKING
 ===================================================== -->
 
-<section id="book" class="tint">
+<section
+  id="book"
+  class="section bookingSection"
+>
 
-  <h2>
-    Book a Hospital Buddy
-  </h2>
+  <div class="bookingIntro">
 
-  <p class="sectionIntro">
-    Tell us when you need assistance and what practical support
-    you require.
-  </p>
+    <span class="sectionLabel">
+      BOOK YOUR BUDDY
+    </span>
 
+    <h2>
+      Request practical hospital assistance.
+    </h2>
 
-  <form id="form">
+    <p>
 
-    <label>
+      Complete the short form below.
+      We will look for an available Hospital Buddy
+      for your selected service.
 
-      Name
-
-      <input
-        id="name"
-        type="text"
-        required
-        autocomplete="name"
-      >
-
-    </label>
+    </p>
 
 
-    <label>
+    <div class="bookingBenefits">
 
-      Phone
+      <div>
+        ✓ Simple request
+      </div>
 
-      <input
-        id="phone"
-        type="tel"
-        required
-        autocomplete="tel"
-      >
+      <div>
+        ✓ Language matching
+      </div>
 
-    </label>
+      <div>
+        ✓ Buddy availability
+      </div>
 
-
-    <label>
-
-      Language
-
-      <select id="lang" required>
-
-        <option value="Assamese">
-          Assamese
-        </option>
-
-        <option value="English">
-          English
-        </option>
-
-        <option value="Hindi">
-          Hindi
-        </option>
-
-        <option value="Bengali">
-          Bengali
-        </option>
-
-        <option value="Bodo">
-          Bodo
-        </option>
-
-      </select>
-
-    </label>
-
-
-    <label>
-
-      Service
-
-      <select id="service" required>
-
-        <option value="Hospital Navigation">
-          Hospital Navigation
-        </option>
-
-        <option value="Appointment Assistance">
-          Appointment Assistance
-        </option>
-
-        <option value="Administrative Help">
-          Administrative Help
-        </option>
-
-        <option value="Language Assistance">
-          Language Assistance
-        </option>
-
-        <option value="Elderly Assistance">
-          Elderly Assistance
-        </option>
-
-        <option value="Outstation Support">
-          Outstation Support
-        </option>
-
-      </select>
-
-    </label>
-
-
-    <div class="two">
-
-      <label>
-
-        Date
-
-        <input
-          id="date"
-          type="date"
-          required
-        >
-
-      </label>
-
-
-      <label>
-
-        Time
-
-        <input
-          id="time"
-          type="time"
-          required
-        >
-
-      </label>
+      <div>
+        ✓ Contact after confirmation
+      </div>
 
     </div>
 
-
-    <label>
-
-      Non-medical requirement
-
-      <textarea
-        id="notes"
-        placeholder="Tell us what practical help you need..."
-      ></textarea>
-
-    </label>
+  </div>
 
 
-    <label class="check">
 
-      <input
-        id="agree"
-        type="checkbox"
-        required
+  <div class="bookingBox">
+
+    <form id="form">
+
+
+      <!-- NAME -->
+
+      <label>
+
+        <span>
+          Patient / Requester Name
+        </span>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Enter your name"
+          required
+          autocomplete="name"
+        >
+
+      </label>
+
+
+
+      <!-- PHONE -->
+
+      <label>
+
+        <span>
+          Phone Number
+        </span>
+
+        <input
+          id="phone"
+          type="tel"
+          placeholder="Enter your phone number"
+          required
+          autocomplete="tel"
+        >
+
+      </label>
+
+
+
+      <!-- LANGUAGE -->
+
+      <label>
+
+        <span>
+          Preferred Language
+        </span>
+
+        <select
+          id="lang"
+          required
+        >
+
+          <option value="Assamese">
+            Assamese
+          </option>
+
+          <option value="English">
+            English
+          </option>
+
+          <option value="Hindi">
+            Hindi
+          </option>
+
+          <option value="Bengali">
+            Bengali
+          </option>
+
+          <option value="Bodo">
+            Bodo
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- SERVICE -->
+
+      <label>
+
+        <span>
+          What help do you need?
+        </span>
+
+        <select
+          id="service"
+          required
+        >
+
+          <option value="Hospital Navigation">
+            Hospital Navigation
+          </option>
+
+          <option value="Appointment Assistance">
+            Appointment Assistance
+          </option>
+
+          <option value="Administrative Help">
+            Administrative Help
+          </option>
+
+          <option value="Language Assistance">
+            Language Assistance
+          </option>
+
+          <option value="Elderly Assistance">
+            Elderly Assistance
+          </option>
+
+          <option value="Outstation Support">
+            Outstation Support
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <!-- DATE + TIME -->
+
+      <div class="formTwo">
+
+        <label>
+
+          <span>
+            Date
+          </span>
+
+          <input
+            id="date"
+            type="date"
+            required
+          >
+
+        </label>
+
+
+        <label>
+
+          <span>
+            Time
+          </span>
+
+          <input
+            id="time"
+            type="time"
+            required
+          >
+
+        </label>
+
+      </div>
+
+
+
+      <!-- NOTES -->
+
+      <label>
+
+        <span>
+          What practical help do you need?
+        </span>
+
+        <textarea
+          id="notes"
+          placeholder="Example: I need help finding the registration counter and submitting documents."
+          rows="4"
+        ></textarea>
+
+      </label>
+
+
+
+      <!-- AGREEMENT -->
+
+      <label class="agreement">
+
+        <input
+          id="agree"
+          type="checkbox"
+          required
+        >
+
+        <span>
+
+          I understand that Hospital Buddy is an
+          independent, non-medical assistance service
+          and does not guarantee treatment, admission,
+          priority or doctor access.
+
+        </span>
+
+      </label>
+
+
+
+      <button
+        class="btn primaryBtn submitBtn"
+        type="submit"
       >
 
-      <span>
+        🤝 Find & Request a Hospital Buddy
 
-        I understand this is an independent service and does not guarantee
-        treatment, admission, priority or doctor access.
-
-      </span>
-
-    </label>
+      </button>
 
 
-    <button
-      class="btn"
-      type="submit"
-    >
+      <p class="formPrivacy">
 
-      Find & Request a Hospital Buddy
+        🔒 Your information is used to process
+        your Hospital Buddy request.
 
-    </button>
+      </p>
 
-  </form>
+
+    </form>
+
+  </div>
 
 </section>
+
+
+
+<!-- =====================================================
+     REPLACEMENT / FEEDBACK PREVIEW
+===================================================== -->
+
+<section class="section featureSection">
+
+  <div class="sectionHeading">
+
+    <span class="sectionLabel">
+      AFTER YOUR BOOKING
+    </span>
+
+    <h2>
+      You're always in control.
+    </h2>
+
+    <p>
+      More patient controls will be available
+      through your request page.
+    </p>
+
+  </div>
+
+
+  <div class="featureGrid">
+
+
+    <article class="featureCard">
+
+      <div class="featureIcon">
+        🔄
+      </div>
+
+      <h3>
+        Need a different Buddy?
+      </h3>
+
+      <p>
+        If your assigned Buddy isn't suitable,
+        you will be able to request a replacement
+        with a reason.
+      </p>
+
+      <span class="featureStatus">
+        Coming with Request Management
+      </span>
+
+    </article>
+
+
+    <article class="featureCard">
+
+      <div class="featureIcon">
+        ⭐
+      </div>
+
+      <h3>
+        Rate your experience
+      </h3>
+
+      <p>
+        After your service, you can give a star
+        rating and write feedback about your
+        Hospital Buddy.
+      </p>
+
+      <span class="featureStatus">
+        Feedback system planned
+      </span>
+
+    </article>
+
+
+    <article class="featureCard">
+
+      <div class="featureIcon">
+        🎙️
+      </div>
+
+      <h3>
+        Voice feedback
+      </h3>
+
+      <p>
+        Patients will also be able to record
+        optional audio feedback after their
+        service.
+      </p>
+
+      <span class="featureStatus">
+        Voice feedback planned
+      </span>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL CTA
+===================================================== -->
+
+<section class="finalCTA">
+
+  <div>
+
+    <span>
+      HOSPITAL BUDDY
+    </span>
+
+    <h2>
+      A helping hand when
+      hospital visits feel difficult.
+    </h2>
+
+    <p>
+      Assist • Guide • Support
+    </p>
+
+  </div>
+
+
+  <a
+    href="#book"
+    class="btn whiteBtn"
+  >
+    Book a Hospital Buddy
+  </a>
+
+</section>
+
+
+</main>
+
 
 
 <!-- =====================================================
@@ -524,29 +1025,83 @@
 
 <footer>
 
-  <b>
-    Hospital Buddy
-  </b>
+  <div class="footerMain">
 
-  <p>
-    Helping Patients • Supporting Families • Creating Opportunities
-  </p>
+    <div>
 
-  <p>
-    Near AIIMS Guwahati, Changsari, Assam
-  </p>
+      <img
+        src="logo.png"
+        alt="Hospital Buddy"
+        class="footerLogo"
+      >
 
-  <!-- ADMIN LOGIN -->
-  <p>
-    <a
-      href="admin.html"
-      style="color:white;text-decoration:underline;"
-    >
-      Admin Login
-    </a>
-  </p>
+      <h3>
+        Hospital Buddy
+      </h3>
+
+      <p>
+        Helping Patients • Supporting Families
+        • Creating Opportunities
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Quick Links
+      </h4>
+
+      <a href="#services">
+        Services
+      </a>
+
+      <a href="#buddies">
+        Buddies
+      </a>
+
+      <a href="#how">
+        How It Works
+      </a>
+
+      <a href="#book">
+        Book
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Account
+      </h4>
+
+      <a href="admin.html">
+        Buddy / Admin Login
+      </a>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footerBottom">
+
+    <p>
+      © 2026 Hospital Buddy. All rights reserved.
+    </p>
+
+    <p>
+      Independent non-medical assistance service.
+    </p>
+
+  </div>
 
 </footer>
+
 
 
 <!-- =====================================================
@@ -558,7 +1113,11 @@
   class="modal hidden"
 >
 
-  <div class="modalbox">
+  <div
+    class="modalbox"
+    role="dialog"
+    aria-modal="true"
+  >
 
     <button
       class="close"
@@ -577,11 +1136,13 @@
 </div>
 
 
+
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
 
 <script src="script.js"></script>
+
 
 </body>
 
