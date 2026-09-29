@@ -1,101 +1,129 @@
 // =====================================================
-// HOSPITAL BUDDY — BUDDY DASHBOARD
+// HOSPITAL BUDDY — BUDDY.JS
+// FINAL VERSION
 // =====================================================
+
 
 // =====================================================
 // FIREBASE CONFIG
 // =====================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+  apiKey: "AIzaSyDxfRCo3z0YLo_q5yrhnZHejYR41PzGDiw",
   authDomain: "hospital-buddy-2224d.firebaseapp.com",
   projectId: "hospital-buddy-2224d",
   storageBucket: "hospital-buddy-2224d.firebasestorage.app",
   messagingSenderId: "190919672635",
   appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
-  measurementId: "G-7I3TZ2EFFR"
+  measurementId: "G-Z13TZ2EFFR"
 };
 
 
 // =====================================================
-// LOAD FIREBASE
+// FIREBASE SDK LOADER
 // =====================================================
 
-const firebaseAppScript = document.createElement("script");
+(function loadFirebase() {
 
-firebaseAppScript.src =
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
+  if (window.firebase) {
+    initializeBuddyFirebase();
+    return;
+  }
 
-document.head.appendChild(firebaseAppScript);
+  const appScript = document.createElement("script");
 
-firebaseAppScript.onload = () => {
+  appScript.src =
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
 
-  const authScript = document.createElement("script");
+  appScript.onload = function () {
 
-  authScript.src =
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+    const authScript = document.createElement("script");
 
-  document.head.appendChild(authScript);
+    authScript.src =
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
 
-  authScript.onload = () => {
+    authScript.onload = function () {
 
-    const firestoreScript = document.createElement("script");
+      const firestoreScript =
+        document.createElement("script");
 
-    firestoreScript.src =
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+      firestoreScript.src =
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
 
-    document.head.appendChild(firestoreScript);
+      firestoreScript.onload = function () {
+        initializeBuddyFirebase();
+      };
 
-    firestoreScript.onload = () => {
+      firestoreScript.onerror = function () {
+        console.error("Firebase Firestore SDK failed to load.");
+      };
 
-      firebase.initializeApp(firebaseConfig);
-
-      window.auth = firebase.auth();
-      window.db = firebase.firestore();
-
-      startBuddySystem();
-
+      document.head.appendChild(firestoreScript);
     };
 
+    authScript.onerror = function () {
+      console.error("Firebase Authentication SDK failed to load.");
+    };
+
+    document.head.appendChild(authScript);
   };
 
-};
+  appScript.onerror = function () {
+    console.error("Firebase App SDK failed to load.");
+  };
+
+  document.head.appendChild(appScript);
+
+})();
 
 
 // =====================================================
-// START SYSTEM
+// INITIALIZE FIREBASE
+// =====================================================
+
+function initializeBuddyFirebase() {
+
+  try {
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+
+    startBuddySystem();
+
+  } catch (error) {
+
+    console.error(
+      "Firebase initialization error:",
+      error
+    );
+
+    showMessage(
+      "Firebase could not be initialized.",
+      true
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// START BUDDY SYSTEM
 // =====================================================
 
 function startBuddySystem() {
 
-  const loginForm =
-    document.getElementById("buddyLoginForm");
-
-  if (loginForm) {
-
-    loginForm.addEventListener(
-      "submit",
-      buddyLogin
-    );
-
-  }
-
-
-  const logoutButton =
-    document.getElementById("buddyLogout");
-
-  if (logoutButton) {
-
-    logoutButton.addEventListener(
-      "click",
-      buddyLogout
-    );
-
-  }
-
+  setupLoginForm();
+  setupLogoutButtons();
+  setupAvailabilityButtons();
+  setupProfileForm();
 
   auth.onAuthStateChanged(
-    async user => {
+    async function (user) {
 
       if (!user) {
 
@@ -105,39 +133,43 @@ function startBuddySystem() {
 
       }
 
-
-      const profile =
-        await getBuddyProfile(user.uid);
-
-
-      if (!profile) {
-
-        await auth.signOut();
-
-        showBuddyLogin();
-
-        showBuddyMessage(
-          "Buddy profile was not found.",
-          true
-        );
-
-        return;
-
-      }
-
-
-      showBuddyDashboard();
-
-      displayBuddyProfile(
-        profile
-      );
-
-      loadBuddyBookings(
-        user.uid
-      );
+      await loadBuddyAccount(user);
 
     }
   );
+
+}
+
+
+// =====================================================
+// LOGIN FORM
+// =====================================================
+
+function setupLoginForm() {
+
+  const forms = [
+
+    document.getElementById("buddyLoginForm"),
+
+    document.getElementById("loginForm")
+
+  ].filter(Boolean);
+
+
+  forms.forEach(function (form) {
+
+    if (form.dataset.buddyListener === "true") {
+      return;
+    }
+
+    form.dataset.buddyListener = "true";
+
+    form.addEventListener(
+      "submit",
+      buddyLogin
+    );
+
+  });
 
 }
 
@@ -151,22 +183,43 @@ async function buddyLogin(event) {
   event.preventDefault();
 
 
+  const emailElement =
+    document.getElementById("buddyEmail") ||
+    document.getElementById("loginEmail") ||
+    document.getElementById("email");
+
+
+  const passwordElement =
+    document.getElementById("buddyPassword") ||
+    document.getElementById("loginPassword") ||
+    document.getElementById("password");
+
+
+  if (!emailElement || !passwordElement) {
+
+    showMessage(
+      "Login fields were not found.",
+      true
+    );
+
+    return;
+
+  }
+
+
   const email =
-    document
-      .getElementById("buddyLoginEmail")
-      ?.value
-      .trim();
+    emailElement.value
+      .trim()
+      .toLowerCase();
 
 
   const password =
-    document
-      .getElementById("buddyLoginPassword")
-      ?.value;
+    passwordElement.value;
 
 
   if (!email || !password) {
 
-    showBuddyMessage(
+    showMessage(
       "Please enter your email and password.",
       true
     );
@@ -176,7 +229,7 @@ async function buddyLogin(event) {
   }
 
 
-  showBuddyMessage(
+  showMessage(
     "Signing in...",
     false
   );
@@ -188,7 +241,6 @@ async function buddyLogin(event) {
       email,
       password
     );
-
 
   } catch (error) {
 
@@ -202,51 +254,42 @@ async function buddyLogin(event) {
       "Unable to sign in.";
 
 
-    if (
-      error.code ===
-      "auth/invalid-credential"
-    ) {
+    switch (error.code) {
 
-      message =
-        "Incorrect email or password.";
+      case "auth/invalid-credential":
+        message =
+          "Incorrect email or password.";
+        break;
 
-    }
+      case "auth/user-not-found":
+        message =
+          "No Hospital Buddy account was found.";
+        break;
 
+      case "auth/wrong-password":
+        message =
+          "Incorrect password.";
+        break;
 
-    else if (
-      error.code ===
-      "auth/user-not-found"
-    ) {
+      case "auth/invalid-email":
+        message =
+          "Please enter a valid email address.";
+        break;
 
-      message =
-        "No Buddy account was found with this email.";
+      case "auth/too-many-requests":
+        message =
+          "Too many login attempts. Please try again later.";
+        break;
 
-    }
-
-
-    else if (
-      error.code ===
-      "auth/wrong-password"
-    ) {
-
-      message =
-        "Incorrect password.";
-
-    }
-
-
-    else if (
-      error.code ===
-      "auth/invalid-email"
-    ) {
-
-      message =
-        "Please enter a valid email address.";
+      case "auth/network-request-failed":
+        message =
+          "Network error. Please check your internet connection.";
+        break;
 
     }
 
 
-    showBuddyMessage(
+    showMessage(
       message,
       true
     );
@@ -257,69 +300,104 @@ async function buddyLogin(event) {
 
 
 // =====================================================
-// GET BUDDY PROFILE
+// LOAD BUDDY ACCOUNT
 // =====================================================
 
-async function getBuddyProfile(
-  uid
-) {
+async function loadBuddyAccount(user) {
 
   try {
 
-    const snapshot =
-      await db
+    const buddyRef =
+      db
         .collection("hospital_buddies")
-        .doc(uid)
-        .get();
+        .doc(user.uid);
 
 
-    if (!snapshot.exists) {
+    const buddySnapshot =
+      await buddyRef.get();
 
-      return null;
+
+    if (!buddySnapshot.exists) {
+
+      await auth.signOut();
+
+      showBuddyLogin();
+
+      showMessage(
+        "Your Hospital Buddy profile has not been approved yet.",
+        true
+      );
+
+      return;
 
     }
 
 
-    return {
+    const buddy =
+      buddySnapshot.data();
 
-      id:
-        snapshot.id,
 
-      ...snapshot.data()
-
+    window.currentBuddy = {
+      id: user.uid,
+      uid: user.uid,
+      email: user.email || "",
+      ...buddy
     };
+
+
+    /*
+     * Pending registrations cannot access
+     * the Buddy dashboard.
+     */
+
+    if (
+      buddy.approved === false ||
+      buddy.status === "pending"
+    ) {
+
+      await auth.signOut();
+
+      showBuddyLogin();
+
+      showMessage(
+        "Your Hospital Buddy registration is awaiting administrator approval.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    showBuddyDashboard();
+
+
+    populateBuddyProfile(
+      window.currentBuddy
+    );
+
+
+    loadBuddyBookings(
+      user.uid
+    );
+
+
+    updateAvailabilityUI(
+      buddy.status
+    );
 
 
   } catch (error) {
 
     console.error(
-      "Get Buddy profile error:",
+      "Load Buddy account error:",
       error
     );
 
 
-    return null;
-
-  }
-
-}
-
-
-// =====================================================
-// LOGOUT
-// =====================================================
-
-async function buddyLogout() {
-
-  try {
-
-    await auth.signOut();
-
-  } catch (error) {
-
-    console.error(
-      "Buddy logout error:",
-      error
+    showMessage(
+      "Unable to load your Buddy account.",
+      true
     );
 
   }
@@ -333,32 +411,40 @@ async function buddyLogout() {
 
 function showBuddyLogin() {
 
-  const login =
-    document.getElementById(
-      "buddyLoginSection"
-    );
+  const loginSections = [
+
+    document.getElementById("buddyLoginSection"),
+
+    document.getElementById("loginSection"),
+
+    document.getElementById("buddyLogin")
+
+  ].filter(Boolean);
 
 
-  const dashboard =
-    document.getElementById(
-      "buddyDashboard"
-    );
+  const dashboardSections = [
+
+    document.getElementById("buddyDashboard"),
+
+    document.getElementById("dashboardSection"),
+
+    document.getElementById("buddyPanel")
+
+  ].filter(Boolean);
 
 
-  if (login) {
+  loginSections.forEach(function (element) {
 
-    login.style.display =
-      "block";
+    element.style.display = "";
 
-  }
+  });
 
 
-  if (dashboard) {
+  dashboardSections.forEach(function (element) {
 
-    dashboard.style.display =
-      "none";
+    element.style.display = "none";
 
-  }
+  });
 
 }
 
@@ -369,30 +455,106 @@ function showBuddyLogin() {
 
 function showBuddyDashboard() {
 
-  const login =
-    document.getElementById(
-      "buddyLoginSection"
+  const loginSections = [
+
+    document.getElementById("buddyLoginSection"),
+
+    document.getElementById("loginSection"),
+
+    document.getElementById("buddyLogin")
+
+  ].filter(Boolean);
+
+
+  const dashboardSections = [
+
+    document.getElementById("buddyDashboard"),
+
+    document.getElementById("dashboardSection"),
+
+    document.getElementById("buddyPanel")
+
+  ].filter(Boolean);
+
+
+  loginSections.forEach(function (element) {
+
+    element.style.display = "none";
+
+  });
+
+
+  dashboardSections.forEach(function (element) {
+
+    element.style.display = "";
+
+  });
+
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function setupLogoutButtons() {
+
+  const buttons = [
+
+    document.getElementById("buddyLogout"),
+
+    document.getElementById("logoutBuddy"),
+
+    document.getElementById("logoutButton"),
+
+    document.getElementById("logoutBtn")
+
+  ].filter(Boolean);
+
+
+  buttons.forEach(function (button) {
+
+    if (button.dataset.buddyListener === "true") {
+      return;
+    }
+
+    button.dataset.buddyListener = "true";
+
+    button.addEventListener(
+      "click",
+      logoutBuddy
     );
 
+  });
 
-  const dashboard =
-    document.getElementById(
-      "buddyDashboard"
+}
+
+
+// =====================================================
+// LOGOUT FUNCTION
+// =====================================================
+
+async function logoutBuddy() {
+
+  try {
+
+    await auth.signOut();
+
+    window.currentBuddy = null;
+
+    showBuddyLogin();
+
+  } catch (error) {
+
+    console.error(
+      "Logout error:",
+      error
     );
 
-
-  if (login) {
-
-    login.style.display =
-      "none";
-
-  }
-
-
-  if (dashboard) {
-
-    dashboard.style.display =
-      "block";
+    showMessage(
+      "Unable to log out.",
+      true
+    );
 
   }
 
@@ -400,163 +562,331 @@ function showBuddyDashboard() {
 
 
 // =====================================================
-// LOGIN MESSAGE
+// AVAILABILITY SETUP
 // =====================================================
 
-function showBuddyMessage(
-  message,
-  error
-) {
+function setupAvailabilityButtons() {
 
-  const element =
+  const availableButton =
     document.getElementById(
-      "buddyLoginMessage"
+      "setAvailableBtn"
     );
 
 
-  if (!element) {
+  const unavailableButton =
+    document.getElementById(
+      "setUnavailableBtn"
+    );
+
+
+  if (availableButton) {
+
+    availableButton.addEventListener(
+      "click",
+      function () {
+        changeAvailability("available");
+      }
+    );
+
+  }
+
+
+  if (unavailableButton) {
+
+    unavailableButton.addEventListener(
+      "click",
+      function () {
+        changeAvailability("unavailable");
+      }
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// CHANGE AVAILABILITY
+// =====================================================
+
+async function changeAvailability(
+  newStatus
+) {
+
+  if (!auth.currentUser) {
+
+    showMessage(
+      "Please log in first.",
+      true
+    );
 
     return;
 
   }
 
 
-  element.textContent =
-    message;
+  const allowedStatuses = [
+    "available",
+    "unavailable"
+  ];
 
 
-  element.style.color =
-    error
-      ? "#b00020"
-      : "#176b32";
+  if (
+    !allowedStatuses.includes(
+      newStatus
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await db
+      .collection("hospital_buddies")
+      .doc(auth.currentUser.uid)
+      .update({
+
+        status:
+          newStatus,
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    if (window.currentBuddy) {
+
+      window.currentBuddy.status =
+        newStatus;
+
+    }
+
+
+    updateAvailabilityUI(
+      newStatus
+    );
+
+
+    showMessage(
+      newStatus === "available"
+        ? "You are now available for bookings."
+        : "You are now unavailable for bookings.",
+      false
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Availability error:",
+      error
+    );
+
+
+    showMessage(
+      "Unable to update your availability.",
+      true
+    );
+
+  }
 
 }
 
 
 // =====================================================
-// DISPLAY PROFILE
+// AVAILABILITY UI
 // =====================================================
 
-function displayBuddyProfile(
+function updateAvailabilityUI(
+  status
+) {
+
+  const statusElements = [
+
+    document.getElementById(
+      "buddyAvailability"
+    ),
+
+    document.getElementById(
+      "availabilityStatus"
+    ),
+
+    document.getElementById(
+      "buddyStatus"
+    )
+
+  ].filter(Boolean);
+
+
+  statusElements.forEach(function (element) {
+
+    element.textContent =
+      status === "available"
+        ? "Available"
+        : "Unavailable";
+
+    element.classList.remove(
+      "available",
+      "unavailable"
+    );
+
+    element.classList.add(
+      status === "available"
+        ? "available"
+        : "unavailable"
+    );
+
+  });
+
+
+  const availableButton =
+    document.getElementById(
+      "setAvailableBtn"
+    );
+
+
+  const unavailableButton =
+    document.getElementById(
+      "setUnavailableBtn"
+    );
+
+
+  if (availableButton) {
+
+    availableButton.disabled =
+      status === "available";
+
+  }
+
+
+  if (unavailableButton) {
+
+    unavailableButton.disabled =
+      status === "unavailable";
+
+  }
+
+}
+
+
+// =====================================================
+// PROFILE DISPLAY
+// =====================================================
+
+function populateBuddyProfile(
   buddy
 ) {
 
-  setText(
-    "buddyProfileName",
+  setElementText(
+    "buddyDisplayName",
     buddy.name || "Hospital Buddy"
   );
 
 
-  setText(
-    "buddyProfilePhone",
+  setElementText(
+    "buddyNameDisplay",
+    buddy.name || "Hospital Buddy"
+  );
+
+
+  setElementText(
+    "buddyPhoneDisplay",
     buddy.phone || "Not provided"
   );
 
 
-  setText(
-    "buddyProfileEmail",
+  setElementText(
+    "buddyEmailDisplay",
     buddy.email || "Not provided"
   );
 
 
-  setText(
-    "buddyProfileGender",
-    buddy.gender || "Not provided"
+  setElementText(
+    "buddyQualificationDisplay",
+    buddy.qualification || "Not specified"
   );
 
 
-  setText(
-    "buddyProfileDistrict",
-    buddy.district || "Not provided"
-  );
-
-
-  setText(
-    "buddyProfileHospital",
-    buddy.hospital || "Not provided"
-  );
-
-
-  setText(
-    "buddyProfileQualification",
-    buddy.qualification || "Not provided"
-  );
-
-
-  setText(
-    "buddyProfileAvailability",
-    buddy.availability || "Not provided"
-  );
-
-
-  setText(
-    "buddyProfileAbout",
-    buddy.about || "No introduction provided."
-  );
-
-
-  setText(
-    "buddyProfileStatus",
-    buddy.status || "pending"
-  );
-
-
-  const languages =
+  setElementText(
+    "buddyLanguagesDisplay",
     Array.isArray(buddy.languages)
       ? buddy.languages.join(", ")
-      : "Not provided";
-
-
-  setText(
-    "buddyProfileLanguages",
-    languages
+      : buddy.languages || "Not specified"
   );
 
 
-  const services =
-    Array.isArray(buddy.services)
-      ? buddy.services.join(", ")
-      : "Not provided";
-
-
-  setText(
-    "buddyProfileServices",
-    services
-  );
-
-
-  const statusElement =
+  const nameInput =
     document.getElementById(
-      "buddyProfileStatus"
+      "buddyName"
     );
 
 
-  if (statusElement) {
+  const phoneInput =
+    document.getElementById(
+      "buddyPhone"
+    );
 
-    statusElement.className =
-      "statusBadge " +
-      getStatusClass(
-        buddy.status
-      );
+
+  const qualificationInput =
+    document.getElementById(
+      "buddyQualification"
+    );
+
+
+  const languagesInput =
+    document.getElementById(
+      "buddyLanguages"
+    );
+
+
+  if (
+    nameInput &&
+    !nameInput.value
+  ) {
+
+    nameInput.value =
+      buddy.name || "";
 
   }
 
 
   if (
-    buddy.status !==
-    "approved"
+    phoneInput &&
+    !phoneInput.value
   ) {
 
-    showBuddyApprovalNotice(
-      buddy.status
-    );
+    phoneInput.value =
+      buddy.phone || "";
 
   }
 
 
-  else {
+  if (
+    qualificationInput &&
+    !qualificationInput.value
+  ) {
 
-    hideBuddyApprovalNotice();
+    qualificationInput.value =
+      buddy.qualification || "";
+
+  }
+
+
+  if (
+    languagesInput &&
+    !languagesInput.value
+  ) {
+
+    languagesInput.value =
+      Array.isArray(buddy.languages)
+        ? buddy.languages.join(", ")
+        : buddy.languages || "";
 
   }
 
@@ -564,88 +894,193 @@ function displayBuddyProfile(
 
 
 // =====================================================
-// APPROVAL NOTICE
+// PROFILE FORM
 // =====================================================
 
-function showBuddyApprovalNotice(
-  status
-) {
+function setupProfileForm() {
 
-  const notice =
+  const form =
     document.getElementById(
-      "buddyApprovalNotice"
+      "buddyProfileForm"
     );
 
 
-  if (!notice) {
+  if (!form) {
+    return;
+  }
+
+
+  if (
+    form.dataset.buddyListener ===
+    "true"
+  ) {
 
     return;
 
   }
 
 
-  notice.style.display =
-    "block";
+  form.dataset.buddyListener =
+    "true";
 
 
-  if (
-    status === "pending"
-  ) {
-
-    notice.innerHTML = `
-      <strong>Registration under review</strong>
-      <p>
-        Your Buddy registration is waiting for
-        administrator approval. You will be able
-        to receive assignments after approval.
-      </p>
-    `;
-
-  }
-
-
-  else if (
-    status === "rejected"
-  ) {
-
-    notice.innerHTML = `
-      <strong>Registration not approved</strong>
-      <p>
-        Your Buddy registration has not been approved
-        by the administrator.
-      </p>
-    `;
-
-  }
-
-
-  else {
-
-    notice.innerHTML = `
-      <strong>Buddy account status</strong>
-      <p>
-        Your account is currently not available
-        for assignments.
-      </p>
-    `;
-
-  }
+  form.addEventListener(
+    "submit",
+    saveBuddyProfile
+  );
 
 }
 
 
-function hideBuddyApprovalNotice() {
+// =====================================================
+// SAVE PROFILE
+// =====================================================
 
-  const notice =
+async function saveBuddyProfile(
+  event
+) {
+
+  event.preventDefault();
+
+
+  if (!auth.currentUser) {
+
+    showMessage(
+      "Please log in first.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const nameInput =
     document.getElementById(
-      "buddyApprovalNotice"
+      "buddyName"
     );
 
 
-  if (notice) {
+  const phoneInput =
+    document.getElementById(
+      "buddyPhone"
+    );
 
-    notice.style.display =
-      "none";
+
+  const qualificationInput =
+    document.getElementById(
+      "buddyQualification"
+    );
+
+
+  const languagesInput =
+    document.getElementById(
+      "buddyLanguages"
+    );
+
+
+  const name =
+    nameInput
+      ? nameInput.value.trim()
+      : "";
+
+
+  const phone =
+    phoneInput
+      ? phoneInput.value.trim()
+      : "";
+
+
+  const qualification =
+    qualificationInput
+      ? qualificationInput.value.trim()
+      : "";
+
+
+  const languagesText =
+    languagesInput
+      ? languagesInput.value.trim()
+      : "";
+
+
+  const languages =
+    languagesText
+      .split(",")
+      .map(function (item) {
+        return item.trim();
+      })
+      .filter(function (item) {
+        return item.length > 0;
+      });
+
+
+  try {
+
+    await db
+      .collection("hospital_buddies")
+      .doc(auth.currentUser.uid)
+      .update({
+
+        name:
+          name,
+
+        phone:
+          phone,
+
+        qualification:
+          qualification,
+
+        languages:
+          languages,
+
+        updatedAt:
+          firebase.firestore
+            .FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    if (window.currentBuddy) {
+
+      window.currentBuddy.name =
+        name;
+
+      window.currentBuddy.phone =
+        phone;
+
+      window.currentBuddy.qualification =
+        qualification;
+
+      window.currentBuddy.languages =
+        languages;
+
+    }
+
+
+    populateBuddyProfile(
+      window.currentBuddy
+    );
+
+
+    showMessage(
+      "Profile updated successfully.",
+      false
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Profile update error:",
+      error
+    );
+
+
+    showMessage(
+      "Unable to update your profile.",
+      true
+    );
 
   }
 
@@ -657,8 +1092,14 @@ function hideBuddyApprovalNotice() {
 // =====================================================
 
 async function loadBuddyBookings(
-  uid
+  buddyId
 ) {
+
+  const container =
+    document.getElementById(
+      "buddyBookings"
+    );
+
 
   const table =
     document.getElementById(
@@ -666,20 +1107,18 @@ async function loadBuddyBookings(
     );
 
 
-  if (!table) {
+  const target =
+    container ||
+    table;
 
+
+  if (!target) {
     return;
-
   }
 
 
-  table.innerHTML = `
-    <tr>
-      <td colspan="7">
-        Loading assignments...
-      </td>
-    </tr>
-  `;
+  target.innerHTML =
+    "<p>Loading booking requests...</p>";
 
 
   try {
@@ -690,22 +1129,17 @@ async function loadBuddyBookings(
         .where(
           "buddyId",
           "==",
-          uid
+          buddyId
         )
         .get();
 
 
     if (snapshot.empty) {
 
-      table.innerHTML = `
-        <tr>
-          <td colspan="7">
-            No assignments found.
-          </td>
-        </tr>
-      `;
+      target.innerHTML =
+        "<p>No assigned booking requests.</p>";
 
-      updateBuddyCounts([]);
+      updateBookingCounts([]);
 
       return;
 
@@ -713,54 +1147,37 @@ async function loadBuddyBookings(
 
 
     const bookings =
-      snapshot.docs.map(
-        doc => ({
+      snapshot.docs.map(function (doc) {
 
-          id:
-            doc.id,
-
+        return {
+          id: doc.id,
           ...doc.data()
+        };
 
-        })
+      });
+
+
+    bookings.sort(function (a, b) {
+
+      return (
+        getTimestampMillis(
+          b.createdAt
+        ) -
+        getTimestampMillis(
+          a.createdAt
+        )
       );
 
+    });
 
-    bookings.sort(
-      (a, b) => {
 
-        return (
-          getTimestampMillis(
-            b.createdAt
-          ) -
-          getTimestampMillis(
-            a.createdAt
-          )
-        );
-
-      }
+    renderBuddyBookings(
+      target,
+      bookings
     );
 
 
-    let html = "";
-
-
-    bookings.forEach(
-      booking => {
-
-        html +=
-          renderBuddyBooking(
-            booking
-          );
-
-      }
-    );
-
-
-    table.innerHTML =
-      html;
-
-
-    updateBuddyCounts(
+    updateBookingCounts(
       bookings
     );
 
@@ -773,13 +1190,13 @@ async function loadBuddyBookings(
     );
 
 
-    table.innerHTML = `
-      <tr>
-        <td colspan="7">
-          Unable to load assignments.
-        </td>
-      </tr>
-    `;
+    /*
+     * Firestore rules may not allow
+     * direct query access in some setups.
+     */
+
+    target.innerHTML =
+      "<p>Unable to load assigned requests.</p>";
 
   }
 
@@ -787,331 +1204,213 @@ async function loadBuddyBookings(
 
 
 // =====================================================
-// RENDER BOOKING
+// RENDER BOOKINGS
 // =====================================================
 
-function renderBuddyBooking(
-  booking
-) {
-
-  const status =
-    booking.status ||
-    "pending";
-
-
-  const bookingId =
-    booking.bookingId ||
-    (
-      "HB-" +
-      booking.id
-        .substring(0, 7)
-        .toUpperCase()
-    );
-
-
-  const dateTime =
-    [
-      booking.date || "",
-      booking.time || ""
-    ]
-      .filter(Boolean)
-      .join(" • ");
-
-
-  let action = "";
-
-
-  if (
-    status === "confirmed"
-  ) {
-
-    action = `
-      <button
-        type="button"
-        class="smallBtn green"
-        onclick="buddyCompleteBooking(
-          '${escapeJS(booking.id)}'
-        )"
-      >
-        Complete
-      </button>
-    `;
-
-  }
-
-
-  return `
-
-    <tr>
-
-      <td>
-        <strong>
-          ${escapeHTML(
-            bookingId
-          )}
-        </strong>
-      </td>
-
-
-      <td>
-        ${escapeHTML(
-          booking.name ||
-          "Patient"
-        )}
-      </td>
-
-
-      <td>
-        ${escapeHTML(
-          booking.service ||
-          "Not specified"
-        )}
-      </td>
-
-
-      <td>
-        ${escapeHTML(
-          booking.language ||
-          "Not specified"
-        )}
-      </td>
-
-
-      <td>
-        ${escapeHTML(
-          dateTime ||
-          "Not specified"
-        )}
-      </td>
-
-
-      <td>
-
-        ${
-          booking.requirement
-            ? escapeHTML(
-                booking.requirement
-              )
-            : "No additional requirement"
-        }
-
-      </td>
-
-
-      <td>
-
-        <span
-          class="statusBadge ${getStatusClass(
-            status
-          )}"
-        >
-          ${escapeHTML(
-            status
-          )}
-        </span>
-
-        <br><br>
-
-        ${action}
-
-      </td>
-
-    </tr>
-
-  `;
-
-}
-
-
-// =====================================================
-// COMPLETE ASSIGNMENT
-// =====================================================
-
-async function buddyCompleteBooking(
-  bookingId
-) {
-
-  const confirmed =
-    confirm(
-      "Mark this assignment as completed?"
-    );
-
-
-  if (!confirmed) {
-
-    return;
-
-  }
-
-
-  try {
-
-    const bookingRef =
-      db
-        .collection("bookings")
-        .doc(
-          bookingId
-        );
-
-
-    const bookingSnapshot =
-      await bookingRef.get();
-
-
-    if (!bookingSnapshot.exists) {
-
-      alert(
-        "Booking was not found."
-      );
-
-      return;
-
-    }
-
-
-    const booking =
-      bookingSnapshot.data();
-
-
-    await bookingRef.update({
-
-      status:
-        "completed",
-
-      completedAt:
-        firebase.firestore
-          .FieldValue
-          .serverTimestamp(),
-
-      updatedAt:
-        firebase.firestore
-          .FieldValue
-          .serverTimestamp()
-
-    });
-
-
-    if (
-      booking.buddyId
-    ) {
-
-      await db
-        .collection(
-          "hospital_buddies"
-        )
-        .doc(
-          booking.buddyId
-        )
-        .update({
-
-          status:
-            "available",
-
-          updatedAt:
-            firebase.firestore
-              .FieldValue
-              .serverTimestamp()
-
-        });
-
-    }
-
-
-    loadBuddyBookings(
-      auth.currentUser.uid
-    );
-
-
-    alert(
-      "Assignment marked as completed."
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Complete assignment error:",
-      error
-    );
-
-
-    alert(
-      "Unable to complete assignment."
-    );
-
-  }
-
-}
-
-
-// =====================================================
-// BUDDY COUNTS
-// =====================================================
-
-function updateBuddyCounts(
+function renderBuddyBookings(
+  target,
   bookings
 ) {
 
-  let pending =
-    0;
-
-  let confirmed =
-    0;
-
-  let completed =
-    0;
+  let html = "";
 
 
-  bookings.forEach(
-    booking => {
+  bookings.forEach(function (booking) {
 
-      if (
-        booking.status ===
-        "pending"
-      ) {
-
-        pending++;
-
-      }
+    const status =
+      booking.status ||
+      "pending";
 
 
-      if (
-        booking.status ===
-        "confirmed"
-      ) {
-
-        confirmed++;
-
-      }
+    const date =
+      booking.date ||
+      "Date not specified";
 
 
-      if (
-        booking.status ===
-        "completed"
-      ) {
+    const time =
+      booking.time ||
+      "Time not specified";
 
-        completed++;
 
-      }
+    const service =
+      booking.service ||
+      "Service not specified";
+
+
+    const patientName =
+      booking.name ||
+      "Patient";
+
+
+    html += `
+
+      <div class="buddyBookingCard">
+
+        <div class="buddyBookingHeader">
+
+          <strong>
+            ${escapeHTML(
+              booking.bookingId ||
+              (
+                "HB-" +
+                booking.id
+                  .substring(0, 7)
+                  .toUpperCase()
+              )
+            )}
+          </strong>
+
+          <span class="statusBadge ${escapeHTML(
+            getStatusClass(status)
+          )}">
+            ${escapeHTML(status)}
+          </span>
+
+        </div>
+
+
+        <div class="buddyBookingBody">
+
+          <p>
+            <strong>Patient:</strong>
+            ${escapeHTML(patientName)}
+          </p>
+
+          <p>
+            <strong>Service:</strong>
+            ${escapeHTML(service)}
+          </p>
+
+          <p>
+            <strong>Date:</strong>
+            ${escapeHTML(date)}
+          </p>
+
+          <p>
+            <strong>Time:</strong>
+            ${escapeHTML(time)}
+          </p>
+
+          ${
+            booking.language
+              ? `
+                <p>
+                  <strong>Language:</strong>
+                  ${escapeHTML(
+                    booking.language
+                  )}
+                </p>
+              `
+              : ""
+          }
+
+          ${
+            booking.requirement
+              ? `
+                <p>
+                  <strong>Requirement:</strong>
+                  ${escapeHTML(
+                    booking.requirement
+                  )}
+                </p>
+              `
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  target.innerHTML =
+    html;
+
+}
+
+
+// =====================================================
+// BOOKING COUNTS
+// =====================================================
+
+function updateBookingCounts(
+  bookings
+) {
+
+  let pending = 0;
+  let confirmed = 0;
+  let completed = 0;
+
+
+  bookings.forEach(function (booking) {
+
+    if (
+      booking.status ===
+      "pending"
+    ) {
+
+      pending++;
 
     }
-  );
 
 
-  setText(
+    if (
+      booking.status ===
+      "confirmed"
+    ) {
+
+      confirmed++;
+
+    }
+
+
+    if (
+      booking.status ===
+      "completed"
+    ) {
+
+      completed++;
+
+    }
+
+  });
+
+
+  setElementText(
     "buddyPendingCount",
     pending
   );
 
 
-  setText(
+  setElementText(
     "buddyConfirmedCount",
     confirmed
   );
 
 
-  setText(
+  setElementText(
     "buddyCompletedCount",
+    completed
+  );
+
+
+  setElementText(
+    "pendingCount",
+    pending
+  );
+
+
+  setElementText(
+    "confirmedCount",
+    confirmed
+  );
+
+
+  setElementText(
+    "completedCount",
     completed
   );
 
@@ -1131,14 +1430,8 @@ function getStatusClass(
     case "pending":
       return "pending";
 
-    case "approved":
-      return "confirmed";
-
     case "confirmed":
       return "confirmed";
-
-    case "completed":
-      return "completed";
 
     case "rejected":
       return "rejected";
@@ -1146,36 +1439,17 @@ function getStatusClass(
     case "cancelled":
       return "cancelled";
 
+    case "completed":
+      return "completed";
+
     case "available":
       return "available";
 
-    default:
+    case "unavailable":
       return "unavailable";
 
-  }
-
-}
-
-
-// =====================================================
-// SET TEXT
-// =====================================================
-
-function setText(
-  id,
-  value
-) {
-
-  const element =
-    document.getElementById(
-      id
-    );
-
-
-  if (element) {
-
-    element.textContent =
-      value;
+    default:
+      return "unavailable";
 
   }
 
@@ -1191,9 +1465,7 @@ function getTimestampMillis(
 ) {
 
   if (!timestamp) {
-
     return 0;
-
   }
 
 
@@ -1208,7 +1480,8 @@ function getTimestampMillis(
 
 
   if (
-    timestamp.seconds
+    typeof timestamp.seconds ===
+    "number"
   ) {
 
     return (
@@ -1220,6 +1493,80 @@ function getTimestampMillis(
 
 
   return 0;
+
+}
+
+
+// =====================================================
+// MESSAGE
+// =====================================================
+
+function showMessage(
+  message,
+  isError
+) {
+
+  const elements = [
+
+    document.getElementById(
+      "buddyLoginMessage"
+    ),
+
+    document.getElementById(
+      "loginMessage"
+    ),
+
+    document.getElementById(
+      "buddyMessage"
+    ),
+
+    document.getElementById(
+      "profileMessage"
+    )
+
+  ].filter(Boolean);
+
+
+  if (!elements.length) {
+    return;
+  }
+
+
+  elements.forEach(function (element) {
+
+    element.textContent =
+      message;
+
+
+    element.style.color =
+      isError
+        ? "#b00020"
+        : "#176b32";
+
+  });
+
+}
+
+
+// =====================================================
+// SET ELEMENT TEXT
+// =====================================================
+
+function setElementText(
+  id,
+  value
+) {
+
+  const element =
+    document.getElementById(id);
+
+
+  if (element) {
+
+    element.textContent =
+      value ?? "";
+
+  }
 
 }
 
@@ -1265,35 +1612,20 @@ function escapeHTML(
 
 
 // =====================================================
-// JAVASCRIPT SECURITY
+// MAKE FUNCTIONS AVAILABLE TO HTML
 // =====================================================
 
-function escapeJS(
-  value
-) {
+window.buddyLogin =
+  buddyLogin;
 
-  return String(
-    value ?? ""
-  )
+window.logoutBuddy =
+  logoutBuddy;
 
-    .replace(
-      /\\/g,
-      "\\\\"
-    )
+window.changeAvailability =
+  changeAvailability;
 
-    .replace(
-      /'/g,
-      "\\'"
-    )
+window.loadBuddyBookings =
+  loadBuddyBookings;
 
-    .replace(
-      /\n/g,
-      "\\n"
-    )
-
-    .replace(
-      /\r/g,
-      "\\r"
-    );
-
-}
+window.saveBuddyProfile =
+  saveBuddyProfile;
