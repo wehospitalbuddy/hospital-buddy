@@ -1,5 +1,5 @@
 // =====================================================
-// HOSPITAL BUDDY — FIREBASE CONFIGURATION
+// HOSPITAL BUDDY — FIREBASE
 // =====================================================
 
 const firebaseConfig = {
