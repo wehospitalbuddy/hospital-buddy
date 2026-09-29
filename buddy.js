@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "hospital-buddy-2224d.firebasestorage.app",
   messagingSenderId: "190919672635",
   appId: "1:190919672635:web:8fe14cc8036fd0cb542d1e",
-  measurementId: "G-Z13TZ2EFFR"
+  measurementId: "G-7I3TZ2EFFR"
 };
 
 
