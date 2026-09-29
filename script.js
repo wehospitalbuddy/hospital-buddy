@@ -1,10 +1,5 @@
 // =====================================================
-// HOSPITAL BUDDY — MAIN WEBSITE SCRIPT
-// =====================================================
-
-
-// =====================================================
-// FIREBASE CONFIG
+// HOSPITAL BUDDY — MAIN SCRIPT.JS
 // =====================================================
 
 const firebaseConfig = {
@@ -19,49 +14,45 @@ const firebaseConfig = {
 
 
 // =====================================================
-// FIREBASE LOADER
+// FIREBASE LOAD
 // =====================================================
 
-function loadFirebaseScripts() {
+(function loadFirebase() {
 
-  if (typeof firebase !== "undefined") {
-    initializeHospitalBuddy();
-    return;
-  }
-
-  const appScript =
-    document.createElement("script");
+  const appScript = document.createElement("script");
 
   appScript.src =
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js";
 
   appScript.onload = function () {
 
-    const firestoreScript =
-      document.createElement("script");
+    const authScript = document.createElement("script");
 
-    firestoreScript.src =
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
+    authScript.src =
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
 
-    firestoreScript.onload = function () {
+    authScript.onload = function () {
 
-      const authScript =
+      const firestoreScript =
         document.createElement("script");
 
-      authScript.src =
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js";
+      firestoreScript.src =
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js";
 
-      authScript.onload =
-        initializeHospitalBuddy;
+      firestoreScript.onload = function () {
+
+        initializeHospitalBuddy();
+
+      };
 
       document.head.appendChild(
-        authScript
+        firestoreScript
       );
 
     };
 
     document.head.appendChild(
-      firestoreScript
+      authScript
     );
 
   };
@@ -69,26 +60,15 @@ function loadFirebaseScripts() {
   document.head.appendChild(
     appScript
   );
-}
+
+})();
 
 
 // =====================================================
-// INITIALIZE FIREBASE
+// INITIALIZE
 // =====================================================
-
-let hospitalBuddyDB = null;
-let hospitalBuddyAuth = null;
 
 function initializeHospitalBuddy() {
-
-  if (
-    typeof firebase === "undefined"
-  ) {
-    console.error(
-      "Firebase could not be loaded."
-    );
-    return;
-  }
 
   if (!firebase.apps.length) {
 
@@ -98,222 +78,15 @@ function initializeHospitalBuddy() {
 
   }
 
-  hospitalBuddyDB =
-    firebase.firestore();
-
-  hospitalBuddyAuth =
+  window.hbAuth =
     firebase.auth();
 
-  initializeWebsite();
+  window.hbDB =
+    firebase.firestore();
 
-}
+  setupBookingForm();
 
-
-// =====================================================
-// WEBSITE INITIALIZATION
-// =====================================================
-
-function initializeWebsite() {
-
-  loadApprovedBuddies();
-
-  initializeBookingForm();
-
-  setMinimumBookingDate();
-
-}
-
-
-// =====================================================
-// LOAD APPROVED / AVAILABLE BUDDIES
-// =====================================================
-
-async function loadApprovedBuddies() {
-
-  const buddyList =
-    document.getElementById(
-      "buddyList"
-    );
-
-  if (!buddyList) {
-    return;
-  }
-
-  try {
-
-    const snapshot =
-      await hospitalBuddyDB
-        .collection(
-          "hospital_buddies"
-        )
-        .where(
-          "status",
-          "==",
-          "available"
-        )
-        .get();
-
-
-    if (snapshot.empty) {
-
-      buddyList.innerHTML = `
-
-        <article class="buddy">
-
-          <div class="serviceIcon">
-            🤝
-          </div>
-
-          <h3>
-            Hospital Buddies
-          </h3>
-
-          <p>
-            Buddy profiles will appear here
-            once approved and available.
-          </p>
-
-          <p class="privateText">
-            Profiles are reviewed before
-            becoming available for booking.
-          </p>
-
-        </article>
-
-      `;
-
-      return;
-
-    }
-
-
-    let html = "";
-
-
-    snapshot.forEach(
-      doc => {
-
-        const buddy =
-          doc.data();
-
-
-        const languages =
-          Array.isArray(
-            buddy.languages
-          )
-            ? buddy.languages.join(", ")
-            : "Not specified";
-
-
-        const services =
-          Array.isArray(
-            buddy.services
-          )
-            ? buddy.services.join(", ")
-            : "Practical assistance";
-
-
-        html += `
-
-          <article class="buddy">
-
-            <div class="serviceIcon">
-              🤝
-            </div>
-
-            <h3>
-              ${escapeHTML(
-                buddy.name ||
-                "Hospital Buddy"
-              )}
-            </h3>
-
-            <p>
-
-              <strong>
-                Hospital:
-              </strong>
-
-              ${escapeHTML(
-                buddy.hospital ||
-                "Not specified"
-              )}
-
-            </p>
-
-            <p>
-
-              <strong>
-                Languages:
-              </strong>
-
-              ${escapeHTML(
-                languages
-              )}
-
-            </p>
-
-            <p>
-
-              <strong>
-                Services:
-              </strong>
-
-              ${escapeHTML(
-                services
-              )}
-
-            </p>
-
-            <button
-              type="button"
-              class="btn"
-              onclick="scrollToBooking()"
-            >
-              Request a Buddy
-            </button>
-
-          </article>
-
-        `;
-
-      }
-    );
-
-
-    buddyList.innerHTML =
-      html;
-
-
-  } catch (error) {
-
-    console.error(
-      "Unable to load buddies:",
-      error
-    );
-
-    buddyList.innerHTML = `
-
-      <article class="buddy">
-
-        <div class="serviceIcon">
-          🤝
-        </div>
-
-        <h3>
-          Hospital Buddies
-        </h3>
-
-        <p>
-          Buddy profiles are currently
-          being prepared.
-        </p>
-
-      </article>
-
-    `;
-
-  }
+  setupNavigation();
 
 }
 
@@ -322,17 +95,16 @@ async function loadApprovedBuddies() {
 // BOOKING FORM
 // =====================================================
 
-function initializeBookingForm() {
+function setupBookingForm() {
 
   const form =
     document.getElementById(
-      "form"
+      "bookingForm"
     );
 
   if (!form) {
     return;
   }
-
 
   form.addEventListener(
     "submit",
@@ -350,74 +122,129 @@ async function submitBooking(event) {
 
   event.preventDefault();
 
-
   const form =
-    document.getElementById(
-      "form"
+    event.target;
+
+  const button =
+    form.querySelector(
+      'button[type="submit"]'
     );
 
-  const submitButton =
+  const message =
     document.getElementById(
-      "submitBtn"
+      "bookingMessage"
     );
 
 
   const name =
-    document
-      .getElementById("name")
-      .value
-      .trim();
+    getValue(
+      form,
+      [
+        "name",
+        "patientName"
+      ]
+    );
 
 
   const phone =
-    document
-      .getElementById("phone")
-      .value
-      .trim();
+    getValue(
+      form,
+      [
+        "phone",
+        "patientPhone"
+      ]
+    );
 
 
-  const language =
-    document
-      .getElementById("lang")
-      .value;
+  const email =
+    getValue(
+      form,
+      [
+        "email",
+        "patientEmail"
+      ]
+    );
+
+
+  const hospital =
+    getValue(
+      form,
+      [
+        "hospital"
+      ]
+    );
+
+
+  const district =
+    getValue(
+      form,
+      [
+        "district"
+      ]
+    );
 
 
   const service =
-    document
-      .getElementById("service")
-      .value;
+    getValue(
+      form,
+      [
+        "service"
+      ]
+    );
+
+
+  const language =
+    getValue(
+      form,
+      [
+        "language"
+      ]
+    );
 
 
   const date =
-    document
-      .getElementById("date")
-      .value;
+    getValue(
+      form,
+      [
+        "date"
+      ]
+    );
 
 
   const time =
-    document
-      .getElementById("time")
-      .value;
+    getValue(
+      form,
+      [
+        "time"
+      ]
+    );
 
 
-  const notes =
-    document
-      .getElementById("notes")
-      .value
-      .trim();
+  const requirement =
+    getValue(
+      form,
+      [
+        "requirement",
+        "notes",
+        "message"
+      ]
+    );
 
 
   if (
     !name ||
     !phone ||
-    !language ||
+    !hospital ||
+    !district ||
     !service ||
     !date ||
     !time
   ) {
 
-    alert(
-      "Please complete all required fields."
+    showBookingMessage(
+      message,
+      "Please complete all required fields.",
+      true
     );
 
     return;
@@ -425,93 +252,37 @@ async function submitBooking(event) {
   }
 
 
-  submitButton.disabled =
-    true;
+  if (button) {
 
-  submitButton.textContent =
-    "Submitting Request...";
+    button.disabled =
+      true;
+
+    button.textContent =
+      "Submitting...";
+
+  }
 
 
   try {
 
-    // =================================================
-    // FIND AVAILABLE BUDDY
-    // =================================================
+    const user =
+      hbAuth.currentUser;
 
-    let matchedBuddy =
+
+    let patientId =
       null;
 
 
-    const buddySnapshot =
-      await hospitalBuddyDB
-        .collection(
-          "hospital_buddies"
-        )
-        .where(
-          "status",
-          "==",
-          "available"
-        )
-        .get();
+    if (user) {
 
-
-    const availableBuddies =
-      buddySnapshot.docs.map(
-        doc => ({
-
-          id: doc.id,
-
-          ...doc.data()
-
-        })
-      );
-
-
-    // =================================================
-    // LANGUAGE MATCH
-    // =================================================
-
-    matchedBuddy =
-      availableBuddies.find(
-        buddy => {
-
-          if (
-            !Array.isArray(
-              buddy.languages
-            )
-          ) {
-
-            return false;
-
-          }
-
-          return buddy.languages
-            .includes(language);
-
-        }
-      );
-
-
-    // =================================================
-    // FALLBACK TO FIRST AVAILABLE
-    // =================================================
-
-    if (!matchedBuddy) {
-
-      matchedBuddy =
-        availableBuddies.length > 0
-          ? availableBuddies[0]
-          : null;
+      patientId =
+        user.uid;
 
     }
 
 
-    // =================================================
-    // BOOKING ID
-    // =================================================
-
     const bookingRef =
-      hospitalBuddyDB
+      hbDB
         .collection(
           "bookings"
         )
@@ -525,116 +296,150 @@ async function submitBooking(event) {
         .toUpperCase();
 
 
-    // =================================================
-    // CURRENT PATIENT
-    // =================================================
+    // -----------------------------------------------
+    // FIND AVAILABLE BUDDY
+    // -----------------------------------------------
 
-    let patientId =
+    const buddySnapshot =
+      await hbDB
+        .collection(
+          "hospital_buddies"
+        )
+        .where(
+          "status",
+          "==",
+          "available"
+        )
+        .get();
+
+
+    let matchedBuddy =
       null;
 
 
-    if (
-      hospitalBuddyAuth &&
-      hospitalBuddyAuth.currentUser
-    ) {
+    if (!buddySnapshot.empty) {
 
-      patientId =
-        hospitalBuddyAuth
-          .currentUser
-          .uid;
+      const buddies =
+        buddySnapshot.docs.map(
+          doc => ({
+
+            id:
+              doc.id,
+
+            ...doc.data()
+
+          })
+        );
+
+
+      // Try language matching first
+
+      matchedBuddy =
+        buddies.find(
+          buddy => {
+
+            if (
+              !Array.isArray(
+                buddy.languages
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            return buddy.languages.some(
+              buddyLanguage =>
+                String(
+                  buddyLanguage
+                )
+                  .toLowerCase()
+                  .trim() ===
+                String(
+                  language
+                )
+                  .toLowerCase()
+                  .trim()
+            );
+
+          }
+        );
+
+
+      // Otherwise first available buddy
+
+      if (!matchedBuddy) {
+
+        matchedBuddy =
+          buddies[0];
+
+      }
 
     }
 
 
-    // =================================================
-    // BOOKING DATA
-    // =================================================
+    // -----------------------------------------------
+    // SAVE BOOKING
+    // -----------------------------------------------
 
     const bookingData = {
 
       bookingId:
-
         bookingId,
 
       patientId:
-
         patientId,
 
       name:
-
         name,
 
       phone:
-
         phone,
 
       email:
+        email,
 
-        patientId &&
-        hospitalBuddyAuth.currentUser
-          ? hospitalBuddyAuth.currentUser.email || ""
-          : "",
+      hospital:
+        hospital,
 
-      language:
-
-        language,
+      district:
+        district,
 
       service:
-
         service,
 
-      date:
+      language:
+        language,
 
+      date:
         date,
 
       time:
-
         time,
 
       requirement:
+        requirement,
 
-        notes,
-
-      hospital:
-
-        matchedBuddy
-          ? matchedBuddy.hospital || ""
-          : "",
-
-      district:
-
-        matchedBuddy
-          ? matchedBuddy.district || ""
-          : "",
+      status:
+        "pending",
 
       buddyId:
-
         matchedBuddy
           ? matchedBuddy.id
-          : "",
+          : null,
 
       buddyName:
-
         matchedBuddy
           ? matchedBuddy.name || ""
           : "",
 
-      buddyPhone:
-
-        "",
-
-      status:
-
-        "pending",
-
       createdAt:
-
         firebase.firestore
           .FieldValue
           .serverTimestamp(),
 
       updatedAt:
-
         firebase.firestore
           .FieldValue
           .serverTimestamp()
@@ -642,76 +447,69 @@ async function submitBooking(event) {
     };
 
 
-    // =================================================
-    // SAVE BOOKING
-    // =================================================
-
     await bookingRef.set(
       bookingData
     );
 
 
-    // =================================================
-    // SUCCESS MODAL
-    // =================================================
+    // -----------------------------------------------
+    // SUCCESS
+    // -----------------------------------------------
 
-    showBookingResult({
-
-      bookingId:
+    showBookingMessage(
+      message,
+      "Request submitted successfully. Booking ID: " +
         bookingId,
+      false
+    );
 
-      name:
-        name,
-
-      language:
-        language,
-
-      service:
-        service,
-
-      date:
-        date,
-
-      time:
-        time,
-
-      buddy:
-        matchedBuddy
-
-    });
-
-
-    // =================================================
-    // RESET
-    // =================================================
 
     form.reset();
 
 
-    setMinimumBookingDate();
+    // -----------------------------------------------
+    // OPTIONAL REDIRECT
+    // -----------------------------------------------
+
+    setTimeout(
+      function () {
+
+        window.location.href =
+          "patient.html";
+
+      },
+      1800
+    );
 
 
   } catch (error) {
 
     console.error(
-      "Booking error:",
+      "Booking submission error:",
       error
     );
 
 
-    alert(
-      getBookingErrorMessage(
+    showBookingMessage(
+      message,
+      getFriendlyFirebaseError(
         error
-      )
+      ),
+      true
     );
+
 
   } finally {
 
-    submitButton.disabled =
-      false;
+    if (button) {
 
-    submitButton.textContent =
-      "🤝 Request a Buddy";
+      button.disabled =
+        false;
+
+      button.textContent =
+        "Request a Hospital Buddy";
+
+    }
 
   }
 
@@ -719,290 +517,177 @@ async function submitBooking(event) {
 
 
 // =====================================================
-// BOOKING RESULT
+// GET FORM VALUE
 // =====================================================
 
-function showBookingResult(
-  data
+function getValue(
+  form,
+  ids
 ) {
 
-  const modal =
-    document.getElementById(
-      "modal"
-    );
+  for (
+    let i = 0;
+    i < ids.length;
+    i++
+  ) {
 
-  const result =
-    document.getElementById(
-      "result"
-    );
+    const element =
+      form.querySelector(
+        "#" + ids[i]
+      );
 
 
-  if (!modal || !result) {
-    return;
+    if (
+      element &&
+      element.value !== undefined
+    ) {
+
+      return String(
+        element.value
+      ).trim();
+
+    }
+
   }
 
 
-  const buddyName =
-    data.buddy &&
-    data.buddy.name
-      ? data.buddy.name
-      : "Hospital Buddy";
-
-
-  const buddyStatus =
-    data.buddy
-      ? "A Buddy has been matched and your request is now awaiting administrator confirmation."
-      : "Your request has been submitted and the administrator will assign an available Hospital Buddy.";
-
-
-  result.innerHTML = `
-
-    <div class="resultIcon">
-      ✅
-    </div>
-
-    <h2>
-      Booking Request Submitted
-    </h2>
-
-    <p>
-      Your request has been successfully
-      submitted to Hospital Buddy.
-    </p>
-
-    <div class="contact">
-
-      <p>
-        <b>Booking ID:</b><br>
-        ${escapeHTML(
-          data.bookingId
-        )}
-      </p>
-
-      <p>
-        <b>Name:</b><br>
-        ${escapeHTML(
-          data.name
-        )}
-      </p>
-
-      <p>
-        <b>Service:</b><br>
-        ${escapeHTML(
-          data.service
-        )}
-      </p>
-
-      <p>
-        <b>Date:</b><br>
-        ${escapeHTML(
-          data.date
-        )}
-      </p>
-
-      <p>
-        <b>Preferred Time:</b><br>
-        ${escapeHTML(
-          data.time
-        )}
-      </p>
-
-      <p>
-        <b>Language:</b><br>
-        ${escapeHTML(
-          data.language
-        )}
-      </p>
-
-      <p>
-        <b>Buddy:</b><br>
-        ${escapeHTML(
-          buddyName
-        )}
-      </p>
-
-      <p>
-        <b>Status:</b><br>
-        Pending Administrator Confirmation
-      </p>
-
-    </div>
-
-    <p class="privateText">
-      ${escapeHTML(
-        buddyStatus
-      )}
-    </p>
-
-    <button
-      type="button"
-      class="btn primaryBtn"
-      onclick="closeModal()"
-    >
-      Done
-    </button>
-
-  `;
-
-
-  modal.classList.remove(
-    "hidden"
-  );
+  return "";
 
 }
 
 
 // =====================================================
-// CLOSE MODAL
+// MESSAGE
 // =====================================================
 
-function closeModal() {
-
-  const modal =
-    document.getElementById(
-      "modal"
-    );
-
-
-  if (modal) {
-
-    modal.classList.add(
-      "hidden"
-    );
-
-  }
-
-}
-
-
-// =====================================================
-// SCROLL TO BOOKING
-// =====================================================
-
-function scrollToBooking() {
-
-  const bookingSection =
-    document.getElementById(
-      "book"
-    );
-
-
-  if (bookingSection) {
-
-    bookingSection.scrollIntoView({
-      behavior: "smooth"
-    });
-
-  }
-
-}
-
-
-// =====================================================
-// MINIMUM BOOKING DATE
-// =====================================================
-
-function setMinimumBookingDate() {
-
-  const dateInput =
-    document.getElementById(
-      "date"
-    );
-
-
-  if (!dateInput) {
-    return;
-  }
-
-
-  const today =
-    new Date();
-
-
-  const year =
-    today.getFullYear();
-
-
-  const month =
-    String(
-      today.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  const day =
-    String(
-      today.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  dateInput.min =
-    `${year}-${month}-${day}`;
-
-}
-
-
-// =====================================================
-// ERROR MESSAGE
-// =====================================================
-
-function getBookingErrorMessage(
+function showBookingMessage(
+  element,
+  text,
   error
 ) {
 
-  if (
-    error &&
-    error.code ===
-      "permission-denied"
-  ) {
-
-    return (
-      "Your booking could not be submitted because Firebase denied the request. Please check the Firestore Security Rules."
-    );
-
+  if (!element) {
+    return;
   }
 
 
-  if (
-    error &&
-    error.code ===
-      "unavailable"
-  ) {
-
-    return (
-      "Firebase is temporarily unavailable. Please check your internet connection and try again."
-    );
-
-  }
+  element.textContent =
+    text;
 
 
-  if (
-    error &&
-    error.message
-  ) {
-
-    return (
-      "Unable to submit your booking.\n\n" +
-      error.message
-    );
-
-  }
+  element.style.display =
+    "block";
 
 
-  return (
-    "Unable to submit your booking. Please try again."
-  );
+  element.style.color =
+    error
+      ? "#b00020"
+      : "#176b32";
+
+
+  element.style.background =
+    error
+      ? "#fff1f2"
+      : "#ecfdf3";
+
+
+  element.style.padding =
+    "12px 15px";
+
+
+  element.style.borderRadius =
+    "10px";
+
+
+  element.style.marginTop =
+    "15px";
 
 }
 
 
 // =====================================================
-// HTML SECURITY
+// FRIENDLY FIREBASE ERROR
+// =====================================================
+
+function getFriendlyFirebaseError(
+  error
+) {
+
+  if (!error) {
+
+    return "Something went wrong. Please try again.";
+
+  }
+
+
+  switch (
+    error.code
+  ) {
+
+    case "permission-denied":
+
+      return "The request could not be submitted because database permission is denied.";
+
+    case "auth/api-key-not-valid.-please-pass-a-valid-api-key.":
+
+      return "Firebase configuration error. Please check the Firebase API key.";
+
+    case "unavailable":
+
+      return "Firebase is temporarily unavailable. Please try again.";
+
+    default:
+
+      return (
+        "Unable to submit the request. Please try again."
+      );
+
+  }
+
+}
+
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+
+function setupNavigation() {
+
+  const menuButton =
+    document.querySelector(
+      ".menu-toggle"
+    );
+
+
+  const nav =
+    document.querySelector(
+      "nav"
+    );
+
+
+  if (
+    menuButton &&
+    nav
+  ) {
+
+    menuButton.addEventListener(
+      "click",
+      function () {
+
+        nav.classList.toggle(
+          "open"
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// ESCAPE HTML
 // =====================================================
 
 function escapeHTML(
@@ -1039,13 +724,3 @@ function escapeHTML(
     );
 
 }
-
-
-// =====================================================
-// START
-// =====================================================
-
-document.addEventListener(
-  "DOMContentLoaded",
-  loadFirebaseScripts
-);
