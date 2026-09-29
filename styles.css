@@ -250,7 +250,7 @@ nav a:hover {
   inset: 0;
   z-index: 0;
 
-  background-image: url("hero-bg.png.png");
+  background-image: url("hero-image.png");
   background-size: cover;
   background-position: 78% center;
   background-repeat: no-repeat;
