@@ -1734,4 +1734,35 @@ footer,
   .hb-section {
     padding: 20px 0;
   }
+
+}
+/* =====================================================
+   HOSPITAL BUDDY — MOBILE HERO IMAGE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .hb-hero-background {
+        position: absolute;
+        inset: 0;
+
+        background-image: url("hero-bg.png.png");
+        background-size: cover;
+        background-position: center top;
+        background-repeat: no-repeat;
+
+        opacity: 1;
+    }
+
+    .hb-hero {
+        position: relative;
+        min-height: 680px;
+        overflow: hidden;
+    }
+
+    .hb-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
 }
