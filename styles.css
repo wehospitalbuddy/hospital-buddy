@@ -1,6 +1,5 @@
 /* =========================================================
    HOSPITAL BUDDY — COMPLETE RESPONSIVE STYLES
-   Hero image: hero-bg.png.png
    ========================================================= */
 
 :root {
@@ -183,7 +182,9 @@ header,
   margin-top: 4px;
 }
 
-/* Navigation */
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 .hb-nav,
 nav {
@@ -205,7 +206,9 @@ nav a:hover {
   color: var(--hb-green);
 }
 
-/* Mobile menu button */
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
 
 .hb-menu-btn,
 .menu-btn,
@@ -230,6 +233,7 @@ nav a:hover {
 
 .hb-hero {
   position: relative;
+
   min-height: 650px;
 
   display: flex;
@@ -237,17 +241,22 @@ nav a:hover {
 
   overflow: hidden;
 
-  background: #fff;
+  background: #ffffff;
 }
 
 /*
-   IMPORTANT:
-   Keep hero-bg.png.png in the SAME folder as styles.css.
+   IMPORTANT
+   Your GitHub image is:
+
+   hero-image.png
+
+   Keep this file in the SAME folder as styles.css.
 */
 
 .hb-hero-background {
   position: absolute;
   inset: 0;
+
   z-index: 0;
 
   background-image: url("hero-image.png");
@@ -255,11 +264,16 @@ nav a:hover {
   background-position: 78% center;
   background-repeat: no-repeat;
 
-  background-color: #fff;
+  background-color: #ffffff;
 }
+
+/*
+   White overlay keeps the HTML text readable.
+*/
 
 .hb-hero-background::after {
   content: "";
+
   position: absolute;
   inset: 0;
 
@@ -269,18 +283,20 @@ nav a:hover {
     linear-gradient(
       90deg,
       rgba(255, 255, 255, 0.99) 0%,
-      rgba(255, 255, 255, 0.96) 28%,
-      rgba(255, 255, 255, 0.72) 48%,
-      rgba(255, 255, 255, 0.18) 72%,
+      rgba(255, 255, 255, 0.96) 25%,
+      rgba(255, 255, 255, 0.76) 45%,
+      rgba(255, 255, 255, 0.25) 70%,
       rgba(255, 255, 255, 0.02) 100%
     );
 }
 
 .hb-hero-content {
   position: relative;
+
   z-index: 2;
 
   width: min(100% - 32px, var(--hb-container));
+
   margin: 0 auto;
 
   display: flex;
@@ -293,16 +309,19 @@ nav a:hover {
 
 .hb-eyebrow {
   display: inline-flex;
+
   align-items: center;
 
   padding: 7px 13px;
 
   background: var(--hb-green-light);
+
   color: var(--hb-green-dark);
 
   border-radius: 999px;
 
   font-size: 13px;
+
   font-weight: 800;
 
   margin-bottom: 18px;
@@ -312,6 +331,7 @@ nav a:hover {
   color: var(--hb-blue);
 
   font-size: clamp(38px, 6vw, 68px);
+
   line-height: 1.04;
 
   font-weight: 850;
@@ -328,26 +348,32 @@ nav a:hover {
   color: #344054;
 
   font-size: clamp(16px, 2vw, 19px);
+
   line-height: 1.65;
 
   margin-bottom: 28px;
 }
 
-/* Hero buttons */
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
 
 .hb-hero-actions {
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 12px;
 }
 
 .hb-primary-button,
-.hb-secondary-button,
-.hb-hero .hb-primary-button {
+.hb-secondary-button {
   min-height: 52px;
 
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 9px;
@@ -357,6 +383,7 @@ nav a:hover {
   border-radius: 13px;
 
   font-weight: 800;
+
   font-size: 15px;
 
   transition:
@@ -367,7 +394,10 @@ nav a:hover {
 
 .hb-primary-button {
   background: var(--hb-green);
+
   color: white;
+
+  border: 0;
 
   box-shadow:
     0 10px 24px rgba(10, 169, 104, 0.22);
@@ -375,11 +405,13 @@ nav a:hover {
 
 .hb-primary-button:hover {
   background: var(--hb-green-dark);
+
   transform: translateY(-2px);
 }
 
 .hb-secondary-button {
   background: white;
+
   color: var(--hb-blue);
 
   border: 1px solid var(--hb-border);
@@ -387,11 +419,12 @@ nav a:hover {
 
 .hb-secondary-button:hover {
   border-color: var(--hb-green);
+
   color: var(--hb-green);
 }
 
 /* =========================================================
-   TRUST / FEATURE CARDS
+   TRUST / FEATURES
    ========================================================= */
 
 .hb-trust-grid,
@@ -425,18 +458,22 @@ nav a:hover {
 .hb-trust-card:hover,
 .hb-feature-card:hover {
   transform: translateY(-4px);
+
   box-shadow: var(--hb-shadow-lg);
 }
 
 .hb-trust-icon,
 .hb-feature-icon {
   width: 50px;
+
   height: 50px;
 
   margin: 0 auto 14px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 14px;
@@ -453,6 +490,7 @@ nav a:hover {
   color: var(--hb-blue);
 
   font-size: 16px;
+
   font-weight: 800;
 
   margin-bottom: 5px;
@@ -461,6 +499,7 @@ nav a:hover {
 .hb-trust-card p,
 .hb-feature-card p {
   color: var(--hb-muted);
+
   font-size: 13px;
 }
 
@@ -499,10 +538,13 @@ nav a:hover {
 .hb-service-card .icon,
 .hb-service-icon {
   width: 48px;
+
   height: 48px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 14px;
@@ -531,7 +573,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   BOOKING SECTION
+   BOOKING
    ========================================================= */
 
 .hb-booking-section {
@@ -555,7 +597,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   STEP INDICATOR
+   STEPS
    ========================================================= */
 
 .hb-steps {
@@ -733,7 +775,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   SERVICE SELECTOR
+   SERVICE OPTIONS
    ========================================================= */
 
 .hb-service-options {
@@ -791,7 +833,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   DATE / TIME
+   TIME
    ========================================================= */
 
 .hb-time-grid {
@@ -829,7 +871,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   BUTTON GROUP
+   FORM BUTTONS
    ========================================================= */
 
 .hb-form-actions {
@@ -879,7 +921,7 @@ nav a:hover {
 }
 
 /* =========================================================
-   BUDDY MATCH RESULT
+   BUDDY MATCH
    ========================================================= */
 
 .hb-match-card {
@@ -1232,7 +1274,7 @@ footer,
 }
 
 /* =========================================================
-   MOBILE BOOKING NAV
+   MOBILE BOTTOM NAV
    ========================================================= */
 
 .hb-mobile-nav {
@@ -1240,7 +1282,7 @@ footer,
 }
 
 /* =========================================================
-   TABLETS
+   TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -1292,14 +1334,14 @@ footer,
   }
 
   .hb-container {
-    width: min(100% - 24px, var(--hb-container));
+    width: calc(100% - 24px);
   }
 
   .hb-section {
     padding: 48px 0;
   }
 
-  /* Header */
+  /* HEADER */
 
   .hb-header-inner {
     min-height: 64px;
@@ -1325,6 +1367,7 @@ footer,
     display: flex;
 
     align-items: center;
+
     justify-content: center;
   }
 
@@ -1376,26 +1419,35 @@ footer,
     background: var(--hb-green-light);
   }
 
-  /* Mobile hero */
+  /* =====================================================
+     MOBILE HERO
+     ===================================================== */
 
   .hb-hero {
-    min-height: 680px;
+    min-height: 700px;
 
     align-items: flex-end;
 
     padding: 0 0 35px;
   }
 
+  /*
+     SAME IMAGE NAME AS GITHUB:
+     hero-image.png
+  */
+
   .hb-hero-background {
-    background-image: url("hero-bg.png.png");
+    background-image: url("hero-image.png");
 
     background-size: cover;
+
+    /*
+       Keep patient + buddy visible.
+    */
 
     background-position: 68% top;
 
     background-repeat: no-repeat;
-
-    opacity: 1;
   }
 
   .hb-hero-background::after {
@@ -1403,10 +1455,10 @@ footer,
       linear-gradient(
         180deg,
         rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.08) 24%,
-        rgba(255,255,255,0.35) 40%,
-        rgba(255,255,255,0.78) 55%,
-        rgba(255,255,255,0.97) 68%,
+        rgba(255,255,255,0.06) 22%,
+        rgba(255,255,255,0.30) 38%,
+        rgba(255,255,255,0.72) 52%,
+        rgba(255,255,255,0.95) 66%,
         rgba(255,255,255,1) 100%
       );
   }
@@ -1459,7 +1511,7 @@ footer,
     width: 100%;
   }
 
-  /* Trust */
+  /* TRUST */
 
   .hb-trust-grid,
   .hb-features-grid {
@@ -1496,7 +1548,7 @@ footer,
     font-size: 11px;
   }
 
-  /* Services */
+  /* SERVICES */
 
   .hb-services-grid {
     grid-template-columns: 1fr;
@@ -1508,7 +1560,7 @@ footer,
     padding: 18px;
   }
 
-  /* Booking */
+  /* BOOKING */
 
   .hb-booking-card {
     padding: 18px 14px;
@@ -1516,7 +1568,7 @@ footer,
     border-radius: 18px;
   }
 
-  /* Steps */
+  /* STEPS */
 
   .hb-steps {
     margin-bottom: 25px;
@@ -1540,7 +1592,7 @@ footer,
     white-space: nowrap;
   }
 
-  /* Forms */
+  /* FORMS */
 
   .hb-form-row {
     grid-template-columns: 1fr;
@@ -1558,19 +1610,19 @@ footer,
     min-height: 46px;
   }
 
-  /* Service options */
+  /* SERVICE OPTIONS */
 
   .hb-service-options {
     grid-template-columns: 1fr;
   }
 
-  /* Time */
+  /* TIME */
 
   .hb-time-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Buttons */
+  /* BUTTONS */
 
   .hb-form-actions {
     flex-direction: column-reverse;
@@ -1580,7 +1632,7 @@ footer,
     width: 100%;
   }
 
-  /* Buddy */
+  /* BUDDY */
 
   .hb-buddy-profile {
     align-items: flex-start;
@@ -1594,7 +1646,7 @@ footer,
     height: 58px;
   }
 
-  /* Requests */
+  /* REQUESTS */
 
   .hb-request-header {
     align-items: flex-start;
@@ -1612,7 +1664,7 @@ footer,
     text-align: left;
   }
 
-  /* Dashboard */
+  /* DASHBOARD */
 
   .hb-dashboard {
     display: block;
@@ -1640,7 +1692,7 @@ footer,
     font-size: 23px;
   }
 
-  /* Footer */
+  /* FOOTER */
 
   .hb-footer-grid {
     grid-template-columns: 1fr;
@@ -1653,7 +1705,7 @@ footer,
     padding: 40px 0 20px;
   }
 
-  /* Mobile bottom navigation */
+  /* MOBILE BOTTOM NAV */
 
   .hb-mobile-nav {
     position: fixed;
@@ -1843,5 +1895,4 @@ footer,
   .hb-section {
     padding: 20px 0;
   }
-
 }
