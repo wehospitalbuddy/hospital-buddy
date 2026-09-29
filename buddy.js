@@ -9,7 +9,7 @@
 // =====================================================
 
 const firebaseConfig = {
- apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
+  apiKey: "AIzaSyDxfFRc03z0YLo_q5ynZhEjYR41PzGdiw",
   authDomain: "hospital-buddy-2224d.firebaseapp.com",
   projectId: "hospital-buddy-2224d",
   storageBucket: "hospital-buddy-2224d.firebasestorage.app",
