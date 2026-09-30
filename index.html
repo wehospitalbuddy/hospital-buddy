@@ -1577,20 +1577,29 @@
           1fr;
 
         gap:
-          35px;
+          30px;
 
         padding:
-          55px 18px 70px;
+          40px 18px 70px;
+      }
+
+      /* On phones, show the hospital image BEFORE the text.
+         This prevents the hero image from appearing as a second
+         block below the entire hero copy. */
+      .hb-hero-image-wrap {
+        width:
+          100%;
+
+        order:
+          -1;
       }
 
       .hb-hero-copy {
         max-width:
           720px;
-      }
 
-      .hb-hero-image-wrap {
-        width:
-          100%;
+        order:
+          1;
       }
 
       .hb-service-grid {
@@ -1648,10 +1657,10 @@
 
       .hb-hero-inner {
         padding:
-          38px 16px 60px;
+          24px 14px 55px;
 
         gap:
-          28px;
+          24px;
       }
 
       .hb-eyebrow {
@@ -1711,13 +1720,18 @@
 
       .hb-hero-image {
         aspect-ratio:
-          4 / 3;
+          3 / 2;
 
         object-fit:
           cover;
 
         object-position:
-          center;
+          center center;
+      }
+
+      .hb-hero-copy {
+        width:
+          100%;
       }
 
       .hb-trust {
