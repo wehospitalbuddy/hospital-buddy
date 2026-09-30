@@ -1636,3 +1636,426 @@ body:has(#loginSection) .loginLogo img {
     font-size: 15px !important;
   }
 }
+
+/* =========================================================
+   HOSPITAL BUDDY — FINAL MOBILE FIX
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ---------- CONTAINER ---------- */
+
+.hb-container,
+.hb-hero-content {
+  width: min(100% - 24px, 1180px);
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- HEADER ---------- */
+
+.hb-header,
+header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+.hb-header-inner {
+  width: min(100% - 24px, 1180px);
+  min-height: 64px;
+  margin: auto;
+}
+
+/* ---------- HERO ---------- */
+
+.hb-hero {
+  position: relative;
+  width: 100%;
+  min-height: 650px;
+  overflow: hidden;
+}
+
+.hb-hero-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url("hero-image.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 75% center;
+}
+
+/* Don't let the image make the page wider */
+.hb-hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- DESKTOP HERO ---------- */
+
+.hb-hero-content {
+  position: relative;
+  z-index: 2;
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+}
+
+.hb-hero-copy {
+  width: 100%;
+  max-width: 650px;
+}
+
+.hb-hero h1 {
+  max-width: 650px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media screen and (max-width: 700px) {
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  /* HEADER */
+
+  .hb-header-inner {
+    width: calc(100% - 20px);
+    min-height: 62px;
+  }
+
+  .hb-logo img,
+  .logo-area img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hb-logo-text strong {
+    font-size: 17px;
+  }
+
+  .hb-logo-text small {
+    font-size: 8px;
+  }
+
+  .hb-menu-btn,
+  .menu-btn,
+  .mobile-menu-btn {
+    display: flex !important;
+    width: 42px;
+    height: 42px;
+  }
+
+  /* NAVIGATION */
+
+  .hb-nav,
+  nav {
+    display: none;
+  }
+
+  .hb-nav.open,
+  nav.open {
+    display: flex !important;
+  }
+
+  /* HERO */
+
+  .hb-hero {
+    min-height: 690px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 0 30px;
+  }
+
+  .hb-hero-background {
+    background-image: url("hero-image.png") !important;
+    background-size: cover;
+    background-position: 70% top;
+  }
+
+  .hb-hero-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.00) 0%,
+        rgba(255,255,255,0.02) 20%,
+        rgba(255,255,255,0.20) 38%,
+        rgba(255,255,255,0.65) 52%,
+        rgba(255,255,255,0.94) 67%,
+        rgba(255,255,255,1) 82%
+      );
+  }
+
+  .hb-hero-content {
+    width: calc(100% - 24px);
+    min-height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .hb-hero-copy {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hb-eyebrow {
+    font-size: 10px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+  }
+
+  .hb-hero h1 {
+    max-width: 100%;
+    font-size: 38px;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  .hb-hero-copy > p,
+  .hb-hero-description {
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  /* HERO BUTTONS */
+
+  .hb-hero-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hb-primary-button,
+  .hb-secondary-button {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  /* TRUST CARDS */
+
+  .hb-trust-grid,
+  .hb-features-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .hb-trust-card,
+  .hb-feature-card {
+    min-width: 0;
+    padding: 15px 8px;
+  }
+
+  .hb-trust-card h3,
+  .hb-feature-card h3 {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .hb-trust-card p,
+  .hb-feature-card p {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  /* SERVICES */
+
+  .hb-services-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .hb-service-card {
+    width: 100%;
+    min-width: 0;
+    padding: 18px;
+  }
+
+  /* SECTIONS */
+
+  .hb-section {
+    width: 100%;
+    padding: 42px 0;
+    overflow: hidden;
+  }
+
+  .hb-section-title {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  .hb-section-title h2 {
+    font-size: 29px;
+  }
+
+  .hb-section-title p {
+    font-size: 14px;
+  }
+
+  /* BOOKING */
+
+  .hb-booking-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 12px;
+    border-radius: 16px;
+  }
+
+  /* FORM */
+
+  .hb-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hb-service-options {
+    grid-template-columns: 1fr;
+  }
+
+  .hb-time-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hb-form-actions {
+    flex-direction: column;
+  }
+
+  .hb-form-actions .hb-btn {
+    width: 100%;
+  }
+
+  /* DASHBOARD */
+
+  .hb-dashboard {
+    width: 100%;
+    display: block;
+  }
+
+  .hb-sidebar {
+    display: none;
+  }
+
+  .hb-dashboard-main {
+    width: 100%;
+    padding: 16px 12px;
+  }
+
+  .hb-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .hb-stat-card {
+    min-width: 0;
+    padding: 15px 12px;
+  }
+
+  /* FOOTER */
+
+  .hb-footer,
+  footer {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hb-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* MOBILE BOTTOM NAV */
+
+  .hb-mobile-nav {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    width: auto !important;
+    max-width: none !important;
+    height: 60px;
+    z-index: 99999;
+  }
+
+  .hb-mobile-nav a {
+    min-width: 50px;
+  }
+
+  body {
+    padding-bottom: 76px;
+  }
+}
+
+/* ---------- VERY SMALL PHONES ---------- */
+
+@media screen and (max-width: 390px) {
+
+  .hb-hero {
+    min-height: 650px;
+  }
+
+  .hb-hero h1 {
+    font-size: 34px;
+  }
+
+  .hb-hero-copy > p,
+  .hb-hero-description {
+    font-size: 14px;
+  }
+
+  .hb-trust-grid,
+  .hb-features-grid {
+    gap: 7px;
+  }
+
+  .hb-trust-card,
+  .hb-feature-card {
+    padding: 13px 6px;
+  }
+
+  .hb-trust-icon,
+  .hb-feature-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .hb-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
